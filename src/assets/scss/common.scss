@@ -4,3 +4,6 @@ body {
   height: 100%;
   position: fixed; // 스크롤 액션에 의해 헤더나 레프트까지 당겨지는 현상 막기
 }
+button {
+  cursor: pointer;
+}

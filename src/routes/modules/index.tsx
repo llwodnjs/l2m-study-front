@@ -3,6 +3,7 @@ import Login from "@/pages/login/Login";
 import MainLayout from "@/pages/layout/MainLayout";
 import Main from "@/pages/main/Main";
 import Join from "@/pages/join/Join";
+import FindPw from "@/pages/findpw/FindPw";
 // import PopupLayout from "@/pages/layouts/PopupLayout";
 // import {GlobalError} from "@/pages/global";
 
@@ -27,6 +28,11 @@ const router: CustomRouteObject[] = [
         id: "join",
         path: "join",
         element: <Join />,
+      },
+      {
+        id: "findPw",
+        path: "findPw",
+        element: <FindPw />,
       },
     ],
   },

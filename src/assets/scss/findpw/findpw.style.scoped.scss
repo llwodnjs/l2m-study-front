@@ -1,4 +1,4 @@
-.join {
+.find-pw {
   background-color: $main-bgcolor;
   width: 100%;
   height: 100%;
@@ -13,36 +13,58 @@
   }
 
   &__content {
-    // height: 1000px;
+    height: 50%;
 
-    &__input {
+    &__noti {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       justify-content: center;
       align-items: center;
-      padding: 5px 0px;
+      padding: 0px;
+      height: 303px;
       gap: 10px;
 
-      height: 139px;
-
-      &__area {
+      &__text {
         display: flex;
-        flex-direction: column;
-        align-items: flex-start;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
         padding: 0px;
         gap: 10px;
 
-        &__span {
-          font-family: 'Noto Sans KR';
-          font-style: normal;
-          font-weight: 700;
-          font-size: 23px;
-          line-height: 33px;
-          display: flex;
-          align-items: center;
-          color: #BFBEBC;
-        }
+        width: 707px;
+        height: 220px;
 
+        font-family: 'Noto Sans KR';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 23px;
+        line-height: 33px;
+        text-align: center;
+        
+        background: #383838;
+        color: #FFFFFF;
+
+        span {
+          color: #EAD624;
+          font-size: 26px;
+          text-decoration-line: underline;
+        }
+      }
+    }
+
+    &__area {
+      padding: 15px 0px;
+      
+      &__input {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 105px;
+        padding-top: 15px;
+        gap: 10px;
+  
         &__text {
           width: 670px;
           height: 79px;
@@ -68,9 +90,9 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    padding: 40px 0px 40px;
+    // padding: 40px 0px 40px;
     gap: 13px;
-
+  
     button {
       width: 707px;
       height: 95px;
@@ -87,5 +109,6 @@
       border: 0;
       padding: 0;
     }
+  
   }
 }
