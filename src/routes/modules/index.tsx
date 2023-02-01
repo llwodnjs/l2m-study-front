@@ -1,0 +1,47 @@
+import {CustomRouteObject} from "../Route.type";
+import Login from "@/pages/login/Login";
+import MainLayout from "@/pages/layout/MainLayout";
+import Main from "@/pages/main/Main";
+// import PopupLayout from "@/pages/layouts/PopupLayout";
+// import {GlobalError} from "@/pages/global";
+
+const router: CustomRouteObject[] = [
+  {
+    id: "root",
+    path: "/",
+    element: <MainLayout />,
+    children: [
+      {
+        id: "main",
+        data: "Main",
+        // path: "main",
+        element: <Main />,
+      },
+      // {
+      //   id: "login",
+      //   path: "login",
+      //   element: <Login />,
+      // },
+    ],
+  },
+  {
+    id: "login",
+    path: "/login",
+    element: <MainLayout />,
+    children: [
+      {
+        id: "login1",
+        data: "로그인",
+        // path: "main",
+        element: <Login />,
+      },
+      // {
+      //   id: "login",
+      //   path: "login",
+      //   element: <Login />,
+      // },
+    ],
+  },
+];
+
+export default router;
