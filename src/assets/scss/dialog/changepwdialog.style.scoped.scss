@@ -1,0 +1,129 @@
+.changePwDialogWrapper {
+  width: 100%;
+  height: 100%;
+  z-index: 10000;
+  position: absolute;
+
+  &__show {
+    display: block;
+    background: rgba(0, 0, 0, 0.68);
+  }
+}
+.changePwDialog {
+  width: 1000px;
+  height: 650px;
+  left: 460px;
+  top: 180px;
+  position: absolute;
+  background-color: #FFFFFF;
+
+  &__header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 10px 0px 10px;
+    background-color: #000000;
+    height: 80px;
+
+    &__left {
+      color: #FFFFFF;
+      font-family: 'Noto Sans KR';
+      font-style: normal;
+      font-weight: 500;
+      font-size: 28px;
+      line-height: 41px;
+    }
+
+    // &__right {
+      
+    // }
+  }
+
+  &__content {
+    height: 570px;
+
+    &__area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 0px 0px;
+      gap: 10px;
+
+      &__input {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0px;
+        gap: 10px;
+
+        span {
+          font-family: 'Noto Sans KR';
+          font-style: normal;
+          font-weight: 700;
+          font-size: 23px;
+          line-height: 33px;
+          display: flex;
+          align-items: center;
+          color: #BFBEBC;
+        }
+
+        input {
+          width: 670px;
+          height: 67px;
+          left: 0px;
+          top: 43px;
+          padding-left: 35px;
+          border: 0;
+
+          font-family: 'Noto Sans KR';
+          font-style: normal;
+          font-weight: 700;
+          font-size: 23px;
+          line-height: 33px;
+          display: flex;
+          align-items: center;
+          color: #7E7E7E;
+          background: #383838;
+          border-radius: 10px;
+        }
+      }
+    }
+
+    &__btn__area {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      padding: 0px;
+      padding-top: 46px;
+      gap: 13px;
+
+      button {
+        width: 707px;
+        height: 68px;
+        border: 0;
+        padding: 0;
+
+        font-family: 'Noto Sans KR';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 23px;
+        line-height: 33px;
+        text-align: center;
+
+        color: #FFFFFF;
+
+        background: #140F4E;
+        border-radius: 10px;
+      }
+    }
+  }
+}
+
+.close_icon {
+  color: white;
+  width: 50px;
+  height: 50px;
+}
