@@ -1,4 +1,4 @@
-import "@/assets/scss/findpw/findpw.style.scoped.scss";
+import "@/assets/scss/pages/findpw/findpw.style.scoped.scss";
 
 const logoImg = require("@/assets/images/l2m-logo.png");
 

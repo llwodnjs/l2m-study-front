@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import "@/assets/scss/pages/main/main.style.scoped.scss";
 
 const logoImg = require("@/assets/images/l2m-logo.png");
@@ -7,6 +8,7 @@ const classImg = require("@/assets/images/class.png");
  * TODO (구현필요) 메인 화면 컨텐츠 구상 필요
  */
 function Main() {
+  const navigate = useNavigate();
   return (
     <div className="main">
       <div className="main__img">
@@ -28,11 +30,11 @@ function Main() {
           </select>
         </div>
         <div className="main__search__input">
-          <input className="main__search__input__text" placeholder="아이템 이름을 입력해주세요." />
+          <input type={"text"} className="main__search__input__text" placeholder="아이템 이름을 입력해주세요." />
         </div>
         <div className="main__search__button">
           <button type="button" className="low-price-setting">최저가 세팅</button>
-          <button type="button" className="search-item">아이템 조회</button>
+          <button type="button" className="search-item" onClick={() => navigate("/itemSearch")}>아이템 조회</button>
         </div>
         <div className="main__search__img">
           <img src={classImg} alt="" />

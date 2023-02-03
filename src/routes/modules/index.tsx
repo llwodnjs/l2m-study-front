@@ -5,6 +5,7 @@ import Main from "@/pages/main/Main";
 import Join from "@/pages/join/Join";
 import FindPw from "@/pages/findpw/FindPw";
 import ChangePwDialog from "@/components/dialog/ChangePwDialog";
+import ItemSearch from "@/pages/search/ItemSearch";
 // import PopupLayout from "@/pages/layouts/PopupLayout";
 // import {GlobalError} from "@/pages/global";
 
@@ -34,6 +35,11 @@ const router: CustomRouteObject[] = [
         id: "findPw",
         path: "findPw",
         element: <FindPw />,
+      },
+      {
+        id: "itemSearch",
+        path: "itemSearch",
+        element: <ItemSearch />,
       },
     ],
   },

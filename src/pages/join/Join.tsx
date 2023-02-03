@@ -1,4 +1,4 @@
-import "@/assets/scss/join/join.style.scoped.scss";
+import "@/assets/scss/pages/join/join.style.scoped.scss";
 
 const logoImg = require("@/assets/images/l2m-logo.png");
 

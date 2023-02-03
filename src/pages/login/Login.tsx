@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import "@/assets/scss/login/login.style.scoped.scss";
+import "@/assets/scss/pages/login/login.style.scoped.scss";
 
 const logoImg = require("@/assets/images/l2m-logo.png");
 
