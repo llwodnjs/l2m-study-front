@@ -6,6 +6,7 @@ import Join from "@/pages/join/Join";
 import FindPw from "@/pages/findpw/FindPw";
 import ChangePwDialog from "@/components/dialog/ChangePwDialog";
 import ItemSearch from "@/pages/search/ItemSearch";
+import LowPriceSearch from "@/pages/search/LowPriceSearch";
 // import PopupLayout from "@/pages/layouts/PopupLayout";
 // import {GlobalError} from "@/pages/global";
 
@@ -40,6 +41,11 @@ const router: CustomRouteObject[] = [
         id: "itemSearch",
         path: "itemSearch",
         element: <ItemSearch />,
+      },
+      {
+        id: "lowPrice",
+        path: "lowPriceSearch",
+        element: <LowPriceSearch />,
       },
     ],
   },

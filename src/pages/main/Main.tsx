@@ -33,7 +33,7 @@ function Main() {
           <input type={"text"} className="main__search__input__text" placeholder="아이템 이름을 입력해주세요." />
         </div>
         <div className="main__search__button">
-          <button type="button" className="low-price-setting">최저가 세팅</button>
+          <button type="button" className="low-price-setting" onClick={() => navigate("/lowPriceSearch")}>최저가 세팅</button>
           <button type="button" className="search-item" onClick={() => navigate("/itemSearch")}>아이템 조회</button>
         </div>
         <div className="main__search__img">
