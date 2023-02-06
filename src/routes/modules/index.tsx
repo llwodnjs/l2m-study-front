@@ -7,6 +7,7 @@ import FindPw from "@/pages/findpw/FindPw";
 import ChangePwDialog from "@/components/dialog/ChangePwDialog";
 import ItemSearch from "@/pages/search/ItemSearch";
 import LowPriceSearch from "@/pages/search/LowPriceSearch";
+import MySetting from "@/pages/mysetting/MySetting";
 // import PopupLayout from "@/pages/layouts/PopupLayout";
 // import {GlobalError} from "@/pages/global";
 
@@ -46,6 +47,11 @@ const router: CustomRouteObject[] = [
         id: "lowPrice",
         path: "lowPriceSearch",
         element: <LowPriceSearch />,
+      },
+      {
+        id: "mySetting",
+        path: "mySetting",
+        element: <MySetting />,
       },
     ],
   },
