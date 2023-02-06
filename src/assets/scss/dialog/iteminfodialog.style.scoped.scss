@@ -1,0 +1,386 @@
+// 다이얼로그 영역
+.item-info-dialog {
+  width: 1000px;
+  height: 750px;
+  margin: 0 auto;
+
+  background: #FFFFFF;
+
+  &__header {
+    height: 65px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 10px;
+
+    background: #000000;
+
+    &__span {
+      font-family: 'Noto Sans KR';
+      font-style: normal;
+      font-weight: 500;
+      font-size: 28px;
+      line-height: 41px;
+
+      color: #FFFFFF;
+    }
+  }
+
+  &__body {
+    width: 100%;
+    height: 685px;
+
+    display: flex;
+    flex-direction: row;
+
+    &__left {
+      box-sizing: border-box;
+
+      width: 500px;
+      height: 685px;
+      left: 0px;
+      top: 65px;
+
+      background: #FFFFFF;
+      border-right: 1px solid #E8E8E8;
+
+      &__header {
+        // height: 103px;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        padding: 16px 0px 16px 20px;
+        gap: 15px;
+
+        &__select {
+          width: 42px;
+          height: 23px;
+
+          background: #FFFFFF;
+          border: 0;
+        }
+
+        &__detail {
+          height: 62px;
+
+          &__name {
+            font-family: 'Noto Sans KR';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 23px;
+
+            color: #FC5656;
+          }
+
+          &__img {
+            width: 282px;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 10px;
+            font-size: 23px;
+          }
+
+        }
+
+        &__like {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          padding: 0px;
+          gap: 10px;
+
+          width: 31px;
+          height: 62px;
+        }
+      }
+
+      &__content {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0px;
+        gap: 2px;
+        width: 100%;
+        height: 582px;
+
+        &__header {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          gap: 10px;
+
+          width: 100%;
+          height: 50px;
+
+          background: #E3E3E3;
+          border-top: 1px solid #5A5757;
+
+          &__text {
+            font-family: 'Noto Sans KR';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 17px;
+            line-height: 25px;
+            padding-left: 10px;
+
+            color: #6A6363;
+          }
+        }
+
+        &__info {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 10px;
+          padding-top: 10px;
+
+          &__category {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 30px;
+
+            width: 500px;
+            // height: 35px;
+
+            & span {
+              width: 130px;
+              font-family: 'Noto Sans KR';
+              font-style: normal;
+              font-weight: 500;
+              font-size: 17px;
+              line-height: 25px;
+
+              color: #6A6363;
+              padding-left: 10px;
+            }
+
+            &__text {
+              width: 100%;
+
+              display: flex;
+              flex-direction: column;
+
+              // justify-content: center;
+              & span {
+                width: 100%;
+                font-family: 'Noto Sans KR';
+                font-style: normal;
+                font-weight: 500;
+                font-size: 17px;
+                line-height: 30px;
+
+                color: #000000;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    &__right {
+      width: 500px;
+      height: 685px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 0px;
+
+      &__quote__header {
+        width: 100%;
+        height: 50px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+
+        background: #E3E3E3;
+        border-top: 1px solid #5A5757;
+
+        & span {
+          padding-left: 10px;
+          font-family: 'Noto Sans KR';
+          font-style: normal;
+          font-weight: 500;
+          font-size: 17px;
+          line-height: 25px;
+
+          color: #6A6363;
+        }
+      }
+
+      &__quote__body {
+        width: 100%;
+        height: 293px;
+        display: flex;
+        flex-direction: column;
+
+        &__server {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: flex-end;
+          height: 39px;
+
+          &__wrapper {
+            padding-right: 10px;
+
+            & select {
+              width: 75px;
+              height: 23px;
+
+              font-family: 'Noto Sans KR';
+              font-style: normal;
+              font-weight: 500;
+              font-size: 14px;
+              line-height: 20px;
+
+              color: #6A6363;
+              background: #FFFFFF;
+              border: 0;
+            }
+          }
+        }
+
+        &__content {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          height: 254px;
+
+          &__row {
+            width: 100%;
+            height: 35px;
+
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+
+            &__name {
+              width: 100px;
+
+              & span {
+                padding-left: 10px;
+
+                font-family: 'Noto Sans KR';
+                font-style: normal;
+                font-weight: 500;
+                font-size: 14px;
+                line-height: 20px;
+
+                color: #6A6363;
+              }
+            }
+
+            &__price {
+              display: flex;
+              gap: 5px;
+
+              & img {
+                width: 20px;
+                height: 18px;
+              }
+
+              & span {
+                font-family: 'Noto Sans KR';
+                font-style: normal;
+                font-weight: 500;
+                font-size: 14px;
+                line-height: 20px;
+
+                color: #000000;
+
+              }
+            }
+          }
+        }
+      }
+
+      &__server__header {
+        width: 100%;
+        height: 50px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+
+        background: #E3E3E3;
+        border-top: 1px solid #5A5757;
+
+        & span {
+          padding-left: 10px;
+          font-family: 'Noto Sans KR';
+          font-style: normal;
+          font-weight: 500;
+          font-size: 17px;
+          line-height: 25px;
+
+          color: #6A6363;
+        }
+      }
+
+      &__server__body {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px 0px 0px;
+        gap: 10px;
+
+        width: 100%;
+        height: 290px;
+
+        &__row {
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          // justify-content: space-between;
+
+          &__header {
+            width: 70%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 16px;
+
+            padding-left: 10px;
+
+            & span {
+              font-family: 'Noto Sans KR';
+              font-style: normal;
+              font-weight: 500;
+              font-size: 14px;
+              line-height: 20px;
+
+              color: #6A6363;
+            }
+          }
+
+          &__price {
+            padding-right: 50px;
+            display: flex;
+            gap: 5px;
+
+            & img {
+              width: 20px;
+              height: 18px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.close_icon {
+  width: 50px;
+  height: 51px;
+
+  color: #FFFFFF;
+}

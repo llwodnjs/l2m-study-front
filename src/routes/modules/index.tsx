@@ -8,6 +8,7 @@ import ChangePwDialog from "@/components/dialog/ChangePwDialog";
 import ItemSearch from "@/pages/search/ItemSearch";
 import LowPriceSearch from "@/pages/search/LowPriceSearch";
 import MySetting from "@/pages/mysetting/MySetting";
+import ItemInfoDialog from "@/components/dialog/ItemInfoDialog";
 // import PopupLayout from "@/pages/layouts/PopupLayout";
 // import {GlobalError} from "@/pages/global";
 
@@ -52,6 +53,11 @@ const router: CustomRouteObject[] = [
         id: "mySetting",
         path: "mySetting",
         element: <MySetting />,
+      },
+      {
+        id: "searchInfo",
+        path: "info",
+        element: <ItemInfoDialog />,
       },
     ],
   },
