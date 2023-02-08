@@ -9,6 +9,7 @@ import ItemSearch from "@/pages/search/ItemSearch";
 import LowPriceSearch from "@/pages/search/LowPriceSearch";
 import MySetting from "@/pages/mysetting/MySetting";
 import ItemInfoDialog from "@/components/dialog/ItemInfoDialog";
+import CompareDialog from "@/components/dialog/CompareDialog";
 // import PopupLayout from "@/pages/layouts/PopupLayout";
 // import {GlobalError} from "@/pages/global";
 
@@ -58,6 +59,16 @@ const router: CustomRouteObject[] = [
         id: "searchInfo",
         path: "info",
         element: <ItemInfoDialog />,
+      },
+      {
+        id: "compare",
+        path: "compare",
+        element: <CompareDialog />,
+      },
+      {
+        id: "changePw",
+        path: "changePw",
+        element: <ChangePwDialog />,
       },
     ],
   },

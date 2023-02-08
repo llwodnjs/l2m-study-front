@@ -37,7 +37,10 @@ function ItemInfoDialog() {
                 |
                 <img src={tradeable} />
                 |
-                <img src={enchantable} />
+                <div className="item-info-dialog__body__left__header__detail__img__enchan">
+                  <img src={enchantable} />
+                  <span>6</span>
+                </div>
               </div>
             </div>
             <div className="item-info-dialog__body__left__header__like">

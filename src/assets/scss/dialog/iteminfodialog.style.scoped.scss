@@ -82,6 +82,16 @@
             align-items: center;
             gap: 10px;
             font-size: 23px;
+
+            &__enchan {
+              font-family: 'Noto Sans KR';
+              font-style: normal;
+              font-weight: 500;
+              font-size: 14px;
+              line-height: 20px;
+              display: flex;
+              align-items: center;
+            }
           }
 
         }
