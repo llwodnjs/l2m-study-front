@@ -1,4 +1,4 @@
-import {CustomRouteObject} from "../Route.type";
+import {CustomRouteObject} from "../../type/routes/Route.type";
 import Login from "@/pages/login/Login";
 import MainLayout from "@/pages/layout/MainLayout";
 import Main from "@/pages/main/Main";
@@ -10,6 +10,7 @@ import LowPriceSearch from "@/pages/search/LowPriceSearch";
 import MySetting from "@/pages/mysetting/MySetting";
 import ItemInfoDialog from "@/components/dialog/ItemInfoDialog";
 import CompareDialog from "@/components/dialog/CompareDialog";
+import Favorites from "@/pages/favorites/Favorites";
 // import PopupLayout from "@/pages/layouts/PopupLayout";
 // import {GlobalError} from "@/pages/global";
 
@@ -69,6 +70,11 @@ const router: CustomRouteObject[] = [
         id: "changePw",
         path: "changePw",
         element: <ChangePwDialog />,
+      },
+      {
+        id: "favorites",
+        path: "favorites",
+        element: <Favorites />,
       },
     ],
   },

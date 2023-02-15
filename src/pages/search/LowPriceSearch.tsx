@@ -253,8 +253,10 @@ function LowPriceSearch() {
         <img className="arrow-img" src={arrowForwardImage} />
       </div>
       <div className="low-price-paging">
-        <img className="low-price-paging__img" src={equipNonActive}></img>
-        <img className="low-price-paging__img" src={accActive}></img>
+        {/* <img className="low-price-paging__img" src={equipNonActive}></img> */}
+        <img className="low-price-paging__img" src={equipActive}></img>
+        {/* <img className="low-price-paging__img" src={accActive}></img> */}
+        <img className="low-price-paging__img" src={accNonActive}></img>
       </div>
       <div className="low-price-item">
         <div className="low-price-item__total">

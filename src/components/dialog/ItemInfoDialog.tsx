@@ -12,7 +12,13 @@ const compare = require("@/assets/images/compare.png");
 const world = require("@/assets/images/world.png");
 const diamond = require("@/assets/images/diamond.png");
 
-function ItemInfoDialog() {
+// type ItemInfoDialogProps = {
+//   isShow: boolean,
+// }
+
+function ItemInfoDialog(
+  // isShow = false,
+) {
   return (
     <div className="item-info-dialog">
       <div className="item-info-dialog__header">

@@ -1,5 +1,5 @@
 import React, { createElement, cloneElement } from "react";
-import { CustomRouteObject } from "./Route.type";
+import { CustomRouteObject } from "../type/routes/Route.type";
 import { createBrowserRouter, RouteObject } from "react-router-dom";
 import reactRoute from "./modules";
 // import { store } from "@/stores";

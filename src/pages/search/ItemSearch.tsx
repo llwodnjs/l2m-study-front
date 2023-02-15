@@ -1,252 +1,104 @@
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import "@/assets/scss/pages/search/itemsearch.style.scoped.scss";
-const itemImage = require("@/assets/images/itemImage.png");
-const diamondImage = require("@/assets/images/diamond.png");
-const searchImage = require("@/assets/images/iconSearch.png");
-const arrowBackImage = require("@/assets/images/icon_arrow_back.png");
-const arrowForwardImage = require("@/assets/images/icon_arrow_forward.png");
+import SearchGrid from "@/components/grid/SearchGrid";
+import SearchPaging from "@/components/paging/SearchPaging";
+import SearchSelect from "@/components/select/SearchSelect";
+import ServerSearchSelect from "@/components/select/ServerSearchSelect";
+import SearchInput from "@/components/input/SearchInput";
+import SearchButton from "@/components/button/SearchButton";
+import ItemInfoDialog from "@/components/dialog/ItemInfoDialog";
+import { SearchListParam, SearchListParamInit, serverList, classList, gradeList, enchantLevelList } from "@/type/pages/main/Main.type";
+import { apiSearchItem } from "@/resources/api/pages/main/Main.api";
+import { ItemSearchType, ItemSearchTypeDefault, PagingType, PagingDefault } from "@/type/pages/search/Search.type";
+
 function ItemSearch() {
+  const location = useLocation();
+
+  const [listParam, setListParam] = useState<SearchListParam>(() => location.state || SearchListParamInit());
+  const [list, setList] = useState<ItemSearchType[]>(() => ItemSearchTypeDefault());
+  const [paging, setPaging] = useState<PagingType>(() => PagingDefault());
+
+  // 아이템조회
+  const searchItem = () =>
+    apiSearchItem(listParam)
+      .then((result) => {
+        setList(result.data.contents);
+        setPaging(result.data.pagination);
+      });
+  // const initSearchItem = () =>
+  //   setListParam((current) => ({
+  //     ...listParam,
+  //     page: 1,
+  //     size: current.size,
+  //   }));
+  //   apiSearchItem(listParam)
+  //     .then((result) => {
+  //       setList(result.data.contents);
+  //       setPaging(result.data.pagination);
+  //     });
+
+  // 페이지 데이터 변경
+  const pageChangeHandler = (page: number) => {
+    setListParam((current) => ({
+      ...listParam,
+      page: page,
+      size: current.size,
+    }));
+    searchItem();
+  };
+
+  const initSearchItem = () => {
+    pageChangeHandler(1);
+  }
+
+  useEffect(() => {
+    searchItem();
+  }, []);
+
   return (
     <div className="search">
       <div className="search__filter">
         <div className="search__filter__select">
-          <select className="select-button">
-            <option>서버</option>
-          </select>
-          <select className="select-button">
-            <option>클래스</option>
-          </select>
-          <select className="select-button">
-            <option>장비등급</option>
-          </select>
-          <select className="select-button">
-            <option>강화수치</option>
-          </select>
+          <ServerSearchSelect
+            defaultValue="서버"
+            options={serverList}
+            value={listParam?.server_id}
+            onChange={(val) => setListParam({ ...listParam, server_id: val })}
+          />
+          <SearchSelect
+            defaultValue="클래스"
+            options={classList}
+            value={listParam?.class_id}
+            onChange={(val) => setListParam({ ...listParam, class_id: val })}
+          />
+          <SearchSelect
+            defaultValue="장비등급"
+            options={gradeList}
+            value={listParam?.grade_id}
+            onChange={(val) => setListParam({ ...listParam, grade_id: val })}
+          />
+          <SearchSelect
+            defaultValue="강화수치"
+            options={enchantLevelList}
+            value={listParam?.from_enchant_level}
+            onChange={(val) => setListParam({ ...listParam, from_enchant_level: parseInt(val) })}
+          />
         </div>
         <div className="search__filter__input">
-          <input placeholder="아이템명을 입력해주세요."></input>
-          <button type="button">검색</button>
+          <SearchInput
+            placeholder="아이템 이름을 입력해주세요."
+            value={listParam?.search_keyword}
+            onChange={(val) => setListParam({ ...listParam, search_keyword: val })}
+            wd={'555px'}
+            hi={'69px'}
+          />
+          <SearchButton onClickFunction={initSearchItem} wd={'109px'} hi={'69px'} text={'검색'} />
         </div>
       </div>
-      <div className="search__table">
-        <div className="search__table__count">
-          검색결과: 8건
-        </div>
-        <div className="search__table__content">
-          <table className="search-table">
-            <colgroup>
-              <col width={"40%"} />
-              <col width={"30%"} />
-              <col width={"15%"} />
-              <col width={"15%"} />
-            </colgroup>
-            <thead>
-              <tr className="header-tr">
-                <th>아이템 이름</th>
-                <th>재련 옵션</th>
-                <th>최저가</th>
-                <th>기능</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <img src={itemImage} />
-                  <span>아르카나 오브</span>
-                </td>
-                <td>
-                  <div className="search-table-second">
-                    <span>무기 데미지 증폭 100%</span>
-                    <span>명중 +100</span>
-                  </div>
-                </td>
-                <td>
-                  <div className="search-table-all">
-                    <img src={diamondImage} />
-                    <span>1만 2000</span>
-                  </div>
-                </td>
-                <td>
-                  <div className="search-table-all">
-                    <img src={searchImage} />
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <img src={itemImage} />
-                  <span>아르카나 오브</span>
-                </td>
-                <td>
-                  <div className="search-table-second">
-                    <span>무기 데미지 증폭 100%</span>
-                    <span>명중 +100</span>
-                  </div>
-                </td>
-                <td>
-                  <div className="search-table-all">
-                    <img src={diamondImage} />
-                    <span>1만 2000</span>
-                  </div>
-                </td>
-                <td>
-                  <div className="search-table-all">
-                    <img src={searchImage} />
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <img src={itemImage} />
-                  <span>아르카나 오브</span>
-                </td>
-                <td>
-                  <div className="search-table-second">
-                    <span>무기 데미지 증폭 100%</span>
-                    <span>명중 +100</span>
-                  </div>
-                </td>
-                <td>
-                  <div className="search-table-all">
-                    <img src={diamondImage} />
-                    <span>1만 2000</span>
-                  </div>
-                </td>
-                <td>
-                  <div className="search-table-all">
-                    <img src={searchImage} />
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <img src={itemImage} />
-                  <span>아르카나 오브</span>
-                </td>
-                <td>
-                  <div className="search-table-second">
-                    <span>무기 데미지 증폭 100%</span>
-                    <span>명중 +100</span>
-                  </div>
-                </td>
-                <td>
-                  <div className="search-table-all">
-                    <img src={diamondImage} />
-                    <span>1만 2000</span>
-                  </div>
-                </td>
-                <td>
-                  <div className="search-table-all">
-                    <img src={searchImage} />
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <img src={itemImage} />
-                  <span>아르카나 오브</span>
-                </td>
-                <td>
-                  <div className="search-table-second">
-                    <span>무기 데미지 증폭 100%</span>
-                    <span>명중 +100</span>
-                  </div>
-                </td>
-                <td>
-                  <div className="search-table-all">
-                    <img src={diamondImage} />
-                    <span>1만 2000</span>
-                  </div>
-                </td>
-                <td>
-                  <div className="search-table-all">
-                    <img src={searchImage} />
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <img src={itemImage} />
-                  <span>아르카나 오브</span>
-                </td>
-                <td>
-                  <div className="search-table-second">
-                    <span>무기 데미지 증폭 100%</span>
-                    <span>명중 +100</span>
-                  </div>
-                </td>
-                <td>
-                  <div className="search-table-all">
-                    <img src={diamondImage} />
-                    <span>1만 2000</span>
-                  </div>
-                </td>
-                <td>
-                  <div className="search-table-all">
-                    <img src={searchImage} />
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <img src={itemImage} />
-                  <span>아르카나 오브</span>
-                </td>
-                <td>
-                  <div className="search-table-second">
-                    <span>무기 데미지 증폭 100%</span>
-                    <span>명중 +100</span>
-                  </div>
-                </td>
-                <td>
-                  <div className="search-table-all">
-                    <img src={diamondImage} />
-                    <span>1만 2000</span>
-                  </div>
-                </td>
-                <td>
-                  <div className="search-table-all">
-                    <img src={searchImage} />
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <img src={itemImage} />
-                  <span>아르카나 오브</span>
-                </td>
-                <td>
-                  <div className="search-table-second">
-                    <span>무기 데미지 증폭 100%</span>
-                    <span>명중 +100</span>
-                  </div>
-                </td>
-                <td>
-                  <div className="search-table-all">
-                    <img src={diamondImage} />
-                    <span>1만 2000</span>
-                  </div>
-                </td>
-                <td>
-                  <div className="search-table-all">
-                    <img src={searchImage} />
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div className="search__paging">
-        <div className="search__paging__area">
-          <img src={arrowBackImage} />
-          <span>1</span>
-          <span>2</span>
-          <span>3</span>
-          <span>4</span>
-          <span>5</span>
-          <img src={arrowForwardImage} />
-        </div>
-      </div>
+      <SearchGrid search_result={paging.total} list={list} />
+      <SearchPaging paging={paging} pageChangeHandler={pageChangeHandler} />
+      <ItemInfoDialog />
     </div>
   );
 };

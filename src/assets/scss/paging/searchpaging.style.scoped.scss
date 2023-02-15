@@ -1,0 +1,31 @@
+.search__paging {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  &__area {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+
+    font-family: 'Noto Sans KR';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 18px;
+
+    color: #FFFFFF;
+
+    &>span, &>img {
+      cursor: pointer;
+    }
+
+    &__selected {
+      color: #EAD624;
+      font-weight: 900;
+    }
+  }
+}

@@ -1,0 +1,195 @@
+// 즐겨찾기 영역 [s]
+.favorites {
+
+  // 즐겨찾기 헤더영역 [s]
+  &__header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 10px;
+    gap: 10px;
+
+    &>span {
+      font-family: 'Noto Sans KR';
+      font-style: normal;
+      font-weight: 500;
+      font-size: 32px;
+      line-height: 46px;
+
+      color: #FFFFFF;
+    }
+  }
+
+  // 즐겨찾기 헤더영역 [e]
+
+  // 즐겨찾기 리스트영역 [s]
+  &__content {
+    height: 329px;
+    border-bottom: 1px solid #D9D9D9;
+    display: flex;
+    flex-direction: column;
+
+    &__list {
+      height: 291px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 22px;
+
+      &__img {
+        width: 242px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+
+        &__text {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: center;
+
+          &>.normal {
+            font-family: 'Noto Sans KR';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 20px;
+            line-height: 18px;
+            color: #FFFFFF;
+          }
+
+          &>.advanced {
+            font-family: 'Noto Sans KR';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 20px;
+            line-height: 18px;
+            color: #2FED00;
+          }
+
+          &>.rare {
+            font-family: 'Noto Sans KR';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 20px;
+            line-height: 18px;
+            color: #402FFD;
+          }
+
+          &>.hero {
+            font-family: 'Noto Sans KR';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 20px;
+            line-height: 18px;
+            color: #FD000F;
+          }
+
+          &>.regend {
+            font-family: 'Noto Sans KR';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 20px;
+            line-height: 18px;
+            color: #BD00FF;
+          }
+
+          &>.myth {
+            font-family: 'Noto Sans KR';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 20px;
+            line-height: 18px;
+            color: #EDC700;
+          }
+        }
+      }
+    }
+
+    &__paging {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+
+      &__area {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+
+        font-family: 'Noto Sans KR';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 18px;
+
+        color: #FFFFFF;
+      }
+    }
+  }
+
+  // 즐겨찾기 리스트영역 [e]
+}
+
+// 즐겨찾기 영역 [e]
+
+// 차트영역 [s]
+.chart {
+
+  // 차트헤더 영역 [s]
+  &__header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    &__wrapper {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      width: calc(100vw - 500px);
+      gap: 18px;
+      padding: 24px 0;
+
+      &>span {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 32px;
+        line-height: 39px;
+        text-align: center;
+
+        color: #FFFFFF;
+
+      }
+
+      &>.select-button {
+        width: 167px;
+        height: 38px;
+        box-sizing: border-box;
+        background: #111111;
+        border: 1px solid #777777;
+        border-radius: 10px;
+        font-family: 'Noto Sans KR';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 26px;
+        display: flex;
+        align-items: center;
+        color: #d6d6d6;
+        padding-left: 15px;
+      }
+    }
+  }
+
+  // 차트헤더 영역 [e]
+}
+
+// 차트영역 [e]

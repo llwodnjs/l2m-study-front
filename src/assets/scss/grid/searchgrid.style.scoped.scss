@@ -1,0 +1,138 @@
+.search__table {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 0px 50px;
+  gap: 20px;
+
+  &__count {
+    width: 731px;
+    height: 37px;
+
+    font-family: 'Noto Sans KR';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 18px;
+
+    display: flex;
+    align-items: center;
+
+    color: #FFFFFF;
+  }
+
+  &__content {
+    width: 740px;
+    // height: 486px;
+
+    background: #FFFFFF;
+  }
+}
+
+.header-tr {
+  height: 40px;
+  text-align: center;
+  background: #111111;
+  color: #FFFFFF;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+tbody > tr {
+  background: #D9D9D9;
+  border: 1px solid #828282;
+}
+tbody > tr > td {
+  height: 55px;
+
+  font-family: 'Noto Sans Kr';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  vertical-align: middle;
+
+  &>.common {
+    font-family: 'Noto Sans KR';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 18px;
+    color: $common-font-color;
+  }
+
+  &>.uncommon {
+    font-family: 'Noto Sans KR';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 18px;
+    color: $uncommon-font-color;
+  }
+
+  &>.rare {
+    font-family: 'Noto Sans KR';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 18px;
+    color: $rare-font-color;
+  }
+
+  &>.epic {
+    font-family: 'Noto Sans KR';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 18px;
+    color: $epic-font-color;
+  }
+
+  &>.legendary {
+    font-family: 'Noto Sans KR';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 18px;
+    color: $legendary-font-color;
+  }
+
+  &>.mythic {
+    font-family: 'Noto Sans KR';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 18px;
+    color: $mythic-font-color;
+  }
+}
+
+tbody > tr > td:first-child {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-left: 10px;
+}
+
+.search-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  &-second {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  &-all {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+}
