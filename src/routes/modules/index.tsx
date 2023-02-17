@@ -57,11 +57,6 @@ const router: CustomRouteObject[] = [
         element: <MySetting />,
       },
       {
-        id: "searchInfo",
-        path: "info",
-        element: <ItemInfoDialog />,
-      },
-      {
         id: "compare",
         path: "compare",
         element: <CompareDialog />,

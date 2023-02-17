@@ -16,10 +16,6 @@ function SearchPaging({
   const { page, size, total } = paging; // 원본 props
   const _page = page === 0 ? 1 : page; // 보정 offset (최소값 1)
 
-  console.log(page, 'page');
-  console.log(size, 'size');
-  console.log(total, 'total');
-
   // 현재 페이지가 1페이지니?
   const isOffsetFirst = _page === 1;
 
@@ -84,8 +80,8 @@ function SearchPaging({
         {
           isOffsetFirst ? ('') : (<img src={arrowBackImage} onClick={goPrev} />)
         }
-        {pageInfo.pageArr.map((page) => (
-          <span className={page === _page ? 'search__paging__area__selected' : ''} onClick={() => pageChangeHandler(page)}>{page}</span>
+        {pageInfo.pageArr.map((page, idx) => (
+          <span key={idx} className={page === _page ? 'search__paging__area__selected' : ''} onClick={() => pageChangeHandler(page)}>{page}</span>
         ))}
         {
           isOffsetLast ? ('') : (<img src={arrowForwardImage} onClick={goNext} />)

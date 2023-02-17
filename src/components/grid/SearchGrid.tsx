@@ -9,11 +9,13 @@ const searchImage = require("@/assets/images/iconSearch.png");
 type SearchGridProps = {
   search_result?: number,
   list: ItemSearchType[],
+  onClickFunction?: (item_id: number, server_id: number, enchant_level: number) => void,
 }
 
 function SearchGrid({
   search_result = 0,
   list,
+  onClickFunction = () => { },
 }: SearchGridProps) {
   return (
     <div className="search__table">
@@ -25,12 +27,14 @@ function SearchGrid({
           <colgroup>
             <col width={"40%"} />
             <col width={"30%"} />
-            <col width={"15%"} />
-            <col width={"15%"} />
+            <col width={"10%"} />
+            <col width={"10%"} />
+            <col width={"10%"} />
           </colgroup>
           <thead>
             <tr className="header-tr">
               <th>아이템 이름</th>
+              <th>서버</th>
               <th>평균가</th>
               <th>최저가</th>
               <th>기능</th>
@@ -42,23 +46,28 @@ function SearchGrid({
                 <td>
                   <SearchImage imgUrl={item.image} wd={'50px'} hi={'40px'} />
                   {/* <img src={item.image} /> */}
-                  <span className={item.grade}>{item.item_name}</span>
+                  <span className={item.grade}>{item.item_name} + {item.enchant_level}</span>
                 </td>
                 <td>
                   <div className="search-table-all">
-                    <img src={diamondImage} />
+                    <span>{item.server_name}</span>
+                  </div>
+                </td>
+                <td>
+                  <div className="search-table-all">
+                    <SearchImage imgUrl={diamondImage} wd={'24px'} hi={'20px'} />
                     <span>{item.avg_unit_price}</span>
                   </div>
                 </td>
                 <td>
                   <div className="search-table-all">
-                    <img src={diamondImage} />
+                    <SearchImage imgUrl={diamondImage} wd={'24px'} hi={'20px'} />
                     <span>{item.now_min_unit_price}</span>
                   </div>
                 </td>
                 <td>
                   <div className="search-table-all">
-                    <img src={searchImage} />
+                    <SearchImage imgUrl={searchImage} wd={'27px'} hi={'27px'} itemId={item.item_id} serverId={item.server_id} enchantLevel={item.enchant_level} onClickFunction={onClickFunction} />
                   </div>
                 </td>
               </tr>

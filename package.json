@@ -40,10 +40,10 @@
     "style-loader": "^3.3.1"
   },
   "scripts": {
-    "start": "craco start",
-    "build": "craco build",
-    "test": "craco test",
-    "eject": "craco eject"
+    "start": "craco start .env",
+    "build": "craco build .env",
+    "test": "craco test .env",
+    "eject": "craco eject .env"
   },
   "eslintConfig": {
     "extends": [
