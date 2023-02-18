@@ -4,7 +4,7 @@
   height: 100%;
 
   &__img {
-    height: 50%;
+    height: 45%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -12,7 +12,10 @@
   }
 
   &__search {
-    height: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 65%;
 
     &__select {
       display: flex;

@@ -46,209 +46,162 @@ function ItemInfoDialog({
   }
 
   return (
-    <div className={`item-info-dialog ${isShow ? 'item-info-dialog-active' : ''}`}>
+    <div className={`item-info-dialog-container ${isShow ? 'item-info-dialog-container-active' : ''}`}>
+      <div className='item-info-dialog'>
       <div className="item-info-dialog__header">
         <span className="item-info-dialog__header__span">상세보기</span>
         <FontAwesomeIcon className="close_icon" icon={faXmark} onClick={close} />
       </div>
       <div className="item-info-dialog__body">
-        <div className="item-info-dialog__body__left">
-          <div className="item-info-dialog__body__left__header">
-            <SearchImage imgUrl={info?.image} wd={'62px'} hi={'62px'} />
-            <select className="item-info-dialog__body__left__header__select" value={info?.enchant_level} onChange={enchantLevelChangeHandler}>
-              {enchantLevelList.map((obj, idx) => {
-                return <option key={idx} value={obj.value}>{obj.text}</option>
-              })}
-            </select>
-            <div className="item-info-dialog__body__left__header__detail">
-              <div className="item-info-dialog__body__left__header__detail__name">
-                <span className={info?.grade}>{info?.item_name}</span>
-              </div>
-              <div className="item-info-dialog__body__left__header__detail__img">
-                <img src={storable} />
-                |
-                <img src={dropable} />
-                |
-                <img src={tradeable} />
-                |
-                <div className="item-info-dialog__body__left__header__detail__img__enchan">
-                  <img src={enchantable} />
-                  <span>{info?.attribute.safe_enchant_level}</span>
-                </div>
-              </div>
+        <div className="item-info-dialog__body__header">
+          <SearchImage imgUrl={info?.image} wd={'62px'} hi={'62px'} />
+          <select className="item-info-dialog__body__header__select" value={info?.enchant_level} onChange={enchantLevelChangeHandler}>
+            {enchantLevelList.map((obj, idx) => {
+              return <option key={idx} value={obj.value}>{obj.text}</option>
+            })}
+          </select>
+          <div className="item-info-dialog__body__header__detail">
+            <div className="item-info-dialog__body__header__detail__name">
+              <span className={info?.grade}>{info?.item_name}</span>
             </div>
-            <div className="item-info-dialog__body__left__header__like">
-              <img src={likely} />
-              <img src={compare} />
+            <div className="item-info-dialog__body__header__detail__img">
+              <img src={storable} />
+              |
+              <img src={dropable} />
+              |
+              <img src={tradeable} />
+              |
+              <div className="item-info-dialog__body__header__detail__img__enchan">
+                <img src={enchantable} />
+                <span>{info?.attribute.safe_enchant_level}</span>
+              </div>
             </div>
           </div>
-          <div className="item-info-dialog__body__left__content">
-            <div className="item-info-dialog__body__left__content__header">
-              <span className="item-info-dialog__body__left__content__header__text">아이템 정보</span>
+          <div className="item-info-dialog__body__header__like">
+            <img src={likely} />
+            <img src={compare} />
+          </div>
+        </div>
+        <div className="item-info-dialog__body__content">
+          <div className="item-info-dialog__body__content__left">
+            <div className="item-info-dialog__body__content__left__header">
+              <span className="item-info-dialog__body__content__left__header__text">아이템 정보</span>
             </div>
-            <div className="item-info-dialog__body__left__content__info">
-              <div className="item-info-dialog__body__left__content__info__category">
+            <div className="item-info-dialog__body__content__left__info">
+              <div className="item-info-dialog__body__content__left__info__category">
                 <span>카테고리</span>
-                <div className="item-info-dialog__body__left__content__info__category__text">
+                <div className="item-info-dialog__body__content__left__info__category__text">
                   <span>{info?.trade_category_name}</span>
                 </div>
               </div>
-              <div className="item-info-dialog__body__left__content__info__category">
+              <div className="item-info-dialog__body__content__left__info__category">
                 <span>효과</span>
-                <div className="item-info-dialog__body__left__content__info__category__text">
+                <div className="item-info-dialog__body__content__left__info__category__text">
                   {info?.options.map((option, index) => {
                     return <span key={index}>{option.option_name} {option.display} {option.extra_display !== '' ? <span className="enchant-info">({option.extra_display})</span> : ''}</span>
                   })}
                 </div>
               </div>
-              <div className="item-info-dialog__body__left__content__info__category">
+              <div className="item-info-dialog__body__content__left__info__category">
                 <span>재질</span>
-                <div className="item-info-dialog__body__left__content__info__category__text">
+                <div className="item-info-dialog__body__content__left__info__category__text">
                   <span>{info?.attribute.material_name}</span>
                 </div>
               </div>
-              <div className="item-info-dialog__body__left__content__info__category">
+              <div className="item-info-dialog__body__content__left__info__category">
                 <span>무게</span>
-                <div className="item-info-dialog__body__left__content__info__category__text">
+                <div className="item-info-dialog__body__content__left__info__category__text">
                   <span>{info?.attribute.weight / 10000}</span>
                 </div>
               </div>
-              <div className="item-info-dialog__body__left__content__info__category">
+              <div className="item-info-dialog__body__content__left__info__category">
                 <span>컬렉션</span>
-                <div className="item-info-dialog__body__left__content__info__category__text">
+                <div className="item-info-dialog__body__content__left__info__category__text">
                   <span>{info?.attribute.collection_count} 개</span>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className="item-info-dialog__body__right">
-          <div className="item-info-dialog__body__right__quote__header">
-            <span>시세 정보</span>
-          </div>
-          <div className="item-info-dialog__body__right__quote__body">
-            <div className="item-info-dialog__body__right__quote__body__server">
-              <div className="item-info-dialog__body__right__quote__body__server__wrapper">
-                <select value={priceInfo.server_id} onChange={serverPriceChangeHandler}>
-                  <option value={''}>전체 서버</option>
-                  {serverList.map((option, idx) => (
-                    <option key={idx} value={option.world_id}>{option.world_name}</option>
-                  ))}
-                  {
-                    serverList.map((option, idx) => (
-                      option.servers.map((server, i) => (
-                        <option key={i} value={server.server_id}>
-                          {server.server_name}
-                        </option>
+          <div className="item-info-dialog__body__content__right">
+            <div className="item-info-dialog__body__content__right__quote__header">
+              <span className="item-info-dialog__body__content__right__quote__header__text">시세 정보</span>
+            </div>
+            <div className="item-info-dialog__body__content__right__quote__body">
+              <div className="item-info-dialog__body__content__right__quote__body__server">
+                <div className="item-info-dialog__body__content__right__quote__body__server__wrapper">
+                  <select value={priceInfo.server_id} onChange={serverPriceChangeHandler}>
+                    <option value={''}>전체 서버</option>
+                    {serverList.map((option, idx) => (
+                      <option key={idx} value={option.world_id}>{option.world_name}</option>
+                    ))}
+                    {
+                      serverList.map((option, idx) => (
+                        option.servers.map((server, i) => (
+                          <option key={i} value={server.server_id}>
+                            {server.server_name}
+                          </option>
+                        ))
                       ))
-                    ))
-                  }
-                </select>
-              </div>
-            </div>
-            <div className="item-info-dialog__body__right__quote__body__content">
-              <div className="item-info-dialog__body__right__quote__body__content__row">
-                <div className="item-info-dialog__body__right__quote__body__content__row__name">
-                  <span>현 최저가</span>
-                </div>
-                <div className="item-info-dialog__body__right__quote__body__content__row__price">
-                  {serverList.filter((server) => server.world_id === priceInfo.server_id).length > 0 ? <img src={world} /> : ''}
-                  <img src={diamond} />
-                  <span>{priceInfo.now ? priceInfo.now.unit_price : 0}</span>
+                    }
+                  </select>
                 </div>
               </div>
-              <div className="item-info-dialog__body__right__quote__body__content__row">
-                <div className="item-info-dialog__body__right__quote__body__content__row__name">
-                  <span>최저 거래가</span>
+              <div className="item-info-dialog__body__content__right__quote__body__content">
+                <div className="item-info-dialog__body__content__right__quote__body__content__row">
+                  <div className="item-info-dialog__body__content__right__quote__body__content__row__name">
+                    <span>현 최저가</span>
+                  </div>
+                  <div className="item-info-dialog__body__content__right__quote__body__content__row__price">
+                    {serverList.filter((server) => server.world_id === priceInfo.server_id).length > 0 ? <img src={world} /> : ''}
+                    <img src={diamond} />
+                    <span>{priceInfo.now ? priceInfo.now.unit_price : 0}</span>
+                  </div>
                 </div>
-                <div className="item-info-dialog__body__right__quote__body__content__row__price">
-                  {serverList.filter((server) => server.world_id === priceInfo.server_id).length > 0 ? <img src={world} /> : ''}
-                  <img src={diamond} />
-                  <span>{priceInfo.min ? priceInfo.min.unit_price : 0}</span>
+                <div className="item-info-dialog__body__content__right__quote__body__content__row">
+                  <div className="item-info-dialog__body__content__right__quote__body__content__row__name">
+                    <span>최저 거래가</span>
+                  </div>
+                  <div className="item-info-dialog__body__content__right__quote__body__content__row__price">
+                    {serverList.filter((server) => server.world_id === priceInfo.server_id).length > 0 ? <img src={world} /> : ''}
+                    <img src={diamond} />
+                    <span>{priceInfo.min ? priceInfo.min.unit_price : 0}</span>
+                  </div>
                 </div>
-              </div>
-              <div className="item-info-dialog__body__right__quote__body__content__row">
-                <div className="item-info-dialog__body__right__quote__body__content__row__name">
-                  <span>최고 거래가</span>
+                <div className="item-info-dialog__body__content__right__quote__body__content__row">
+                  <div className="item-info-dialog__body__content__right__quote__body__content__row__name">
+                    <span>최고 거래가</span>
+                  </div>
+                  <div className="item-info-dialog__body__content__right__quote__body__content__row__price">
+                    {serverList.filter((server) => server.world_id === priceInfo.server_id).length > 0 ? <img src={world} /> : ''}
+                    <img src={diamond} />
+                    <span>{priceInfo.max ? priceInfo.max.unit_price : 0}</span>
+                  </div>
                 </div>
-                <div className="item-info-dialog__body__right__quote__body__content__row__price">
-                  {serverList.filter((server) => server.world_id === priceInfo.server_id).length > 0 ? <img src={world} /> : ''}
-                  <img src={diamond} />
-                  <span>{priceInfo.max ? priceInfo.max.unit_price : 0}</span>
+                <div className="item-info-dialog__body__content__right__quote__body__content__row">
+                  <div className="item-info-dialog__body__content__right__quote__body__content__row__name">
+                    <span>평균 거래가</span>
+                  </div>
+                  <div className="item-info-dialog__body__content__right__quote__body__content__row__price">
+                    {serverList.filter((server) => server.world_id === priceInfo.server_id).length > 0 ? <img src={world} /> : ''}
+                    <img src={diamond} />
+                    <span>{priceInfo.avg ? priceInfo.avg.unit_price : 0}</span>
+                  </div>
                 </div>
-              </div>
-              <div className="item-info-dialog__body__right__quote__body__content__row">
-                <div className="item-info-dialog__body__right__quote__body__content__row__name">
-                  <span>평균 거래가</span>
+                <div className="item-info-dialog__body__content__right__quote__body__content__row">
+                  <div className="item-info-dialog__body__content__right__quote__body__content__row__name">
+                    <span>마지막 거래가</span>
+                  </div>
+                  <div className="item-info-dialog__body__content__right__quote__body__content__row__price">
+                    {serverList.filter((server) => server.world_id === priceInfo.server_id).length > 0 ? <img src={world} /> : ''}
+                    <img src={diamond} />
+                    <span>{priceInfo.last ? priceInfo.last.unit_price : 0}</span>
+                  </div>
                 </div>
-                <div className="item-info-dialog__body__right__quote__body__content__row__price">
-                  {serverList.filter((server) => server.world_id === priceInfo.server_id).length > 0 ? <img src={world} /> : ''}
-                  <img src={diamond} />
-                  <span>{priceInfo.avg ? priceInfo.avg.unit_price : 0}</span>
-                </div>
-              </div>
-              <div className="item-info-dialog__body__right__quote__body__content__row">
-                <div className="item-info-dialog__body__right__quote__body__content__row__name">
-                  <span>마지막 거래가</span>
-                </div>
-                <div className="item-info-dialog__body__right__quote__body__content__row__price">
-                  {serverList.filter((server) => server.world_id === priceInfo.server_id).length > 0 ? <img src={world} /> : ''}
-                  <img src={diamond} />
-                  <span>{priceInfo.last ? priceInfo.last.unit_price : 0}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="item-info-dialog__body__right__server__header">
-            <span>서버별 현 최저가 비교(가격순, 최대 10개)</span>
-          </div>
-          <div className="item-info-dialog__body__right__server__body">
-            <div className="item-info-dialog__body__right__server__body__row">
-              <div className="item-info-dialog__body__right__server__body__row__header">
-                <span>1</span>
-                <span>안타라스 월드</span>
-              </div>
-              <div className="item-info-dialog__body__right__server__body__row__price">
-                <img src={world} />
-                <img src={diamond} />
-                <span>480</span>
-              </div>
-            </div>
-            <div className="item-info-dialog__body__right__server__body__row">
-              <div className="item-info-dialog__body__right__server__body__row__header">
-                <span>2</span>
-                <span>카인 01</span>
-              </div>
-              <div className="item-info-dialog__body__right__server__body__row__price">
-                <img src={world} />
-                <img src={diamond} />
-                <span>510</span>
-              </div>
-            </div>
-            <div className="item-info-dialog__body__right__server__body__row">
-              <div className="item-info-dialog__body__right__server__body__row__header">
-                <span>3</span>
-                <span>카스티엔 월드</span>
-              </div>
-              <div className="item-info-dialog__body__right__server__body__row__price">
-                <img src={world} />
-                <img src={diamond} />
-                <span>520</span>
-              </div>
-            </div>
-            <div className="item-info-dialog__body__right__server__body__row">
-              <div className="item-info-dialog__body__right__server__body__row__header">
-                <span>4</span>
-                <span>오필리아 월드</span>
-              </div>
-              <div className="item-info-dialog__body__right__server__body__row__price">
-                <img src={world} />
-                <img src={diamond} />
-                <span>550</span>
               </div>
             </div>
           </div>
-        </div>
+      </div>
+      </div>
       </div>
     </div>
   );
