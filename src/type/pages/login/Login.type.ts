@@ -11,7 +11,7 @@ export const LoginParamTypeDefault = ():LoginParamType => ({
 });
 
 // 로그인 반환 타입
-export type LoginType = {
+type LoginType = {
   username: string,
   name: string,
   memberKey: string,
@@ -25,3 +25,17 @@ export const LoginTypeDefault = ():LoginType => ({
   memberKey: '',
   token: ''
 });
+
+export type LoginResponseType = {
+  bizStatusCode: string
+  bizStatusMessage: string
+  empty: boolean
+  failCnt: number
+  limit: number 
+  offset: number
+  results: LoginType
+  source: string | null
+  successCnt: number
+  timestamp: string
+  total: number
+}

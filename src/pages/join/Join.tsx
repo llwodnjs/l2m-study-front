@@ -2,7 +2,7 @@ import "@/assets/scss/pages/join/join.style.scoped.scss";
 import { JoinParamType, JoinParamTypeDefault } from "@/type/pages/join/Join.type";
 import { joinApi } from "@/resources/api/pages/join/Join.api";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import NamingInput from "@/components/input/NamingInput";
 import SearchButton from "@/components/button/SearchButton";
 
@@ -10,9 +10,10 @@ const logoImg = require("@/assets/images/l2m-logo.png");
 
 function Join() {
   const navigate = useNavigate();
+  // const location = useLocation();
   // 회원가입 파라미터 정의
   const [joinParam, setJoinParam] = useState<JoinParamType>(JoinParamTypeDefault());
-
+  // const [myInfoParam, setMyInfoParam] = useState<JoinParamType>(location.state.myInfoParam);
   // 회원가입 api
   const join = () => {
     joinApi(joinParam)

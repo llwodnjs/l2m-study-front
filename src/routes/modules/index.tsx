@@ -37,6 +37,11 @@ const router: CustomRouteObject[] = [
         element: <Join />,
       },
       {
+        id: "myInfo",
+        path: "myInfo",
+        element: <Join />,
+      },
+      {
         id: "findPw",
         path: "findPw",
         element: <FindPw />,

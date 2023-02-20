@@ -1,11 +1,17 @@
-.changePwDialogWrapper {
-  width: 100%;
-  height: 100%;
+.confirm_none {
+  display: none;
+}
+
+.confirmPwDialogWrapper {
   z-index: 10000;
-  position: fixed;
   top: 0;
-  right: 0;
   left: 0;
+  bottom: 0;
+  right: 0;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
 
   &__show {
@@ -13,12 +19,10 @@
     background: rgba(0, 0, 0, 0.68);
   }
 }
-.changePwDialog {
+.confirmPwDialog {
   width: 1000px;
-  height: 650px;
+  height: 500px;
   margin: 0 auto;
-  top: 180px;
-  left: 500px;
   position: absolute;
   background-color: #FFFFFF;
 
@@ -46,14 +50,19 @@
   }
 
   &__content {
-    height: 570px;
+    height: 420px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
 
     &__area {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: 40px 0px 0px;
+      padding: 0 0 20px 0;
       gap: 10px;
 
       &__input {
@@ -102,7 +111,7 @@
       justify-content: center;
       align-items: center;
       padding: 0px;
-      padding-top: 46px;
+      // padding-top: 46px;
       gap: 13px;
 
       button {

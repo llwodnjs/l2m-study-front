@@ -14,7 +14,9 @@ function Login() {
   const login = () => {
     loginProcess(loginObj)
       .then((result) => {
-        localStorage.setItem('auth', JSON.stringify(result.data));
+        localStorage.setItem('auth', JSON.stringify(result.data.results));
+        localStorage.setItem('username', JSON.stringify(result.data.results.username));
+        console.log(localStorage);
         navigate("/");
       });
   }
