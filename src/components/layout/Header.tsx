@@ -12,6 +12,7 @@ const RightHeader = ({openDialog}:HeaderProps) => {
 
   const logout = () => {
     localStorage.removeItem('auth');
+    localStorage.removeItem('username');
     navigate('/');
   }
 
