@@ -1,0 +1,37 @@
+.naming-input {
+  &__area {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+    gap: 10px;
+
+    &__span {
+      font-family: 'Noto Sans KR';
+      font-style: normal;
+      font-weight: 700;
+      font-size: 23px;
+      line-height: 33px;
+      display: flex;
+      align-items: center;
+      color: #BFBEBC;
+    }
+
+    &__text {
+      width: 670px;
+      height: 79px;
+      border: 0;
+      padding: 0;
+      padding-left: 37px;
+      color: #7E7E7E;
+
+      background: #383838;
+      border-radius: 10px;
+      font-family: 'Noto Sans KR';
+      font-size: 23px;
+      font-weight: 500;
+      line-height: 33px;
+      text-align: left;
+    }
+  }
+}

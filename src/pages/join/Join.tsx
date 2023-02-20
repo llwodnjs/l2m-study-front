@@ -3,6 +3,8 @@ import { JoinParamType, JoinParamTypeDefault } from "@/type/pages/join/Join.type
 import { joinApi } from "@/resources/api/pages/join/Join.api";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import NamingInput from "@/components/input/NamingInput";
+import SearchButton from "@/components/button/SearchButton";
 
 const logoImg = require("@/assets/images/l2m-logo.png");
 
@@ -25,38 +27,26 @@ function Join() {
   }
 
   return (
-    <div className="join">
-      <div className="join__img">
-        <img src={logoImg} alt="" />
+    <div className='join'>
+      <div className='join__img'>
+        <img src={logoImg} alt='' />
       </div>
-      <div className="join__content">
-        <div className="join__content__input">
-          <div className="join__content__input__area">
-            <span className="join__content__input__area__span">이름</span>
-            <input className="join__content__input__area__text" placeholder="이름" value={joinParam.name} onChange={(e) => setJoinParam({...joinParam, name: e.target.value})} />
-          </div>
+      <div className='join__content'>
+        <div className='join__content__input'>
+          <NamingInput span='이름' placeholder='이름' value={joinParam.name} onChange={(val) => setJoinParam({ ...joinParam, name: val })} />
         </div>
-        <div className="join__content__input">
-          <div className="join__content__input__area">
-            <span className="join__content__input__area__span">아이디</span>
-            <input className="join__content__input__area__text" placeholder="아이디" value={joinParam.username} onChange={(e) => setJoinParam({...joinParam, username: e.target.value})} />
-          </div>
+        <div className='join__content__input'>
+          <NamingInput span='아이디' placeholder='아이디' value={joinParam.username} onChange={(val) => setJoinParam({ ...joinParam, username: val })} />
         </div>
-        <div className="join__content__input">
-          <div className="join__content__input__area">
-            <span className="join__content__input__area__span">비밀번호</span>
-            <input type="password" className="join__content__input__area__text" placeholder="비밀번호" value={joinParam.password} onChange={(e) => setJoinParam({...joinParam, password: e.target.value})} />
-          </div>
+        <div className='join__content__input'>
+          <NamingInput span='비밀번호' type='password' placeholder='비밀번호' value={joinParam.password} onChange={(val) => setJoinParam({ ...joinParam, password: val })} />
         </div>
-        <div className="join__content__input">
-          <div className="join__content__input__area">
-            <span className="join__content__input__area__span">비밀번호 확인</span>
-            <input type="password" className="join__content__input__area__text" placeholder="비밀번호 확인" value={joinParam.rePassword} onChange={(e) => setJoinParam({...joinParam, rePassword: e.target.value})} />
-          </div>
+        <div className='join__content__input'>
+          <NamingInput span='비밀번호 확인' type='password' placeholder='비밀번호 확인' value={joinParam.password} onChange={(val) => setJoinParam({ ...joinParam, rePassword: val })} />
         </div>
       </div>
-      <div className="join__btn__area">
-        <button type="button" className="join-btn" onClick={join}>가입하기</button>
+      <div className='join__btn__area'>
+        <SearchButton onClickFunction={join} text='가입하기' wd='707px' hi='95px' />
       </div>
     </div>
   );
