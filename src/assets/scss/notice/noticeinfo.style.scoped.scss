@@ -1,0 +1,33 @@
+&__noti {
+  padding: 0px;
+  height: 303px;
+  gap: 10px;
+
+  &__text {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    gap: 10px;
+
+    width: 707px;
+    height: 220px;
+
+    font-family: 'Noto Sans KR';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 23px;
+    line-height: 33px;
+    text-align: center;
+    
+    background: #383838;
+    color: #FFFFFF;
+
+    span {
+      color: #EAD624;
+      font-size: 26px;
+      text-decoration-line: underline;
+    }
+  }
+}
