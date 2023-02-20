@@ -4,15 +4,17 @@ $main-bgcolor: #22232D;
 $header-bgcolor: #090909;
 
 // 등급별 폰트 컬러
+// 리니지2M 거래 사이트 폰트 컬러 따옴
+
 // 일반
-$common-font-color: #FFFFFF;
+$common-font-color: rgba(0,0,0,0.68);
 // 고급
-$uncommon-font-color: #25A622;
+$uncommon-font-color: rgba(0,135,11,0.93);
 // 희귀
-$rare-font-color: #402FFD;
+$rare-font-color: #006fc6;
 // 영웅
-$epic-font-color: #FD000F;
+$epic-font-color: rgba(198,0,0,0.93);
 // 전설
-$legendary-font-color: #BD00FF;
+$legendary-font-color: #7e3dcf;
 // 신화
-$mythic-font-color: #EDC700;
+$mythic-font-color: #FB9800;

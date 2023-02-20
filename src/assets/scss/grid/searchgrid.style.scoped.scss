@@ -25,21 +25,18 @@
 
   &__content {
     width: 740px;
-    // height: 486px;
-
-    background: #FFFFFF;
+    background: #111111;
   }
 }
 
 .header-tr {
-  height: 40px;
-  text-align: center;
-  background: #111111;
+  height: 50px;
+  text-align: center;  
   color: #FFFFFF;
-  font-family: 'Inter';
+  // font-family: 'Inter';
   font-style: normal;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 18px;
 }
 
@@ -52,8 +49,8 @@ tbody > tr > td {
 
   font-family: 'Noto Sans Kr';
   font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
+  font-weight: 300;
+  font-size: 16px;
   line-height: 18px;
   vertical-align: middle;
 
@@ -61,7 +58,7 @@ tbody > tr > td {
     font-family: 'Noto Sans KR';
     font-style: normal;
     font-weight: 500;
-    font-size: 20px;
+    font-size: 16px;
     line-height: 18px;
     color: $common-font-color;
   }
@@ -70,7 +67,7 @@ tbody > tr > td {
     font-family: 'Noto Sans KR';
     font-style: normal;
     font-weight: 500;
-    font-size: 20px;
+    font-size: 16px;
     line-height: 18px;
     color: $uncommon-font-color;
   }
@@ -79,7 +76,7 @@ tbody > tr > td {
     font-family: 'Noto Sans KR';
     font-style: normal;
     font-weight: 500;
-    font-size: 20px;
+    font-size: 16px;
     line-height: 18px;
     color: $rare-font-color;
   }
@@ -88,7 +85,7 @@ tbody > tr > td {
     font-family: 'Noto Sans KR';
     font-style: normal;
     font-weight: 500;
-    font-size: 20px;
+    font-size: 16px;
     line-height: 18px;
     color: $epic-font-color;
   }
@@ -97,7 +94,7 @@ tbody > tr > td {
     font-family: 'Noto Sans KR';
     font-style: normal;
     font-weight: 500;
-    font-size: 20px;
+    font-size: 16px;
     line-height: 18px;
     color: $legendary-font-color;
   }
@@ -106,7 +103,7 @@ tbody > tr > td {
     font-family: 'Noto Sans KR';
     font-style: normal;
     font-weight: 500;
-    font-size: 20px;
+    font-size: 16px;
     line-height: 18px;
     color: $mythic-font-color;
   }
@@ -135,5 +132,10 @@ tbody > tr > td:first-child {
     justify-content: center;
     align-items: center;
     gap: 5px;
+
+    &-price {
+      display: flex;
+      gap: 10px;
+    }
   }
 }

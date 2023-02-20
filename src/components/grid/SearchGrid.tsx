@@ -25,10 +25,10 @@ function SearchGrid({
       <div className="search__table__content">
         <table className="search-table">
           <colgroup>
-            <col width={"40%"} />
-            <col width={"30%"} />
-            <col width={"10%"} />
-            <col width={"10%"} />
+            <col width={"35%"} />
+            <col width={"25%"} />
+            <col width={"15%"} />
+            <col width={"15%"} />
             <col width={"10%"} />
           </colgroup>
           <thead>
@@ -44,7 +44,7 @@ function SearchGrid({
             {list.map((item, idx) => {
               return <tr key={idx}>
                 <td>
-                  <SearchImage imgUrl={item.image} wd={'50px'} hi={'40px'} />
+                  <SearchImage imgUrl={item.image} wd={'50px'} hi={'50px'} />
                   {/* <img src={item.image} /> */}
                   <span className={item.grade}>{item.item_name} + {item.enchant_level}</span>
                 </td>
@@ -54,13 +54,13 @@ function SearchGrid({
                   </div>
                 </td>
                 <td>
-                  <div className="search-table-all">
+                  <div className="search-table-all-price">
                     <SearchImage imgUrl={diamondImage} wd={'24px'} hi={'20px'} />
                     <span>{item.avg_unit_price}</span>
                   </div>
                 </td>
                 <td>
-                  <div className="search-table-all">
+                  <div className="search-table-all-price">
                     <SearchImage imgUrl={diamondImage} wd={'24px'} hi={'20px'} />
                     <span>{item.now_min_unit_price}</span>
                   </div>

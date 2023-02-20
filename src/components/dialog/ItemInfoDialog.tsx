@@ -154,7 +154,7 @@ function ItemInfoDialog({
                   <div className="item-info-dialog__body__content__right__quote__body__content__row__price">
                     {serverList.filter((server) => server.world_id === priceInfo.server_id).length > 0 ? <img src={world} /> : ''}
                     <img src={diamond} />
-                    <span>{priceInfo.now ? priceInfo.now.unit_price : 0}</span>
+                    <span>{priceInfo.now.unit_price ? priceInfo.now.unit_price : 0}</span>
                   </div>
                 </div>
                 <div className="item-info-dialog__body__content__right__quote__body__content__row">
@@ -164,7 +164,7 @@ function ItemInfoDialog({
                   <div className="item-info-dialog__body__content__right__quote__body__content__row__price">
                     {serverList.filter((server) => server.world_id === priceInfo.server_id).length > 0 ? <img src={world} /> : ''}
                     <img src={diamond} />
-                    <span>{priceInfo.min ? priceInfo.min.unit_price : 0}</span>
+                    <span>{priceInfo.min.unit_price ? priceInfo.min.unit_price : 0}</span>
                   </div>
                 </div>
                 <div className="item-info-dialog__body__content__right__quote__body__content__row">
@@ -174,7 +174,7 @@ function ItemInfoDialog({
                   <div className="item-info-dialog__body__content__right__quote__body__content__row__price">
                     {serverList.filter((server) => server.world_id === priceInfo.server_id).length > 0 ? <img src={world} /> : ''}
                     <img src={diamond} />
-                    <span>{priceInfo.max ? priceInfo.max.unit_price : 0}</span>
+                    <span>{priceInfo.max.unit_price ? priceInfo.max.unit_price : 0}</span>
                   </div>
                 </div>
                 <div className="item-info-dialog__body__content__right__quote__body__content__row">
@@ -184,7 +184,7 @@ function ItemInfoDialog({
                   <div className="item-info-dialog__body__content__right__quote__body__content__row__price">
                     {serverList.filter((server) => server.world_id === priceInfo.server_id).length > 0 ? <img src={world} /> : ''}
                     <img src={diamond} />
-                    <span>{priceInfo.avg ? priceInfo.avg.unit_price : 0}</span>
+                    <span>{priceInfo.avg.unit_price ? priceInfo.avg.unit_price : 0}</span>
                   </div>
                 </div>
                 <div className="item-info-dialog__body__content__right__quote__body__content__row">
@@ -194,7 +194,7 @@ function ItemInfoDialog({
                   <div className="item-info-dialog__body__content__right__quote__body__content__row__price">
                     {serverList.filter((server) => server.world_id === priceInfo.server_id).length > 0 ? <img src={world} /> : ''}
                     <img src={diamond} />
-                    <span>{priceInfo.last ? priceInfo.last.unit_price : 0}</span>
+                    <span>{priceInfo.last.unit_price ? priceInfo.last.unit_price : 0}</span>
                   </div>
                 </div>
               </div>

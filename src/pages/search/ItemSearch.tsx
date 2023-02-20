@@ -91,25 +91,21 @@ function ItemSearch() {
       <div className="search__filter">
         <div className="search__filter__select">
           <ServerSearchSelect
-            defaultValue="서버"
             options={serverList}
             value={listParam?.server_id}
             onChange={(val) => setListParam({ ...listParam, server_id: val })}
           />
           <SearchSelect
-            defaultValue="클래스"
             options={classList}
             value={listParam?.class_id}
             onChange={(val) => setListParam({ ...listParam, class_id: val })}
           />
           <SearchSelect
-            defaultValue="장비등급"
             options={gradeList}
             value={listParam?.grade_id}
             onChange={(val) => setListParam({ ...listParam, grade_id: val })}
           />
           <SearchSelect
-            defaultValue="강화수치"
             options={enchantLevelList}
             value={listParam?.from_enchant_level}
             onChange={(val) => setListParam({ ...listParam, from_enchant_level: parseInt(val) })}
