@@ -13,7 +13,6 @@ const RightHeader = ({openDialog}:HeaderProps) => {
 
   const logout = () => {
     localStorage.removeItem('auth');
-    localStorage.removeItem('username');
     newAxios.defaults.headers.common['Authorization'] = '';
     navigate('/');
   }

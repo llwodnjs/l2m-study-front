@@ -7,7 +7,7 @@ const diamondImage = require("@/assets/images/diamond.png");
 const searchImage = require("@/assets/images/iconSearch.png");
 const changeImage = require("@/assets/images/icon_changes.png");
 const equipNonActive = require("@/assets/images/equip_non_active.png");
-const equipActive = require("@/assets/images/equip_active.png");
+const equipActive = require("@/assets/images/active_item_paging.png");
 const accNonActive = require("@/assets/images/acc_non_active.png");
 const accActive = require("@/assets/images/acc_active.png");
 
@@ -256,7 +256,7 @@ function LowPriceSearch() {
         {/* <img className="low-price-paging__img" src={equipNonActive}></img> */}
         <img className="low-price-paging__img" src={equipActive}></img>
         {/* <img className="low-price-paging__img" src={accActive}></img> */}
-        <img className="low-price-paging__img" src={accNonActive}></img>
+        {/* <img className="low-price-paging__img" src={accNonActive}></img> */}
       </div>
       <div className="low-price-item">
         <div className="low-price-item__total">

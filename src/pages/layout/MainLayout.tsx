@@ -17,7 +17,7 @@ function MainLayout() {
         <div className="layout__container__box__content" ref={elId}>
           <Outlet />
         </div>
-        <ConfirmPwDialog isShow={isShow} close={() => setIsShow(false)}/>
+        {isShow && <ConfirmPwDialog close={() => setIsShow(false)}/>}
       </div>
     </div>
   );

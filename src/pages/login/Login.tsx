@@ -16,7 +16,6 @@ function Login() {
       .then((result) => {
         if (result.data.bizStatusCode === 'E0GGG000') {
           localStorage.setItem('auth', JSON.stringify(result.data.results));
-          localStorage.setItem('username', JSON.stringify(result.data.results.username));
           navigate("/");
         } else {
           

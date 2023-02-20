@@ -10,7 +10,7 @@ export const LoginParamTypeDefault = ():LoginParamType => ({
   password: '',
 });
 
-// 로그인 반환 타입
+// 회원 로그인 정보
 type LoginType = {
   username: string,
   name: string,
@@ -26,6 +26,7 @@ export const LoginTypeDefault = ():LoginType => ({
   token: ''
 });
 
+// 로그인 반환 타입
 export type LoginResponseType = {
   bizStatusCode: string
   bizStatusMessage: string

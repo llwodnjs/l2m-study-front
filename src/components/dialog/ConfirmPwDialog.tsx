@@ -3,27 +3,46 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import NamingInput from "../input/NamingInput";
 import { useState } from "react";
-import { ConfirmInfoParamType } from "@/type/pages/myinfo/MyInfo.type";
+import { ConfirmInfoParamType, ConfirmInfoResponseType } from "@/type/pages/myinfo/MyInfo.type";
+import { confirmInfoApi } from "@/resources/api/pages/confirmInfo/ConfirmInfo.api";
+import SearchButton from "../button/SearchButton";
+import { useNavigate } from "react-router-dom";
 
 type ConfirmInfoProps = {
-  isShow: boolean,
-  close: React.MouseEventHandler<SVGSVGElement>
+  close: () => void
 }
 
-function ConfirmPwDialog({isShow, close}: ConfirmInfoProps) {
+function ConfirmPwDialog({close}: ConfirmInfoProps) {
 
+  const navigate = useNavigate();
   const [confirmInfoParam, setConfirmInfoParam] = useState<ConfirmInfoParamType>({
-    username: localStorage.getItem('username')?.replaceAll("\"", "") || '',
+    username: JSON.parse(localStorage.getItem('auth') || '').username,
     password: ''
   })
 
-  const confirmInfo = (confirmInfoParam: ConfirmInfoParamType) => {
-    console.log(confirmInfoParam);
+
+  const confirmInfo = () => {
+    confirmInfoApi(confirmInfoParam.username, confirmInfoParam.password)
+      .then((res) => {
+        if(res.data.bizStatusCode === 'E0GGG000') {
+          const resultInfo:ConfirmInfoResponseType = res.data.results;
+          alert('비밀번호가 확인되었습니다.');
+          close();
+          navigate('/myInfo', {
+            state: {resultInfo}
+          });
+        } else {
+          alert(res.data.bizStatusMessage);
+        }
+      })
+      .catch((error) => {
+        alert(error);
+      });
   }
 
 
   return (
-    <div className={isShow ? "confirmPwDialogWrapper" : "confirm_none"}>
+    <div className="confirmPwDialogWrapper">
       <div className="confirmPwDialog">
         <div className="confirmPwDialog__header">
           <div className="confirmPwDialog__header__left">
@@ -42,7 +61,7 @@ function ConfirmPwDialog({isShow, close}: ConfirmInfoProps) {
             </div>
           </div>
           <div className="confirmPwDialog__content__btn__area">
-            <button type="button" onClick={() => confirmInfo(confirmInfoParam)}>비밀번호 확인</button>
+            <SearchButton text="비밀번호 찾기" wd="707px" hi="95px" onClickFunction={confirmInfo} />
           </div>
         </div>
       </div>
