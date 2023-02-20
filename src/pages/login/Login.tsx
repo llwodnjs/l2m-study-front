@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import "@/assets/scss/pages/login/login.style.scoped.scss";
 import { useState } from "react";
 import { loginProcess } from "@/resources/api/pages/login/Login.api";
-import { LoginParamType, LoginParamTypeDefault } from "@/type/pages/login/Login.type";
+import { LoginParamType, LoginParamTypeDefault, LoginResponseType } from "@/type/pages/login/Login.type";
 
 const logoImg = require("@/assets/images/l2m-logo.png");
 
@@ -14,9 +14,13 @@ function Login() {
   const login = () => {
     loginProcess(loginObj)
       .then((result) => {
-        localStorage.setItem('auth', JSON.stringify(result.data.results));
-        localStorage.setItem('username', JSON.stringify(result.data.results.username));
-        navigate("/");
+        if (result.data.bizStatusCode === 'E0GGG000') {
+          localStorage.setItem('auth', JSON.stringify(result.data.results));
+          localStorage.setItem('username', JSON.stringify(result.data.results.username));
+          navigate("/");
+        } else {
+          
+        }
       });
   }
 

@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import newAxios from "@/utils/axios";
 import "@/assets/scss/layout/header.style.scoped.scss";
 const headerImg = require("@/assets/images/header.png");
 
@@ -13,6 +14,7 @@ const RightHeader = ({openDialog}:HeaderProps) => {
   const logout = () => {
     localStorage.removeItem('auth');
     localStorage.removeItem('username');
+    newAxios.defaults.headers.common['Authorization'] = '';
     navigate('/');
   }
 
