@@ -46,7 +46,6 @@ function Main() {
   const handlerClear = () => {
     setShowItemSearch(false);
     setShowLowPriceItemSearch(false);
-    console.log('hello');
   }
 
 

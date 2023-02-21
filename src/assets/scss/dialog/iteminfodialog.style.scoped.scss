@@ -74,6 +74,38 @@
   
             color: #FC5656;
           }
+
+          &__name {
+            &>.common {
+              font-size: 17px;
+              color: $common-font-color;
+            }
+
+            &>.uncommon {
+              font-size: 17px;
+              color: $uncommon-font-color;
+            }
+
+            &>.rare {
+              font-size: 17px;
+              color: $rare-font-color;
+            }
+
+            &>.epic {
+              font-size: 17px;
+              color: $epic-font-color;
+            }
+
+            &>.legendary {
+              font-size: 17px;
+              color: $legendary-font-color;
+            }
+
+            &>.mythic {
+              font-size: 17px;
+              color: $mythic-font-color;
+            }
+          }
   
           &__img {
             width: 282px;
@@ -90,37 +122,13 @@
               font-weight: 500;
               font-size: 16px;
               line-height: 23px;
-  
-              &>.common {
-                color: $common-font-color;
-              }
-  
-              &>.uncommon {
-                color: $uncommon-font-color;
-              }
-  
-              &>.rare {
-                color: $rare-font-color;
-              }
-  
-              &>.epic {
-                color: $epic-font-color;
-              }
-  
-              &>.legendary {
-                color: $legendary-font-color;
-              }
-  
-              &>.mythic {
-                color: $mythic-font-color;
-              }
             }
   
-            &__img {
-              width: 282px;
-              display: flex;
-              align-items: center;
-            }
+            // &__img {
+            //   width: 282px;
+            //   display: flex;
+            //   align-items: center;
+            // }
           }
   
         }
@@ -135,6 +143,10 @@
   
           width: 31px;
           height: 62px;
+
+          img {
+            cursor: pointer;
+          }
         }
       }
   
