@@ -18,32 +18,76 @@ const classImg = require("@/assets/images/class.png");
 function Main() {
   const navigate = useNavigate();
   const [listParam, setListParam] = useState<SearchListParam>(() => SearchListParamInit());
+  const [showItemSearch, setShowItemSearch] = useState(false);
+  const [showLowPriceItemSearch, setShowLowPriceItemSearch] = useState(false);
   
   const pageMove = () => navigate('/itemSearch', {
     state: listParam
   });
 
+  const lowPriceItemSearchBtnHandler = (flag: boolean) => {
+    if(flag) {
+      navigate("/lowPriceSearch");
+    } else {
+      setShowItemSearch(flag);
+      setShowLowPriceItemSearch(!flag);
+    }
+  }
+
+  const showItemSearchBtnHandler = (flag: boolean) => {
+    if(flag) {
+      pageMove();
+    } else {
+      setShowLowPriceItemSearch(flag);
+      setShowItemSearch(!flag);
+    }
+  }
+
+  const handlerClear = () => {
+    setShowItemSearch(false);
+    setShowLowPriceItemSearch(false);
+    console.log('hello');
+  }
+
 
   return (
     <div className="main">
       <div className="main__img">
-        <SearchImage imgUrl={logoImg} />
-        {/* <img src={logoImg} alt="" /> */}
+        {/* <SearchImage imgUrl={logoImg} /> */}
+        <img src={logoImg} onClick={handlerClear} alt="" />
       </div>
       <div className="main__search">
-        <div className="main__search__select">
-          <ServerSearchSelect defaultValue="서버" options={serverList} value={listParam?.server_id} onChange={(val) => setListParam({...listParam, server_id: val})} />
-          <SearchSelect defaultValue="클래스" options={classList} value={listParam?.class_id} onChange={(val) => setListParam({...listParam, class_id: val})} />
-          <SearchSelect defaultValue="장비등급" options={gradeList} value={listParam?.grade_id} onChange={(val) => setListParam({...listParam, grade_id: val})} />
-          <SearchSelect defaultValue="강화수치" options={enchantLevelList} value={listParam?.from_enchant_level} onChange={(val) => setListParam({...listParam, from_enchant_level: parseInt(val)})} />
-        </div>
-        <div className="main__search__input">
-          <SearchInput placeholder="아이템 이름을 입력해주세요." value={listParam?.search_keyword} onChange={(val) => setListParam({...listParam, search_keyword: val})} />
-          {/* <input type={"text"} className="main__search__input__text" placeholder="아이템 이름을 입력해주세요." /> */}
-        </div>
+        { showLowPriceItemSearch &&
+          <div className="main__search__select">
+            <ServerSearchSelect defaultValue="서버" options={serverList} value={listParam?.server_id} onChange={(val) => setListParam({...listParam, server_id: val})} />
+            <SearchSelect defaultValue="클래스" options={classList} value={listParam?.class_id} onChange={(val) => setListParam({...listParam, class_id: val})} />
+            <SearchSelect defaultValue="장비등급" options={gradeList} value={listParam?.grade_id} onChange={(val) => setListParam({...listParam, grade_id: val})} />
+            <SearchSelect defaultValue="강화수치" options={enchantLevelList} value={listParam?.from_enchant_level} onChange={(val) => setListParam({...listParam, from_enchant_level: parseInt(val)})} />
+          </div>
+        }
+        {
+          showItemSearch &&
+          <div className="main__search__select">
+            <ServerSearchSelect defaultValue="서버" options={serverList} value={listParam?.server_id} onChange={(val) => setListParam({...listParam, server_id: val})} />
+            <SearchSelect defaultValue="최소강화수치" options={enchantLevelList} value={listParam?.from_enchant_level} onChange={(val) => setListParam({...listParam, from_enchant_level: parseInt(val)})} />
+            <SearchSelect defaultValue="최대강화수치" options={enchantLevelList} value={listParam?.to_enchant_level} onChange={(val) => setListParam({...listParam, to_enchant_level: parseInt(val)})} />
+          </div>
+        }
+        {
+          (!showLowPriceItemSearch && !showItemSearch) &&
+          <div className="main__search__select">
+            <span className="main__search__select__text">이용하고자 하는 서비스를 선택해주세요.</span>
+          </div>
+        }
+        { showItemSearch &&
+          <div className="main__search__input">
+            <SearchInput placeholder="아이템 이름을 입력해주세요." value={listParam?.search_keyword} onChange={(val) => setListParam({...listParam, search_keyword: val})} />
+            {/* <input type={"text"} className="main__search__input__text" placeholder="아이템 이름을 입력해주세요." /> */}
+          </div>
+        }
         <div className="main__search__button">
-          <SearchButton onClickFunction={() => navigate("/lowPriceSearch")} text='최저가 세팅' />
-          <SearchButton onClickFunction={pageMove} text='아이템 조회' bg="#8F5F44" />
+          <SearchButton onClickFunction={() => lowPriceItemSearchBtnHandler(showLowPriceItemSearch)} text='최저가 세팅' />
+          <SearchButton onClickFunction={() => showItemSearchBtnHandler(showItemSearch)} text='아이템 조회' bg="#8F5F44" />
         </div>
         <div className="main__search__img">
           <SearchImage imgUrl={classImg} />
