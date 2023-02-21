@@ -34,7 +34,7 @@ function Join() {
       .then((result) => {
         if (result.data.bizStatusCode === 'E0GGG000') {
           alert('정보가 수정되었습니다.');
-          navigate('/login');
+          // navigate('/login');
         } else {
           alert(result.data.bizStatusMessage);
         }
@@ -49,17 +49,17 @@ function Join() {
       <div className='join__content'>
         <div className='join__content__input'>
             {location.state === null && <NamingInput span='이름' placeholder='이름' value={joinParam.name} onChange={(val) => setJoinParam({ ...joinParam, name: val })} />}
-            {location.state !== null && <NamingInput span='이름' placeholder='이름' value={location.state.resultInfo.name} onChange={(val) => setJoinParam({ ...joinParam, name: val })} />}
+            {location.state !== null && <NamingInput span='이름' placeholder='이름' effect="readonly" value={location.state.resultInfo.name} />}
         </div>
         <div className='join__content__input'>
           {location.state === null && <NamingInput span='아이디' placeholder='아이디' value={joinParam.username} onChange={(val) => setJoinParam({ ...joinParam, username: val })} />}
-          {location.state !== null && <NamingInput span='아이디' placeholder='아이디' effect="readonly" value={location.state.resultInfo.username} onChange={(val) => setJoinParam({ ...joinParam, username: val })} />}
+          {location.state !== null && <NamingInput span='아이디' placeholder='아이디' effect="readonly" value={location.state.resultInfo.username} />}
         </div>
         <div className='join__content__input'>
           <NamingInput span='비밀번호' type='password' placeholder='비밀번호' value={joinParam.password} onChange={(val) => setJoinParam({ ...joinParam, password: val })} />
         </div>
         <div className='join__content__input'>
-          <NamingInput span='비밀번호 확인' type='password' placeholder='비밀번호 확인' value={joinParam.password} onChange={(val) => setJoinParam({ ...joinParam, rePassword: val })} />
+          <NamingInput span='비밀번호 확인' type='password' placeholder='비밀번호 확인' value={joinParam.rePassword} onChange={(val) => setJoinParam({ ...joinParam, rePassword: val })} />
         </div>
       </div>
       <div className='join__btn__area'>
