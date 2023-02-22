@@ -1,7 +1,7 @@
 import "@/assets/scss/pages/search/lowpricesearch.style.scoped.scss";
 import { useState, useEffect } from "react";
 import { lowPriceSearchApi } from "@/resources/api/pages/search/Search.api";
-import { LowPriceSearchParamType, LowPriceSearchParamTypeDefault, LowPriceSearchType, LowPriceSearchTypeListDefault } from "@/type/pages/search/Search.type";
+import { LowPriceSearchParamType, LowPriceSearchParamTypeDefault, LowPriceSearchType, LowPriceSearchTypeListDefault, ChangePopParamType, ChangePopParamTypeDefault } from "@/type/pages/search/Search.type";
 import ServerSearchSelect from "@/components/select/ServerSearchSelect";
 import SearchSelect from "@/components/select/SearchSelect";
 import { serverList, classList, gradeList, enchantLevelList } from "@/type/pages/main/Main.type";
@@ -21,14 +21,7 @@ function LowPriceSearch() {
   const [searchParam, setSearchParam] = useState<LowPriceSearchParamType>(location.state || LowPriceSearchParamTypeDefault());
   const [resultList, setResultList] = useState<LowPriceSearchType[]>(LowPriceSearchTypeListDefault());
   const [isShow, setIsShow] = useState<boolean>(false);
-  const [changePopParam, setChangePopParam] = useState({
-    itemId: 0,
-    itemType: '',
-    serverId: 0,
-    gradeId: '',
-    enchantLevel: 0,
-    searchKeyword: '',
-  });
+  const [changePopParam, setChangePopParam] = useState<ChangePopParamType>(ChangePopParamTypeDefault());
 
   // 최저가세팅 조회 api 호출
   const searchLowPriceSetting = () => {
@@ -81,7 +74,7 @@ function LowPriceSearch() {
           <button type="button" className="low-price-item__setting__btn" onClick={settingSave}>저장하기</button>
         </div>
       </div>
-      {isShow && <ItemChangeDialog isShow={isShow} setIsShow={setIsShow} changePopParam={changePopParam} />}
+      {isShow && <ItemChangeDialog isShow={isShow} setIsShow={setIsShow} changePopParam={changePopParam} setChangePopParam={setChangePopParam} />}
     </div>
   );
 };

@@ -226,7 +226,25 @@ export type ItemCompareInfoType = {
 }
 
 // 아이템 비교 반환 타입 초기화
-export const ItemCompareInfoTypeDefault = ():ItemCompareInfoType => ({
+export const ItemCompareInfoTypeDefault = (): ItemCompareInfoType => ({
   itemInfos: [],
   itemPriceInfos: []
+})
+
+export type ChangePopParamType = {
+  itemId: number,
+  itemType: string,
+  serverId: number,
+  gradeId: string,
+  enchantLevel: number,
+  searchKeyword: string,
+}
+
+export const ChangePopParamTypeDefault = ():ChangePopParamType => ({
+  itemId: 0,
+  itemType: '',
+  serverId: 0,
+  gradeId: '',
+  enchantLevel: 0,
+  searchKeyword: '',
 })

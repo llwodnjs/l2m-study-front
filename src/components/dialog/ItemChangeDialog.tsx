@@ -2,7 +2,9 @@ import "@/assets/scss/dialog/itemchangedialog.style.scoped.scss";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import SearchSelect from "../select/SearchSelect";
+import SearchInput from "../input/SearchInput";
 import { ItemEnum } from "@/resources/enum/ItemEnum";
+import { ChangePopParamType } from "@/type/pages/search/Search.type";
 
 const itemImage = require("@/assets/images/itemImage.png");
 const diamondImage = require("@/assets/images/diamond.png");
@@ -19,20 +21,15 @@ const enumArray = new Array();
 type ItemChangeDialogProps = {
   isShow: boolean,
   setIsShow: (val: boolean) => void,
-  changePopParam: {
-    itemId: number,
-    itemType: string,
-    serverId: number,
-    gradeId: string,
-    enchantLevel: number,
-    searchKeyword: string,
-  },
+  changePopParam: ChangePopParamType,
+  setChangePopParam: (val:ChangePopParamType) => void,
 }
 
 function ItemChangeDialog({
   isShow = false,
   setIsShow,
-  changePopParam
+  changePopParam,
+  setChangePopParam
 }: ItemChangeDialogProps) {
   
   return (
@@ -45,7 +42,7 @@ function ItemChangeDialog({
         <div className="itemChangeDialog__content">
           <div className="itemChangeDialog__content__search">
             <SearchSelect value={changePopParam.itemType} options={enumArray} />
-            <input placeholder="아이템명을 입력해주세요."></input>
+            <SearchInput placeholder="아이템명을 입력해주세요." wd="560px" hi="60px" onChange={(val) => setChangePopParam({...changePopParam, searchKeyword: val})} />
             <button type="button">검색</button>
           </div>
           <div className="search__table">
