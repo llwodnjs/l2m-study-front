@@ -1,29 +1,50 @@
 import "@/assets/scss/dialog/itemchangedialog.style.scoped.scss";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import SearchSelect from "../select/SearchSelect";
+import { ItemEnum } from "@/resources/enum/ItemEnum";
 
 const itemImage = require("@/assets/images/itemImage.png");
 const diamondImage = require("@/assets/images/diamond.png");
 const searchImage = require("@/assets/images/iconSearch.png");
 const changeImage = require("@/assets/images/icon_changes.png");
+const enumArray = new Array();
+  for (const value of Object.values(ItemEnum)) {
+    enumArray.push({
+      value: value.code,
+      text: value.name
+    });
+  }
 
 type ItemChangeDialogProps = {
-  close: React.MouseEventHandler<SVGSVGElement>,
+  isShow: boolean,
+  setIsShow: (val: boolean) => void,
+  changePopParam: {
+    itemId: number,
+    itemType: string,
+    serverId: number,
+    gradeId: string,
+    enchantLevel: number,
+    searchKeyword: string,
+  },
 }
 
-function ItemChangeDialog({close}:ItemChangeDialogProps) {
+function ItemChangeDialog({
+  isShow = false,
+  setIsShow,
+  changePopParam
+}: ItemChangeDialogProps) {
+  
   return (
-    <div className='itemChangeDialog-container'>
+    <div className={`itemChangeDialog-container ${isShow ? 'itemChangeDialog-container-active' : ''}`}>
       <div className="itemChangeDialog">
         <div className="itemChangeDialog__header">
           <span className="itemChangeDialog__header__span">아이템 교체</span>
-          <FontAwesomeIcon className="close_icon" icon={faXmark} onClick={close}></FontAwesomeIcon>
+          <FontAwesomeIcon className="close_icon" icon={faXmark} onClick={() => setIsShow(false)}></FontAwesomeIcon>
         </div>
         <div className="itemChangeDialog__content">
           <div className="itemChangeDialog__content__search">
-            <select className="select-button">
-              <option>무기</option>
-            </select>
+            <SearchSelect value={changePopParam.itemType} options={enumArray} />
             <input placeholder="아이템명을 입력해주세요."></input>
             <button type="button">검색</button>
           </div>

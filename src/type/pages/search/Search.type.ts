@@ -12,7 +12,26 @@ export type ItemSearchType = {
   world: boolean
 };
 
-export const ItemSearchTypeDefault = (): ItemSearchType[] => ([{
+/**
+ * object 용
+ */
+export const ItemSearchTypeDefault = (): ItemSearchType => ({
+  avg_unit_price: 0,
+  enchant_level: 0,
+  grade: '',
+  image: '',
+  item_id: 0,
+  item_name: '',
+  now_min_unit_price: 0,
+  server_id: 0,
+  server_name: '',
+  world: false
+});
+
+/**
+ * 리스트 용
+ */
+export const ItemSearchTypeListDefault = (): ItemSearchType[] => ([{
   avg_unit_price: 0,
   enchant_level: 0,
   grade: '',
@@ -72,7 +91,7 @@ export type ItemOption = {
 }
 
 // 아이템 옵션 default
-export const ItemOptionDefault = ():ItemOption => ({
+export const ItemOptionDefault = (): ItemOption => ({
   display: '',
   extra_display: '',
   option_name: '',
@@ -127,7 +146,7 @@ export type ItemPriceInfoType = {
 }
 
 // 아이템 시세정보 타입 default
-export const ItemPriceInfoTypeDefault = ():ItemPriceInfoType => ({
+export const ItemPriceInfoTypeDefault = (): ItemPriceInfoType => ({
   server_id: 0,
   item_id: 0,
   enchant_level: 0,
@@ -147,3 +166,47 @@ export const ItemPriceInfoTypeDefault = ():ItemPriceInfoType => ({
     unit_price: 0,
   }
 });
+
+/**
+ * 최저가 조회 파라미터
+ */
+export type LowPriceSearchParamType = {
+  server_id: number,
+  class_id: string,
+  grade_id: string,
+  from_enchant_level: number,
+}
+
+/**
+ * 최저가 조회 파라미터 default
+ */
+export const LowPriceSearchParamTypeDefault = (): LowPriceSearchParamType => ({
+  server_id: 0,
+  class_id: '',
+  grade_id: '',
+  from_enchant_level: 0,
+});
+
+/**
+ * 최저가 조회 반환 타입
+ */
+export type LowPriceSearchType = ItemSearchType & {
+  tradeCategoryName: string,
+}
+
+/**
+ * 최저가 조회 반환 타입 default
+ */
+export const LowPriceSearchTypeListDefault = (): LowPriceSearchType[] => ([{
+  avg_unit_price: 0,
+  enchant_level: 0,
+  grade: '',
+  image: '',
+  item_id: 0,
+  item_name: '',
+  now_min_unit_price: 0,
+  server_id: 0,
+  server_name: '',
+  world: false,
+  tradeCategoryName: '',
+}]);

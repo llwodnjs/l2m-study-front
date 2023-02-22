@@ -1,20 +1,25 @@
 .itemChangeDialog-container{
-  // display: none;
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
   background-color: rgba(0, 0, 0, 0.2);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: none;
+
+  &-active {
+    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
   .itemChangeDialog {
     width: 1000px;
-    height: 750px;
+    height: 900px;
     position: absolute;
     top: 220px;
+    // display: none;
     // top: 180px;
   
     background: #FFFFFF;

@@ -6,6 +6,7 @@ type SelectProps = {
   onChange?: (value: string) => void;
   options?: { text: string; value: string; selected?: boolean }[];
   defaultValue?: string;
+  effect?: 'disabled' | 'non';
   wd?: string;
   hi?: string;
 };
@@ -15,6 +16,7 @@ function SearchSelect({
   onChange = () => { },
   options = [],
   defaultValue = '',
+  effect = 'non',
   wd = '',
   hi = '',
 }: SelectProps) {
@@ -28,7 +30,7 @@ function SearchSelect({
   const _inlineStyle = { width: `${wd === "" ? '167px' : wd}`, height: `${hi === "" ? '65px' : hi}` }
 
   return (
-    <select className="select-button" onChange={_inOnChange} value={textValue} style={_inlineStyle}>
+    <select className="select-button" onChange={_inOnChange} value={textValue} style={_inlineStyle} disabled={effect === 'disabled'}>
       <option value={''}>{defaultValue || '전체'}</option>
       {options.map((option, idx) => (
           <option key={idx} value={option.value}>

@@ -11,6 +11,7 @@ import MySetting from "@/pages/mysetting/MySetting";
 import ItemInfoDialog from "@/components/dialog/ItemInfoDialog";
 import CompareDialog from "@/components/dialog/CompareDialog";
 import Favorites from "@/pages/favorites/Favorites";
+import ItemChangeDialog from "@/components/dialog/ItemChangeDialog";
 // import PopupLayout from "@/pages/layouts/PopupLayout";
 // import {GlobalError} from "@/pages/global";
 

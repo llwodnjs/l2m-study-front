@@ -6,6 +6,7 @@ type ServerSelectProps = {
   onChange?: (value: number) => void;
   options?: { world_name: string, world_id?: number, servers: { server_id: number, server_name: string }[] }[];
   defaultValue?: string;
+  effect?: 'disabled' | 'non';
   wd?: string;
   hi?: string;
 };
@@ -15,6 +16,7 @@ function ServerSearchSelect({
   onChange = () => { },
   options = [],
   defaultValue = '',
+  effect = 'non',
   wd = '',
   hi = '',
 }: ServerSelectProps) {
@@ -28,7 +30,7 @@ function ServerSearchSelect({
   const _inlineStyle = { width: `${wd === "" ? '167px' : wd}`, height: `${hi === "" ? '65px' : hi}` }
 
   return (
-    <select className="select-button" onChange={_inOnChange} value={textValue} style={_inlineStyle}>
+    <select className="select-button" onChange={_inOnChange} value={textValue} style={_inlineStyle} disabled={effect === 'disabled'}>
       <option value={''}>{defaultValue || '전체'}</option>
       {options.map((option, idx) => (
         <optgroup key={idx} label={option.world_name}>

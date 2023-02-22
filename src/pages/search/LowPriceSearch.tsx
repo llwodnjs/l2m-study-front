@@ -1,276 +1,87 @@
 import "@/assets/scss/pages/search/lowpricesearch.style.scoped.scss";
+import { useState, useEffect } from "react";
+import { lowPriceSearchApi } from "@/resources/api/pages/search/Search.api";
+import { LowPriceSearchParamType, LowPriceSearchParamTypeDefault, LowPriceSearchType, LowPriceSearchTypeListDefault } from "@/type/pages/search/Search.type";
+import ServerSearchSelect from "@/components/select/ServerSearchSelect";
+import SearchSelect from "@/components/select/SearchSelect";
+import { serverList, classList, gradeList, enchantLevelList } from "@/type/pages/main/Main.type";
+import { useLocation } from "react-router-dom";
+import LowPriceSearchGrid from "@/components/grid/LowPriceSearchGrid";
+import ItemChangeDialog from "@/components/dialog/ItemChangeDialog";
 
-const arrowBackImage = require("@/assets/images/icon_arrow_back_big.png");
-const arrowForwardImage = require("@/assets/images/icon_arrow_forward_big.png");
-const itemImage = require("@/assets/images/itemImage.png");
 const diamondImage = require("@/assets/images/diamond.png");
-const searchImage = require("@/assets/images/iconSearch.png");
-const changeImage = require("@/assets/images/icon_changes.png");
-const equipNonActive = require("@/assets/images/equip_non_active.png");
-const equipActive = require("@/assets/images/active_item_paging.png");
-const accNonActive = require("@/assets/images/acc_non_active.png");
-const accActive = require("@/assets/images/acc_active.png");
+// const equipNonActive = require("@/assets/images/equip_non_active.png");
+// const equipActive = require("@/assets/images/active_item_paging.png");
+// const accNonActive = require("@/assets/images/acc_non_active.png");
+// const accActive = require("@/assets/images/acc_active.png");
 
 function LowPriceSearch() {
+  // 파라미터
+  const location = useLocation();
+  const [searchParam, setSearchParam] = useState<LowPriceSearchParamType>(location.state || LowPriceSearchParamTypeDefault());
+  const [resultList, setResultList] = useState<LowPriceSearchType[]>(LowPriceSearchTypeListDefault());
+  const [isShow, setIsShow] = useState<boolean>(false);
+  const [changePopParam, setChangePopParam] = useState({
+    itemId: 0,
+    itemType: '',
+    serverId: 0,
+    gradeId: '',
+    enchantLevel: 0,
+    searchKeyword: '',
+  });
+
+  // 최저가세팅 조회 api 호출
+  const searchLowPriceSetting = () => {
+    lowPriceSearchApi(searchParam)
+      .then((result) => {
+        setResultList(result.data.results);
+      });
+  };
+
+  // 교체 팝업 open
+  const openChangePopup = (itemId: number, itemType: string) => {
+    setIsShow(true);
+    setChangePopParam({...changePopParam, itemId: itemId,
+                                          itemType: itemType,
+                                          serverId: searchParam.server_id,
+                                          gradeId: searchParam.grade_id,
+                                          enchantLevel: searchParam.from_enchant_level});
+  };
+
+  // 세팅 저장하기
+  const settingSave = () => {
+
+  }
+
+  useEffect(() => {
+    searchLowPriceSetting();
+  }, []);
   return (
     <div>
       <div className="low-price-search">
         <span className="low-price-search__text">내가 원하는 클래스의 최저가를 확인해보세요.</span>
         <div className="low-price-search__select">
-          <select className="select-button">
-            <option>서버</option>
-          </select>
-          <select className="select-button">
-            <option>클래스</option>
-          </select>
-          <select className="select-button">
-            <option>장비등급</option>
-          </select>
-          <select className="select-button">
-            <option>강화수치</option>
-          </select>
+          <ServerSearchSelect defaultValue="서버" effect="disabled" options={serverList} value={searchParam.server_id} onChange={(val) => setSearchParam({ ...searchParam, server_id: val })} />
+          <SearchSelect defaultValue="클래스" effect="disabled" options={classList} value={searchParam.class_id} onChange={(val) => setSearchParam({ ...searchParam, class_id: val })} />
+          <SearchSelect defaultValue="장비등급" effect="disabled" options={gradeList} value={searchParam.grade_id} onChange={(val) => setSearchParam({ ...searchParam, grade_id: val })} />
+          <SearchSelect defaultValue="강화수치" effect="disabled" options={enchantLevelList} value={searchParam.from_enchant_level} onChange={(val) => setSearchParam({ ...searchParam, from_enchant_level: parseInt(val) })} />
         </div>
       </div>
-      <div className="search-result">
-        <img className="arrow-img" src={arrowBackImage} />
-        <div className="search__table">
-          {/* <div className="search__table__count">
-            검색결과: 8건
-          </div> */}
-          <div className="search__table__content">
-            <table className="search-table">
-              <colgroup>
-                <col width={"40%"} />
-                <col width={"30%"} />
-                <col width={"15%"} />
-                <col width={"15%"} />
-              </colgroup>
-              <thead>
-                <tr className="header-tr">
-                  <th>아이템 이름</th>
-                  <th>재련 옵션</th>
-                  <th>최저가</th>
-                  <th>교체</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    <img src={itemImage} />
-                    <span>아르카나 오브</span>
-                  </td>
-                  <td>
-                    <div className="search-table-second">
-                      <span>무기 데미지 증폭 100%</span>
-                      <span>명중 +100</span>
-                    </div>
-                  </td>
-                  <td>
-                    <div className="search-table-all">
-                      <img src={diamondImage} />
-                      <span>1만 2000</span>
-                    </div>
-                  </td>
-                  <td>
-                    <div className="search-table-all">
-                      <img src={changeImage} />
-                      <img src={searchImage} />
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <img src={itemImage} />
-                    <span>아르카나 오브</span>
-                  </td>
-                  <td>
-                    <div className="search-table-second">
-                      <span>무기 데미지 증폭 100%</span>
-                      <span>명중 +100</span>
-                    </div>
-                  </td>
-                  <td>
-                    <div className="search-table-all">
-                      <img src={diamondImage} />
-                      <span>1만 2000</span>
-                    </div>
-                  </td>
-                  <td>
-                    <div className="search-table-all">
-                      <img src={changeImage} />
-                      <img src={searchImage} />
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <img src={itemImage} />
-                    <span>아르카나 오브</span>
-                  </td>
-                  <td>
-                    <div className="search-table-second">
-                      <span>무기 데미지 증폭 100%</span>
-                      <span>명중 +100</span>
-                    </div>
-                  </td>
-                  <td>
-                    <div className="search-table-all">
-                      <img src={diamondImage} />
-                      <span>1만 2000</span>
-                    </div>
-                  </td>
-                  <td>
-                    <div className="search-table-all">
-                      <img src={changeImage} />
-                      <img src={searchImage} />
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <img src={itemImage} />
-                    <span>아르카나 오브</span>
-                  </td>
-                  <td>
-                    <div className="search-table-second">
-                      <span>무기 데미지 증폭 100%</span>
-                      <span>명중 +100</span>
-                    </div>
-                  </td>
-                  <td>
-                    <div className="search-table-all">
-                      <img src={diamondImage} />
-                      <span>1만 2000</span>
-                    </div>
-                  </td>
-                  <td>
-                    <div className="search-table-all">
-                      <img src={changeImage} />
-                      <img src={searchImage} />
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <img src={itemImage} />
-                    <span>아르카나 오브</span>
-                  </td>
-                  <td>
-                    <div className="search-table-second">
-                      <span>무기 데미지 증폭 100%</span>
-                      <span>명중 +100</span>
-                    </div>
-                  </td>
-                  <td>
-                    <div className="search-table-all">
-                      <img src={diamondImage} />
-                      <span>1만 2000</span>
-                    </div>
-                  </td>
-                  <td>
-                    <div className="search-table-all">
-                      <img src={changeImage} />
-                      <img src={searchImage} />
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <img src={itemImage} />
-                    <span>아르카나 오브</span>
-                  </td>
-                  <td>
-                    <div className="search-table-second">
-                      <span>무기 데미지 증폭 100%</span>
-                      <span>명중 +100</span>
-                    </div>
-                  </td>
-                  <td>
-                    <div className="search-table-all">
-                      <img src={diamondImage} />
-                      <span>1만 2000</span>
-                    </div>
-                  </td>
-                  <td>
-                    <div className="search-table-all">
-                      <img src={changeImage} />
-                      <img src={searchImage} />
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <img src={itemImage} />
-                    <span>아르카나 오브</span>
-                  </td>
-                  <td>
-                    <div className="search-table-second">
-                      <span>무기 데미지 증폭 100%</span>
-                      <span>명중 +100</span>
-                    </div>
-                  </td>
-                  <td>
-                    <div className="search-table-all">
-                      <img src={diamondImage} />
-                      <span>1만 2000</span>
-                    </div>
-                  </td>
-                  <td>
-                    <div className="search-table-all">
-                      <img src={changeImage} />
-                      <img src={searchImage} />
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <img src={itemImage} />
-                    <span>아르카나 오브</span>
-                  </td>
-                  <td>
-                    <div className="search-table-second">
-                      <span>무기 데미지 증폭 100%</span>
-                      <span>명중 +100</span>
-                    </div>
-                  </td>
-                  <td>
-                    <div className="search-table-all">
-                      <img src={diamondImage} />
-                      <span>1만 2000</span>
-                    </div>
-                  </td>
-                  <td>
-                    <div className="search-table-all">
-                      <img src={changeImage} />
-                      <img src={searchImage} />
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <img className="arrow-img" src={arrowForwardImage} />
-      </div>
-      <div className="low-price-paging">
-        {/* <img className="low-price-paging__img" src={equipNonActive}></img> */}
-        <img className="low-price-paging__img" src={equipActive}></img>
-        {/* <img className="low-price-paging__img" src={accActive}></img> */}
-        {/* <img className="low-price-paging__img" src={accNonActive}></img> */}
-      </div>
+      <LowPriceSearchGrid list={resultList} onClickFunction={openChangePopup} />
       <div className="low-price-item">
         <div className="low-price-item__total">
-          <span>방어구 최저가:</span>
+          <span>세팅 최저가:</span>
           <div className="low-price-item__total__price">
             <img src={diamondImage} />
-            <span>95,000</span>
+            {/* <span>{resultList.map((x) => x.now_min_unit_price).reduce((prev, current) => prev + current)}</span> */}
           </div>
         </div>
         <div className="low-price-item__setting">
           <span>세팅을 저장해보세요.</span>
-          <button type="button" className="low-price-item__setting__btn">저장하기</button>
+          <button type="button" className="low-price-item__setting__btn" onClick={settingSave}>저장하기</button>
         </div>
       </div>
+      <ItemChangeDialog isShow={isShow} setIsShow={setIsShow} changePopParam={changePopParam} />
     </div>
   );
 };

@@ -10,13 +10,13 @@ import SearchButton from "@/components/button/SearchButton";
 import ItemInfoDialog from "@/components/dialog/ItemInfoDialog";
 import { SearchListParam, SearchListParamInit, serverList, classList, gradeList, enchantLevelList } from "@/type/pages/main/Main.type";
 import { apiSearchItem, apiSearchItemInfo, apiSearchPriceInfo } from "@/resources/api/pages/main/Main.api";
-import { ItemSearchType, ItemSearchTypeDefault, PagingType, PagingDefault, ItemInfoType, ItemInfoTypeDefault, ItemPriceInfoType, ItemPriceInfoTypeDefault } from "@/type/pages/search/Search.type";
+import { ItemSearchType, ItemSearchTypeListDefault, PagingType, PagingDefault, ItemInfoType, ItemInfoTypeDefault, ItemPriceInfoType, ItemPriceInfoTypeDefault } from "@/type/pages/search/Search.type";
 
 function ItemSearch() {
   const location = useLocation();
 
   const [listParam, setListParam] = useState<SearchListParam>(() => location.state || SearchListParamInit());
-  const [list, setList] = useState<ItemSearchType[]>(() => ItemSearchTypeDefault());
+  const [list, setList] = useState<ItemSearchType[]>(() => ItemSearchTypeListDefault());
   const [paging, setPaging] = useState<PagingType>(() => PagingDefault());
   const [isShow, setIsShow] = useState<boolean>(false);
   const [itemInfo, setItemInfo] = useState<ItemInfoType>(() => ItemInfoTypeDefault());
