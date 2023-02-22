@@ -40,12 +40,12 @@ function LowPriceSearch() {
 
   // 교체 팝업 open
   const openChangePopup = (itemId: number, itemType: string) => {
-    setIsShow(true);
     setChangePopParam({...changePopParam, itemId: itemId,
                                           itemType: itemType,
                                           serverId: searchParam.server_id,
                                           gradeId: searchParam.grade_id,
                                           enchantLevel: searchParam.from_enchant_level});
+    setIsShow(true);
   };
 
   // 세팅 저장하기
@@ -81,7 +81,7 @@ function LowPriceSearch() {
           <button type="button" className="low-price-item__setting__btn" onClick={settingSave}>저장하기</button>
         </div>
       </div>
-      <ItemChangeDialog isShow={isShow} setIsShow={setIsShow} changePopParam={changePopParam} />
+      {isShow && <ItemChangeDialog isShow={isShow} setIsShow={setIsShow} changePopParam={changePopParam} />}
     </div>
   );
 };
