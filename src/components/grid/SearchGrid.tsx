@@ -1,26 +1,33 @@
 import { useState } from 'react';
 import '@/assets/scss/grid/searchgrid.style.scoped.scss';
-import { ItemSearchType } from "@/type/pages/search/Search.type";
+import { ItemCompareParamType, ItemSearchType, PagingType } from "@/type/pages/search/Search.type";
 import SearchImage from "@/components/img/SearchImage";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
 const diamondImage = require("@/assets/images/diamond.png");
 const searchImage = require("@/assets/images/iconSearch.png");
 
 type SearchGridProps = {
-  search_result?: number,
+  search_result: PagingType,
   list: ItemSearchType[],
   onClickFunction?: (item_id: number, server_id: number, enchant_level: number) => void,
+  checkItem?: (item_id: number, server_id: number, enchant_level: number, item_name: string) => void,
+  compareParams?: ItemCompareParamType[]
 }
 
 function SearchGrid({
-  search_result = 0,
+  search_result,
   list,
   onClickFunction = () => { },
+  checkItem = () => { },
+  compareParams
 }: SearchGridProps) {
   return (
     <div className="search__table">
       <div className="search__table__count">
-        검색결과: {search_result}건
+        <div>검색결과: {search_result?.total}건</div>
+        {compareParams && <div className={"search__table__count__compareItems"}>비교대상 : {compareParams.map((item) => item.item_name + ' +' + item.enchant_level)}</div>}
       </div>
       <div className="search__table__content">
         <table className="search-table">
@@ -68,6 +75,7 @@ function SearchGrid({
                 <td>
                   <div className="search-table-all">
                     <SearchImage imgUrl={searchImage} wd={'27px'} hi={'27px'} itemId={item.item_id} serverId={item.server_id} enchantLevel={item.enchant_level} onClickFunction={onClickFunction} />
+                    <FontAwesomeIcon className="check_icon" icon={faCheck} onClick={() => checkItem(item.item_id, item.server_id, item.enchant_level, item.item_name)}></FontAwesomeIcon>
                   </div>
                 </td>
               </tr>

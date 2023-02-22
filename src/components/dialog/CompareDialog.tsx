@@ -1,6 +1,8 @@
 import "@/assets/scss/dialog/comparedialog.style.scoped.scss";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { ItemCompareInfoType } from "@/type/pages/search/Search.type";
+import SearchImage from "../img/SearchImage";
 
 const sirBlade = require("@/assets/images/sir_blade.png");
 const arcAngelBlade = require("@/assets/images/arc_angel_blade.png");
@@ -15,67 +17,135 @@ const diamond = require("@/assets/images/diamond.png");
 const arrowUp = require("@/assets/images/arrow_up.png");
 const arrowDown = require("@/assets/images/arrow_down.png");
 
-function CompareDialog() {
+type CompareDialogProps = {
+  close: React.MouseEventHandler<SVGSVGElement>
+  contents: ItemCompareInfoType 
+}
+
+function CompareDialog({close, contents}: CompareDialogProps) {
+
+  function calcCompare(firstInfoDisplay:string, SecondInfoDisplay:string):number {
+    return parseInt(SecondInfoDisplay.replace(/[^0-9]/g, '')) - parseInt(firstInfoDisplay.replace(/[^0-9]/g, ''));
+  }
+
+  function aa() {
+    const firstInfo = contents.itemInfos[0].options; // 기존 아이템
+    const secondInfo = contents.itemInfos[1].options; // 비교대상 아이템
+
+    const rendering = secondInfo.map((option) => {     
+  
+      // 이름이 다르면 신규
+      if (firstInfo.filter((opt) => (option.option_name === opt.option_name)).length === 0) {
+        return (<div className="compare-text">
+                  <span>{option.option_name} {option.display}</span>
+                  <div className="arrow-area arrow-area-up">
+                    <span>신규</span>
+                  </div>
+                </div>);
+      } else {
+        // 수치가 같으면 -표시
+        if (firstInfo.filter((opt) => (option.display === opt.display)).length > 0) {
+          return (<div className="compare-text">
+                    <span>{option.option_name} {option.display} {option.extra_display !== '' ? <span className="enchant-info">({option.extra_display})</span> : ''}</span>
+                    <div className="arrow-area">
+                      <span>-</span>
+                    </div>
+                  </div>);
+        } else {
+          // 수치가 다를경우 차이 표시
+          if (firstInfo.filter((opt) => calcCompare(opt.display, option.display) > 0).length > 0) {
+            return (  
+              <div className="compare-text">
+                <span>{option.option_name} {option.display}</span>
+                <div className="arrow-area arrow-area-up">
+                  <img src={arrowUp} />
+                  <span>{firstInfo.filter((opt) => opt.option_name === option.option_name).length}</span>
+                  {/* <span>{firstInfo.filter((opt) => calcCompare(opt.display, option.display) > 0 && opt.option_name === option.option_name)
+                        .map((opt) => opt.display)}</span> */}
+                </div>
+              </div>
+            );
+          } else {
+            return (  
+              <div className="compare-text">
+                <span>{option.option_name} {option.display}</span>
+                <div className="arrow-area arrow-area-down">
+                  <img src={arrowDown} />
+                  <span>{firstInfo.filter((opt) => calcCompare(opt.display, option.display) < 0 && option.option_name === opt.option_name)
+                        .map((opt) => calcCompare(opt.display, option.display))}</span>
+                  {/* <span>{firstInfo.filter((opt) => calcCompare(opt.display, option.display) > 0 && opt.option_name === option.option_name)
+                        .map((opt) => option.display)}</span> */}
+                </div>
+              </div>
+            );
+          }
+        }
+      }
+    });
+
+    return rendering;
+  }
+
   return (
+    <div className="compare-dialog-wrapper">
     <div className="compare-dialog">
       <div className="compare-dialog__header">
         <span className="compare-dialog__header__span">비교하기</span>
-        <FontAwesomeIcon className="close_icon" icon={faXmark}></FontAwesomeIcon>
+        <FontAwesomeIcon className="close_icon" icon={faXmark} onClick={close}></FontAwesomeIcon>
       </div>
       <div className="compare-dialog__body">
         <div className="compare-dialog__body__img">
           <div className="compare-dialog__body__img__left__header">
-            <img src={sirBlade} />
+            <SearchImage imgUrl={contents.itemInfos[0].image} wd={'62px'} hi={'62px'} />
             <select className="compare-dialog__body__img__left__header__select">
-              <option>+1</option>
+              <option>{contents.itemInfos[0].enchant_level}</option>
             </select>
             <div className="compare-dialog__body__img__left__header__detail">
               <div className="compare-dialog__body__img__left__header__detail__name">
-                <span>시르 블레이드</span>
+                <span>{contents.itemInfos[0].item_name}</span>
               </div>
               <div className="compare-dialog__body__img__left__header__detail__img">
-                <img src={storable} />
+                {contents.itemInfos[0].attribute.storable ? <img src={storable} alt="first_storable"/> : ''}
                 |
-                <img src={dropable} />
+                {contents.itemInfos[0].attribute.droppable ? <img src={dropable} alt="first_dropable"/> : ''}
                 |
-                <img src={tradeable} />
+                {contents.itemInfos[0].attribute.tradeable ? <img src={tradeable} alt="first_tradeable"/> : ''}
                 |
                 <div className="compare-dialog__body__img__left__header__detail__img__enchan">
-                  <img src={enchantable} />
-                  <span>6</span>
+                  {contents.itemInfos[0].attribute.enchantable ? <img src={enchantable} alt="first_enchantable"/> : ''}
+                  <span>{contents.itemInfos[0].attribute.safe_enchant_level}</span>
                 </div>
               </div>
             </div>
             <div className="compare-dialog__body__img__left__header__like">
               <img src={likely} />
-              <img src={compare} />
             </div>
           </div>
           <div className="compare-dialog__body__img__right__header">
-            <img src={arcAngelBlade} />
+          <SearchImage imgUrl={contents.itemInfos[1].image} wd={'62px'} hi={'62px'} />
             <select className="compare-dialog__body__img__left__header__select">
-              <option>+0</option>
+              <option>{contents.itemInfos[1].enchant_level}</option>
             </select>
             <div className="compare-dialog__body__img__left__header__detail">
               <div className="compare-dialog__body__img__left__header__detail__name">
-                <span>아크엔젤 블레이드</span>
+                <span>{contents.itemInfos[1].item_name}</span>
               </div>
               <div className="compare-dialog__body__img__left__header__detail__img">
-                <img src={storable} />
+                {contents.itemInfos[1].attribute.storable ? <img src={storable} alt="first_storable"/> : ''}
                 |
-                <img src={dropable} />
+                {contents.itemInfos[1].attribute.droppable ? <img src={dropable} alt="first_dropable"/> : ''}
                 |
-                <img src={tradeable} />
+                {contents.itemInfos[1].attribute.tradeable ? <img src={tradeable} alt="first_tradeable"/> : ''}
+                |
                 |
                 <div className="compare-dialog__body__img__left__header__detail__img__enchan">
-                  <img src={enchantable} />
-                  <span>6</span>
+                  {contents.itemInfos[1].attribute.enchantable ? <img src={enchantable} alt="first_enchantable"/> : ''}
+                  <span>{contents.itemInfos[1].attribute.safe_enchant_level}</span>
                 </div>
               </div>
             </div>
             <div className="compare-dialog__body__img__left__header__like">
               <img src={likely} />
-              <img src={compare} />
             </div>
           </div>
         </div>
@@ -91,13 +161,13 @@ function CompareDialog() {
           <div className="compare-dialog__body__category__wrapper">
             <span>카테고리</span>
             <div className="compare-dialog__body__category__wrapper__text">
-              <span>한손검</span>
+              <span>{contents.itemInfos[0].trade_category_name}</span>
             </div>
           </div>
           <div className="compare-dialog__body__category__wrapper">
             <span>카테고리</span>
             <div className="compare-dialog__body__category__wrapper__text">
-              <span>한손검</span>
+              <span>{contents.itemInfos[1].trade_category_name}</span>
             </div>
           </div>
         </div>
@@ -105,59 +175,20 @@ function CompareDialog() {
           <div className="compare-dialog__body__category__wrapper">
             <span>효과</span>
             <div className="compare-dialog__body__category__wrapper__text">
-              <span>무기 대미지 +24</span>
-              <span>명중 +10 <span className="enchant-info">(+1)</span></span>
-              <span>근거리 치명타 +15%</span>
-              <span>더블 확률 +10%</span>
-              <span>추가 대미지 +4 <span>(+1)</span></span>
-              <span>스킬 대미지 증폭 +10%</span>
-              <span>무기 대미지 증폭 +12%</span>
-              <span>트리플 확률 +6%</span>
-              <span>손상 방지</span>
+              {contents.itemInfos[0].options.map((option) => (<span>{option.option_name} {option.display} {option.extra_display !== '' ? <span className="enchant-info">({option.extra_display})</span> : ''}</span>))}
             </div>
           </div>
           <div className="compare-dialog__body__category__wrapper">
             <span>효과</span>
             <div className="compare-dialog__body__category__wrapper__text">
-              <div className="compare-text">
-                <span>무기 대미지 +22</span>
-                <div className="arrow-area arrow-area-down">
-                  <img src={arrowDown} />
-                  <span>2</span>
-                </div>
-              </div>
-              <div className="compare-text">
-                <span>명중 +9</span>
-                <div className="arrow-area arrow-area-down">
-                  <img src={arrowDown} />
-                  <span>2</span>
-                </div>
-              </div>
-              <div className="compare-text">
-                <span>근거리 치명타 +15%</span>
-                <div className="arrow-area">
-                  <span>-</span>
-                </div>
-              </div>
-              <div className="compare-text">
-                <span>더블 확률 +10%</span>
-                <div className="arrow-area">
-                  <span>-</span>
-                </div>
-              </div>
-              <div className="compare-text">
-                <span>추가 대미지 +3</span>
-                <div className="arrow-area arrow-area-down">
-                  <img src={arrowDown} />
-                  <span>2</span>
-                </div>
-              </div>
-              <div className="compare-text">
-                <span>디바인 퍼니쉬먼트 3%</span>
-                <div className="arrow-area arrow-area-up">
-                  <span>신규</span>
-                </div>
-              </div>
+              {aa()}
+              {/* {contents.itemInfos[1].options.map((option) => (
+                contents.itemInfos[0].options.filter((opt) => (option.option_name === opt.option_name)).length > 0 
+                ? contents.itemInfos[0].options.filter((opt) => (option.display === opt.display)).length > 0 ? <span>{option.option_name} {option.display}</span> 
+                : contents.itemInfos[0].options.filter((opt) => (  
+                (calcCompare(opt.display, option.display)) > 0)).length > 0 ? 
+                <span>{option.option_name} {option.display}<span className="arrow-area arrow-area-up">상승 </span></span> : <span>{option.option_name} {option.display}<span className="arrow-area arrow-area-down">하락</span></span>
+                : <span>{option.option_name} {option.display}<span className="arrow-area arrow-area-up">신규</span></span>))} */}
             </div>
           </div>
         </div>
@@ -165,13 +196,13 @@ function CompareDialog() {
           <div className="compare-dialog__body__category__wrapper">
             <span>재질</span>
             <div className="compare-dialog__body__category__wrapper__text">
-              <span>오리하루콘</span>
+              <span>{contents.itemInfos[0].attribute.material_name}</span>
             </div>
           </div>
           <div className="compare-dialog__body__category__wrapper">
             <span>재질</span>
             <div className="compare-dialog__body__category__wrapper__text">
-              <span>아다만티움</span>
+              <span>{contents.itemInfos[1].attribute.material_name}</span>
             </div>
           </div>
         </div>
@@ -179,13 +210,13 @@ function CompareDialog() {
           <div className="compare-dialog__body__category__wrapper">
             <span>무게</span>
             <div className="compare-dialog__body__category__wrapper__text">
-              <span>144</span>
+              <span>{contents.itemInfos[0].attribute.weight / 10000}</span>
             </div>
           </div>
           <div className="compare-dialog__body__category__wrapper">
             <span>무게</span>
             <div className="compare-dialog__body__category__wrapper__text">
-              <span>180</span>
+              <span>{contents.itemInfos[1].attribute.weight / 10000}</span>
             </div>
           </div>
         </div>
@@ -195,7 +226,7 @@ function CompareDialog() {
             <div className="compare-dialog__body__category__wrapper__price">
               <img src={world} />
               <img src={diamond} />
-              <span>144</span>
+              <span>{contents.itemPriceInfos[0].now.unit_price}</span>
             </div>
           </div>
           <div className="compare-dialog__body__category__wrapper">
@@ -203,11 +234,12 @@ function CompareDialog() {
             <div className="compare-dialog__body__category__wrapper__price">
               <img src={world} />
               <img src={diamond} />
-              <span>180</span>
+              <span>{contents.itemPriceInfos[1].now.unit_price}</span>
             </div>
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }

@@ -63,11 +63,6 @@ const router: CustomRouteObject[] = [
         element: <MySetting />,
       },
       {
-        id: "compare",
-        path: "compare",
-        element: <CompareDialog />,
-      },
-      {
         id: "changePw",
         path: "changePw",
         element: <ChangePwDialog />,

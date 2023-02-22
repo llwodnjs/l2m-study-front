@@ -18,9 +18,13 @@
     line-height: 18px;
 
     display: flex;
-    align-items: center;
+    justify-content: space-between;
 
     color: #FFFFFF;
+
+    &__compareItems {
+      display: flex;
+    }
   }
 
   &__content {

@@ -210,3 +210,23 @@ export const LowPriceSearchTypeListDefault = (): LowPriceSearchType[] => ([{
   world: false,
   tradeCategoryName: '',
 }]);
+
+// 아이템 비교 파라미터 타입
+export type ItemCompareParamType = {
+  item_id: number,
+  enchant_level: number,
+  server_id: number,
+  item_name: string
+}
+
+// 아이템 비교 반환 타입
+export type ItemCompareInfoType = {
+  itemInfos: ItemInfoType[],
+  itemPriceInfos: ItemPriceInfoType[]
+}
+
+// 아이템 비교 반환 타입 초기화
+export const ItemCompareInfoTypeDefault = ():ItemCompareInfoType => ({
+  itemInfos: [],
+  itemPriceInfos: []
+})
