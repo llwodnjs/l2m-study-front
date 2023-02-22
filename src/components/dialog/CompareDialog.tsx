@@ -28,7 +28,7 @@ function CompareDialog({close, contents}: CompareDialogProps) {
     return parseInt(SecondInfoDisplay.replace(/[^0-9]/g, '')) - parseInt(firstInfoDisplay.replace(/[^0-9]/g, ''));
   }
 
-  function aa() {
+  function settingAttribute() {
     const firstInfo = contents.itemInfos[0].options; // 기존 아이템
     const secondInfo = contents.itemInfos[1].options; // 비교대상 아이템
 
@@ -44,7 +44,7 @@ function CompareDialog({close, contents}: CompareDialogProps) {
                 </div>);
       } else {
         // 수치가 같으면 -표시
-        if (firstInfo.filter((opt) => (option.display === opt.display)).length > 0) {
+        if (firstInfo.filter((opt) => ((option.option_name === opt.option_name) && (option.display === opt.display))).length > 0) {
           return (<div className="compare-text">
                     <span>{option.option_name} {option.display} {option.extra_display !== '' ? <span className="enchant-info">({option.extra_display})</span> : ''}</span>
                     <div className="arrow-area">
@@ -53,15 +53,16 @@ function CompareDialog({close, contents}: CompareDialogProps) {
                   </div>);
         } else {
           // 수치가 다를경우 차이 표시
-          if (firstInfo.filter((opt) => calcCompare(opt.display, option.display) > 0).length > 0) {
+          if (firstInfo.filter((opt) => (option.option_name === opt.option_name) && calcCompare(opt.display, option.display) > 0).length > 0) {
             return (  
               <div className="compare-text">
                 <span>{option.option_name} {option.display}</span>
                 <div className="arrow-area arrow-area-up">
                   <img src={arrowUp} />
-                  <span>{firstInfo.filter((opt) => opt.option_name === option.option_name).length}</span>
-                  {/* <span>{firstInfo.filter((opt) => calcCompare(opt.display, option.display) > 0 && opt.option_name === option.option_name)
-                        .map((opt) => opt.display)}</span> */}
+                  {/* <span>올라감</span> */}
+                  {/* <span>{firstInfo.filter((opt) => opt.option_name === option.option_name).length}</span> */}
+                  <span>{firstInfo.filter((opt) => calcCompare(opt.display, option.display) > 0 && opt.option_name === option.option_name)
+                        .map((opt) => calcCompare(opt.display, option.display))}</span>
                 </div>
               </div>
             );
@@ -98,10 +99,10 @@ function CompareDialog({close, contents}: CompareDialogProps) {
           <div className="compare-dialog__body__img__left__header">
             <SearchImage imgUrl={contents.itemInfos[0].image} wd={'62px'} hi={'62px'} />
             <select className="compare-dialog__body__img__left__header__select">
-              <option>{contents.itemInfos[0].enchant_level}</option>
+              <option>{'+' + contents.itemInfos[0].enchant_level}</option>
             </select>
             <div className="compare-dialog__body__img__left__header__detail">
-              <div className="compare-dialog__body__img__left__header__detail__name">
+              <div className={"compare-dialog__body__img__left__header__detail__name__" + contents.itemInfos[0].grade}>
                 <span>{contents.itemInfos[0].item_name}</span>
               </div>
               <div className="compare-dialog__body__img__left__header__detail__img">
@@ -124,10 +125,10 @@ function CompareDialog({close, contents}: CompareDialogProps) {
           <div className="compare-dialog__body__img__right__header">
           <SearchImage imgUrl={contents.itemInfos[1].image} wd={'62px'} hi={'62px'} />
             <select className="compare-dialog__body__img__left__header__select">
-              <option>{contents.itemInfos[1].enchant_level}</option>
+              <option>{'+' + contents.itemInfos[1].enchant_level}</option>
             </select>
             <div className="compare-dialog__body__img__left__header__detail">
-              <div className="compare-dialog__body__img__left__header__detail__name">
+              <div className={"compare-dialog__body__img__left__header__detail__name__" + contents.itemInfos[1].grade}>
                 <span>{contents.itemInfos[1].item_name}</span>
               </div>
               <div className="compare-dialog__body__img__left__header__detail__img">
@@ -136,7 +137,6 @@ function CompareDialog({close, contents}: CompareDialogProps) {
                 {contents.itemInfos[1].attribute.droppable ? <img src={dropable} alt="first_dropable"/> : ''}
                 |
                 {contents.itemInfos[1].attribute.tradeable ? <img src={tradeable} alt="first_tradeable"/> : ''}
-                |
                 |
                 <div className="compare-dialog__body__img__left__header__detail__img__enchan">
                   {contents.itemInfos[1].attribute.enchantable ? <img src={enchantable} alt="first_enchantable"/> : ''}
@@ -150,91 +150,82 @@ function CompareDialog({close, contents}: CompareDialogProps) {
           </div>
         </div>
         <div className="compare-dialog__body__area">
-          <div className="compare-dialog__body__area__content__header">
-            <span className="compare-dialog__body__area__content__header__text">아이템 정보</span>
-          </div>
-          <div className="compare-dialog__body__area__content__header">
-            <span className="compare-dialog__body__area__content__header__text">아이템 정보</span>
-          </div>
-        </div>
-        <div className="compare-dialog__body__category">
-          <div className="compare-dialog__body__category__wrapper">
-            <span>카테고리</span>
-            <div className="compare-dialog__body__category__wrapper__text">
-              <span>{contents.itemInfos[0].trade_category_name}</span>
+          <div className="compare-dialog__body__area__left">
+            <div className="compare-dialog__body__area__left__header">
+              <span className="compare-dialog__body__area__left__header__text">아이템 정보</span>
             </div>
+            <div className="compare-dialog__body__area__left__body">
+                <div className="compare-dialog__body__area__left__body__wrapper">
+                  <span>카테고리</span>
+                  <div className="compare-dialog__body__area__left__body__wrapper__text">
+                  <span>{contents.itemInfos[0].trade_category_name}</span>
+                  </div>
+                </div>
+                <div className="compare-dialog__body__area__left__body__wrapper">
+                  <span>효과</span>
+                  <div className="compare-dialog__body__area__left__body__wrapper__text">
+                    {contents.itemInfos[0].options.map((option) => (<span>{option.option_name} {option.display} {option.extra_display !== '' ? <span className="enchant-info">({option.extra_display})</span> : ''}</span>))}
+                  </div>
+                </div>
+                <div className="compare-dialog__body__area__left__body__wrapper">
+                  <span>재질</span>
+                  <div className="compare-dialog__body__area__left__body__wrapper__text">
+                    <span>{contents.itemInfos[0].attribute.material_name}</span>
+                  </div>
+                </div>
+                <div className="compare-dialog__body__area__left__body__wrapper">
+                  <span>무게</span>
+                  <div className="compare-dialog__body__area__left__body__wrapper__text">
+                    <span>{contents.itemInfos[0].attribute.weight / 10000}</span>
+                  </div>
+                </div>
+                <div className="compare-dialog__body__area__left__body__wrapper">
+                  <span>현 최저가</span>
+                  <div className="compare-dialog__body__area__left__body__wrapper__price">
+                    <SearchImage imgUrl={world} wd={'20px'} hi={'20px'}/>
+                    <SearchImage imgUrl={diamond} wd={'20px'} hi={'20px'}/>
+                    <span>{contents.itemPriceInfos[0].now.unit_price}</span>
+                  </div>
+                </div>
+              </div>
           </div>
-          <div className="compare-dialog__body__category__wrapper">
-            <span>카테고리</span>
-            <div className="compare-dialog__body__category__wrapper__text">
-              <span>{contents.itemInfos[1].trade_category_name}</span>
+          <div className="compare-dialog__body__area__right">
+            <div className="compare-dialog__body__area__right__header">
+              <span className="compare-dialog__body__area__right__header__text">아이템 정보</span>
             </div>
-          </div>
-        </div>
-        <div className="compare-dialog__body__category">
-          <div className="compare-dialog__body__category__wrapper">
-            <span>효과</span>
-            <div className="compare-dialog__body__category__wrapper__text">
-              {contents.itemInfos[0].options.map((option) => (<span>{option.option_name} {option.display} {option.extra_display !== '' ? <span className="enchant-info">({option.extra_display})</span> : ''}</span>))}
-            </div>
-          </div>
-          <div className="compare-dialog__body__category__wrapper">
-            <span>효과</span>
-            <div className="compare-dialog__body__category__wrapper__text">
-              {aa()}
-              {/* {contents.itemInfos[1].options.map((option) => (
-                contents.itemInfos[0].options.filter((opt) => (option.option_name === opt.option_name)).length > 0 
-                ? contents.itemInfos[0].options.filter((opt) => (option.display === opt.display)).length > 0 ? <span>{option.option_name} {option.display}</span> 
-                : contents.itemInfos[0].options.filter((opt) => (  
-                (calcCompare(opt.display, option.display)) > 0)).length > 0 ? 
-                <span>{option.option_name} {option.display}<span className="arrow-area arrow-area-up">상승 </span></span> : <span>{option.option_name} {option.display}<span className="arrow-area arrow-area-down">하락</span></span>
-                : <span>{option.option_name} {option.display}<span className="arrow-area arrow-area-up">신규</span></span>))} */}
-            </div>
-          </div>
-        </div>
-        <div className="compare-dialog__body__category">
-          <div className="compare-dialog__body__category__wrapper">
-            <span>재질</span>
-            <div className="compare-dialog__body__category__wrapper__text">
-              <span>{contents.itemInfos[0].attribute.material_name}</span>
-            </div>
-          </div>
-          <div className="compare-dialog__body__category__wrapper">
-            <span>재질</span>
-            <div className="compare-dialog__body__category__wrapper__text">
-              <span>{contents.itemInfos[1].attribute.material_name}</span>
-            </div>
-          </div>
-        </div>
-        <div className="compare-dialog__body__category">
-          <div className="compare-dialog__body__category__wrapper">
-            <span>무게</span>
-            <div className="compare-dialog__body__category__wrapper__text">
-              <span>{contents.itemInfos[0].attribute.weight / 10000}</span>
-            </div>
-          </div>
-          <div className="compare-dialog__body__category__wrapper">
-            <span>무게</span>
-            <div className="compare-dialog__body__category__wrapper__text">
-              <span>{contents.itemInfos[1].attribute.weight / 10000}</span>
-            </div>
-          </div>
-        </div>
-        <div className="compare-dialog__body__category">
-          <div className="compare-dialog__body__category__wrapper">
-            <span>현 최저가</span>
-            <div className="compare-dialog__body__category__wrapper__price">
-              <img src={world} />
-              <img src={diamond} />
-              <span>{contents.itemPriceInfos[0].now.unit_price}</span>
-            </div>
-          </div>
-          <div className="compare-dialog__body__category__wrapper">
-            <span>현 최저가</span>
-            <div className="compare-dialog__body__category__wrapper__price">
-              <img src={world} />
-              <img src={diamond} />
-              <span>{contents.itemPriceInfos[1].now.unit_price}</span>
+            <div className="compare-dialog__body__area__right__body">
+                <div className="compare-dialog__body__area__right__body__wrapper">
+                  <span>카테고리</span>
+                  <div className="compare-dialog__body__area__right__body__wrapper__text">
+                  <span>{contents.itemInfos[1].trade_category_name}</span>
+                  </div>
+                </div>
+                <div className="compare-dialog__body__area__right__body__wrapper">
+                  <span>효과</span>
+                  <div className="compare-dialog__body__area__right__body__wrapper__text">
+                  {settingAttribute()}
+                  </div>
+                </div>
+                <div className="compare-dialog__body__area__right__body__wrapper">
+                  <span>재질</span>
+                  <div className="compare-dialog__body__area__right__body__wrapper__text">
+                    <span>{contents.itemInfos[1].attribute.material_name}</span>
+                  </div>
+                </div>
+                <div className="compare-dialog__body__area__right__body__wrapper">
+                  <span>무게</span>
+                  <div className="compare-dialog__body__area__right__body__wrapper__text">
+                    <span>{contents.itemInfos[1].attribute.weight / 10000}</span>
+                  </div>
+                </div>
+                <div className="compare-dialog__body__area__right__body__wrapper">
+                  <span>현 최저가</span>
+                  <div className="compare-dialog__body__area__right__body__wrapper__price">
+                    <SearchImage imgUrl={world} wd={'20px'} hi={'20px'}/>
+                    <SearchImage imgUrl={diamond} wd={'20px'} hi={'20px'}/>
+                    <span>{contents.itemPriceInfos[1].now.unit_price}</span>
+                  </div>
+                </div>
             </div>
           </div>
         </div>

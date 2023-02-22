@@ -83,13 +83,53 @@
               height: 62px;
   
               &__name {
-                font-family: 'Noto Sans KR';
-                font-style: normal;
-                font-weight: 500;
-                font-size: 16px;
-                line-height: 23px;
-  
-                color: #FC5656;
+                &__common {
+                  font-style: normal;
+                  font-weight: 500;
+                  font-size: 16px;
+                  line-height: 23px;
+                  color: $common-font-color;
+                }
+    
+                &__uncommon {
+                  font-style: normal;
+                  font-weight: 500;
+                  font-size: 16px;
+                  line-height: 23px;
+                  color: $uncommon-font-color;
+                }
+    
+                &__rare {
+                  font-style: normal;
+                  font-weight: 500;
+                  font-size: 16px;
+                  line-height: 23px;
+                  color: $rare-font-color;
+                }
+    
+                &__epic {
+                  font-style: normal;
+                  font-weight: 500;
+                  font-size: 16px;
+                  line-height: 23px;
+                  color: $epic-font-color;
+                }
+    
+                &__legendary {
+                  font-style: normal;
+                  font-weight: 500;
+                  font-size: 16px;
+                  line-height: 23px;
+                  color: $legendary-font-color;
+                }
+    
+                &__mythic {
+                  font-style: normal;
+                  font-weight: 500;
+                  font-size: 16px;
+                  line-height: 23px;
+                  color: $mythic-font-color;
+                }
               }
   
               &__img {
@@ -215,31 +255,23 @@
       &__area {
         display: flex;
         flex-direction: row;
-        height: 50px;
-  
-        &__content {
+
+        &__left, &__right {
+          width: 50%;
           display: flex;
           flex-direction: column;
-          align-items: flex-start;
-          padding: 0px;
-          gap: 2px;
-          width: 100%;
+          overflow: auto;
           height: 582px;
-  
+          border-right: 1px solid #E3E3E3;
+
           &__header {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 10px;
-  
-            width: 100%;
-            height: 50px;
-  
             background: #E3E3E3;
             border-top: 1px solid #5A5757;
-  
+            height: 50px;
+            display: flex;
+            align-items: center;
+
             &__text {
-              font-family: 'Noto Sans KR';
               font-style: normal;
               font-weight: 500;
               font-size: 17px;
@@ -249,117 +281,83 @@
               color: #6A6363;
             }
           }
-        }
-      }
-  
-      &__category {
-        display: flex;
-        flex-direction: row;
-        align-items: flex-start;
-        padding-top: 10px;
-        width: 100%;
-        // height: 35px;
-  
-        &__wrapper {
-          display: flex;
-          flex-direction: row;
-          align-items: flex-start;
-          gap: 30px;
-          width: 50%;
-  
-          &>span {
-            width: 130px;
-            font-family: 'Noto Sans KR';
-            font-style: normal;
-            font-weight: 500;
-            font-size: 17px;
-            line-height: 25px;
-  
-            color: #6A6363;
-            padding-left: 10px;
-          }
-  
-          &__text {
-            width: 100%;
-  
+
+          &__body {
             display: flex;
             flex-direction: column;
-  
-            // justify-content: center;
-            &>span {
-              width: 100%;
-              font-family: 'Noto Sans KR';
-              font-style: normal;
-              font-weight: 500;
-              font-size: 17px;
-              line-height: 30px;
-  
-              color: #000000;
-            }
-  
-            & .enchant-info {
-              color: #D64545;
-            }
-  
-            & .compare-text {
+            padding: 10px;
+
+            &__wrapper {
               display: flex;
-              flex-direction: row;
-              justify-content: space-between;
-              padding-right: 20px;
-  
+              gap: 20px;
+              
               &>span {
-                width: 100%;
-                font-family: 'Noto Sans KR';
+                width: 100px;
+                font-style: normal;
+                font-weight: 500;
+                font-size: 17px;
+                line-height: 25px;
+                // padding: 0px 0px 10px 10px;
+    
+                color: #6A6363;
+              }
+
+              &__text {
+                display: flex;
+                width: 300px;
+                flex-direction: column;
                 font-style: normal;
                 font-weight: 500;
                 font-size: 17px;
                 line-height: 30px;
-  
+    
+                color: #000000;
+
+                & .compare-text {
+                  display: flex;
+                  flex-direction: row;
+                  justify-content: space-between;
+      
+                  &>span {
+                    font-family: 'Noto Sans KR';
+                    font-style: normal;
+                    font-weight: 500;
+                    font-size: 17px;
+                    line-height: 30px;
+      
+                    color: #000000;
+                  }
+                
+                  & .arrow-area {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: center;
+      
+                    &-down {
+                      color: #BB0C0C;
+                    }
+      
+                    &-up {
+                      color: #0BCA07;
+                    }
+                  }
+                }
+              }
+
+              &__price {
+                display: flex;
+                align-items: center;
+                font-style: normal;
+                font-weight: 500;
+                font-size: 17px;
+                line-height: 30px;
+                gap: 10px;
                 color: #000000;
               }
-            
-              & .arrow-area {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: center;
-                width: 35px;
-  
-                &-down {
-                  color: #BB0C0C;
-                }
-  
-                &-up {
-                  color: #0BCA07;
-                }
-              }
-            }
-          }
-  
-          &__price {
-            width: 100%;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: flex-start;
-            gap: 2px;
-  
-            & > img {
-              width: 20px;
-              height: 20px;
-            }
-  
-            & > span {
-              font-family: 'Noto Sans KR';
-              font-style: normal;
-              font-weight: 500;
-              font-size: 17px;
-  
-              color: #000000;
             }
           }
         }
-  
       }
     }
   }
