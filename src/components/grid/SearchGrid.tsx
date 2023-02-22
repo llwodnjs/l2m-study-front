@@ -13,7 +13,8 @@ type SearchGridProps = {
   list: ItemSearchType[],
   onClickFunction?: (item_id: number, server_id: number, enchant_level: number) => void,
   checkItem?: (item_id: number, server_id: number, enchant_level: number, item_name: string) => void,
-  compareParams?: ItemCompareParamType[]
+  compareParams?: ItemCompareParamType[],
+  isCountColor?: boolean,
 }
 
 function SearchGrid({
@@ -21,12 +22,13 @@ function SearchGrid({
   list,
   onClickFunction = () => { },
   checkItem = () => { },
-  compareParams
+  compareParams,
+  isCountColor = false
 }: SearchGridProps) {
   return (
     <div className="search__table">
       <div className="search__table__count">
-        <div>검색결과: {search_result?.total}건</div>
+        <div className={isCountColor ? 'search__table__count__color' : ''}>검색결과: {search_result?.total}건</div>
         {compareParams && <div className={"search__table__count__compareItems"}>비교대상 : {compareParams.map((item) => item.item_name + ' +' + item.enchant_level)}</div>}
       </div>
       <div className="search__table__content">

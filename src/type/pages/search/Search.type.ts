@@ -235,16 +235,38 @@ export type ChangePopParamType = {
   itemId: number,
   itemType: string,
   serverId: number,
+  classId: string,
   gradeId: string,
   enchantLevel: number,
   searchKeyword: string,
+  page: number,
+  size: number,
 }
 
 export const ChangePopParamTypeDefault = ():ChangePopParamType => ({
   itemId: 0,
   itemType: '',
   serverId: 0,
+  classId: '',
   gradeId: '',
   enchantLevel: 0,
   searchKeyword: '',
-})
+  page: 1,
+  size: 10,
+});
+
+// 교체 팝업 반환
+export type ChangePopType = ItemSearchType;
+
+export const ChangePopTypeListDefault = (): ChangePopType[] => ([{
+  avg_unit_price: 0,
+  enchant_level: 0,
+  grade: '',
+  image: '',
+  item_id: 0,
+  item_name: '',
+  now_min_unit_price: 0,
+  server_id: 0,
+  server_name: '',
+  world: false
+}]);

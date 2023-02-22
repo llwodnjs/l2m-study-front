@@ -3,26 +3,30 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import SearchSelect from "../select/SearchSelect";
 import SearchInput from "../input/SearchInput";
+import SearchGrid from "../grid/SearchGrid";
 import { ItemEnum } from "@/resources/enum/ItemEnum";
-import { ChangePopParamType } from "@/type/pages/search/Search.type";
+import { ChangePopParamType, ChangePopType, ChangePopTypeListDefault, PagingType } from "@/type/pages/search/Search.type";
+import { changePopListApi } from "@/resources/api/pages/search/Search.api";
+import { useState } from "react";
+import SearchPaging from "../paging/SearchPaging";
 
 const itemImage = require("@/assets/images/itemImage.png");
 const diamondImage = require("@/assets/images/diamond.png");
 const searchImage = require("@/assets/images/iconSearch.png");
 const changeImage = require("@/assets/images/icon_changes.png");
 const enumArray = new Array();
-  for (const value of Object.values(ItemEnum)) {
-    enumArray.push({
-      value: value.code,
-      text: value.name
-    });
-  }
+for (const value of Object.values(ItemEnum)) {
+  enumArray.push({
+    value: value.code,
+    text: value.name
+  });
+}
 
 type ItemChangeDialogProps = {
   isShow: boolean,
   setIsShow: (val: boolean) => void,
   changePopParam: ChangePopParamType,
-  setChangePopParam: (val:ChangePopParamType) => void,
+  setChangePopParam: (val: React.SetStateAction<ChangePopParamType>) => void,
 }
 
 function ItemChangeDialog({
@@ -31,7 +35,32 @@ function ItemChangeDialog({
   changePopParam,
   setChangePopParam
 }: ItemChangeDialogProps) {
-  
+
+  const [changePopList, setChangePopList] = useState<ChangePopType[]>(ChangePopTypeListDefault());
+  const [paging, setPaging] = useState<PagingType>({
+    page: 1,
+    size: 10,
+    total: 0,
+  });
+
+  // 아이템 교체 리스트 조회
+  const searchChangePopList = () => {
+    changePopListApi(changePopParam)
+      .then((result) => {
+        setChangePopList(result.data.results);
+        setPaging({ ...paging, page: result.data.offset, size: result.data.limit, total: result.data.total });
+      });
+  }
+
+  // 페이지 데이터 변경
+  const pageChangeHandler = (page: number) => {
+    setChangePopParam((current) => ({
+      ...changePopParam,
+      page: page,
+      size: current.size,
+    }));
+  };
+
   return (
     <div className={`itemChangeDialog-container ${isShow ? 'itemChangeDialog-container-active' : ''}`}>
       <div className="itemChangeDialog">
@@ -41,13 +70,15 @@ function ItemChangeDialog({
         </div>
         <div className="itemChangeDialog__content">
           <div className="itemChangeDialog__content__search">
-            <SearchSelect value={changePopParam.itemType} options={enumArray} />
-            <SearchInput placeholder="아이템명을 입력해주세요." wd="560px" hi="60px" onChange={(val) => setChangePopParam({...changePopParam, searchKeyword: val})} />
-            <button type="button">검색</button>
+            <SearchSelect value={changePopParam.itemType} options={enumArray} effect="disabled" />
+            <SearchInput placeholder="아이템명을 입력해주세요." wd="560px" hi="60px" onChange={(val) => setChangePopParam({ ...changePopParam, searchKeyword: val })} />
+            <button type="button" onClick={searchChangePopList}>검색</button>
           </div>
-          <div className="search__table">
+          <SearchGrid search_result={paging} list={changePopList} isCountColor={true} />
+          <SearchPaging paging={paging} pageChangeHandler={pageChangeHandler} />
+          {/* <div className="search__table">
             <div className="search__table__count">
-              검색결과: 8건
+              검색결과: {paging.total}건
             </div>
             <div className="search__table__content">
               <table className="search-table">
@@ -253,7 +284,7 @@ function ItemChangeDialog({
                 </tbody>
               </table>
             </div>
-          </div>
+          </div> */}
         </div>
       </div >
     </div>

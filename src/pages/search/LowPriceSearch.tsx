@@ -36,6 +36,7 @@ function LowPriceSearch() {
     setChangePopParam({...changePopParam, itemId: itemId,
                                           itemType: itemType,
                                           serverId: searchParam.server_id,
+                                          classId: searchParam.class_id,
                                           gradeId: searchParam.grade_id,
                                           enchantLevel: searchParam.from_enchant_level});
     setIsShow(true);
