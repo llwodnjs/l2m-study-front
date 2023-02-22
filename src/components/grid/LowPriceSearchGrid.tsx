@@ -23,8 +23,8 @@ function LowPriceSearchGrid({
   const itemTypeArray = new Array();
   for (const value of Object.values(ItemEnum)) {
     itemTypeArray.push({
-      value: value.code,
-      text: value.name
+      code: value.code,
+      name: value.name
     });
   }
   return (
@@ -54,7 +54,7 @@ function LowPriceSearchGrid({
               </thead>
               <tbody>
                 {itemTypeArray.map((itemType) => {
-                  const row = list.filter((row) => row.tradeCategoryName === itemType.text)[0];
+                  const row = list.filter((row) => row.tradeCategoryName === itemType.name)[0];
 
                   return (
                     <tr key={itemType.code}>

@@ -73,7 +73,7 @@ function LowPriceSearch() {
           <span>세팅 최저가:</span>
           <div className="low-price-item__total__price">
             <img src={diamondImage} />
-            {/* <span>{resultList.map((x) => x.now_min_unit_price).reduce((prev, current) => prev + current)}</span> */}
+            <span>{resultList.map((x) => x.now_min_unit_price).reduce((prev, current) => prev + current)}</span>
           </div>
         </div>
         <div className="low-price-item__setting">
