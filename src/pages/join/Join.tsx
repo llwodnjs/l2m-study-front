@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import NamingInput from "@/components/input/NamingInput";
 import SearchButton from "@/components/button/SearchButton";
 import { editInfoApi } from "@/resources/api/pages/confirmInfo/ConfirmInfo.api";
+import { EditParamType } from "@/type/pages/myinfo/MyInfo.type";
 
 const logoImg = require("@/assets/images/l2m-logo.png");
 
@@ -14,6 +15,12 @@ function Join() {
   const location = useLocation();
   // 회원가입 파라미터 정의
   const [joinParam, setJoinParam] = useState<JoinParamType>(JoinParamTypeDefault());
+  // 내정보 수정 파라미터 정의
+  const [editParam, setEditParam] = useState<EditParamType>({
+    username: '',
+    password: '',
+    rePassword: ''
+  });
 
   // 회원가입 api
   const join = () => {
@@ -30,11 +37,12 @@ function Join() {
 
   // 내 정보 수정 api
   const edit = () => {
-    editInfoApi(joinParam)
+    setEditParam({...editParam, username: location.state.resultInfo.username})
+    editInfoApi(editParam)
       .then((result) => {
         if (result.data.bizStatusCode === 'E0GGG000') {
           alert('정보가 수정되었습니다.');
-          // navigate('/login');
+          navigate('/');
         } else {
           alert(result.data.bizStatusMessage);
         }
@@ -56,10 +64,12 @@ function Join() {
           {location.state !== null && <NamingInput span='아이디' placeholder='아이디' effect="readonly" value={location.state.resultInfo.username} />}
         </div>
         <div className='join__content__input'>
-          <NamingInput span='비밀번호' type='password' placeholder='비밀번호' value={joinParam.password} onChange={(val) => setJoinParam({ ...joinParam, password: val })} />
+          {location.state === null && <NamingInput span='비밀번호' type='password' placeholder='비밀번호' value={joinParam.password} onChange={(val) => setJoinParam({ ...joinParam, password: val })} />}
+          {location.state !== null && <NamingInput span='비밀번호' type='password' placeholder='비밀번호' value={editParam.password} onChange={(val) => setEditParam({ ...editParam, password: val })} />}
         </div>
         <div className='join__content__input'>
-          <NamingInput span='비밀번호 확인' type='password' placeholder='비밀번호 확인' value={joinParam.rePassword} onChange={(val) => setJoinParam({ ...joinParam, rePassword: val })} />
+          {location.state === null && <NamingInput span='비밀번호 확인' type='password' placeholder='비밀번호 확인' value={joinParam.rePassword} onChange={(val) => setJoinParam({ ...joinParam, rePassword: val })} />}
+          {location.state !== null && <NamingInput span='비밀번호 확인' type='password' placeholder='비밀번호 확인' value={editParam.rePassword} onChange={(val) => setEditParam({ ...editParam, rePassword: val })} />}
         </div>
       </div>
       <div className='join__btn__area'>
