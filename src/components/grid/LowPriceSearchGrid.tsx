@@ -14,11 +14,13 @@ const changeImage = require("@/assets/images/icon_changes.png");
 type LowPriceSearchGridProps = {
   list: LowPriceSearchType[],
   onClickFunction?: (row: LowPriceSearchType, itemType: string) => void,
+  itemInfoOpen?: (item_id: number, server_id: number, enchant_level: number) => void,
 }
 
 function LowPriceSearchGrid({
   list = [],
   onClickFunction = () => { },
+  itemInfoOpen = () => { },
 }: LowPriceSearchGridProps) {
   const itemTypeArray = new Array();
   for (const value of Object.values(ItemEnum)) {
@@ -95,7 +97,7 @@ function LowPriceSearchGrid({
                           />
                           <SearchImage imgUrl={searchImage} wd='28px' hi='28px' /> */}
                           <img src={changeImage} onClick={() => onClickFunction(row, itemType.code)} />
-                          <img src={searchImage} />
+                          <SearchImage imgUrl={searchImage} wd='28px' hi='28px' itemId={row?.item_id} serverId={row?.server_id} enchantLevel={row?.enchant_level}  onClickFunction={itemInfoOpen} />
                         </div>
                       </td>
                     </tr>

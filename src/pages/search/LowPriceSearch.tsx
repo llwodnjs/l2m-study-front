@@ -1,7 +1,7 @@
 import "@/assets/scss/pages/search/lowpricesearch.style.scoped.scss";
 import { useState, useEffect } from "react";
 import { lowPriceSearchApi } from "@/resources/api/pages/search/Search.api";
-import { LowPriceSearchParamType, LowPriceSearchParamTypeDefault, LowPriceSearchType, LowPriceSearchTypeListDefault, ChangePopParamType, ChangePopParamTypeDefault, LowPriceSearchTypeDefault, ChangePopType, ItemSearchType, ChangePopTypeRow } from "@/type/pages/search/Search.type";
+import { LowPriceSearchParamType, LowPriceSearchParamTypeDefault, LowPriceSearchType, LowPriceSearchTypeListDefault, ChangePopParamType, ChangePopParamTypeDefault, LowPriceSearchTypeDefault, ChangePopType, ItemSearchType, ChangePopTypeRow, ItemInfoType, ItemInfoTypeDefault, ItemPriceInfoType, ItemPriceInfoTypeDefault } from "@/type/pages/search/Search.type";
 import ServerSearchSelect from "@/components/select/ServerSearchSelect";
 import SearchSelect from "@/components/select/SearchSelect";
 import { serverList, classList, gradeList, enchantLevelList } from "@/type/pages/main/Main.type";
@@ -9,6 +9,8 @@ import { useLocation } from "react-router-dom";
 import LowPriceSearchGrid from "@/components/grid/LowPriceSearchGrid";
 import ItemChangeDialog from "@/components/dialog/ItemChangeDialog";
 import { ItemEnum } from "@/resources/enum/ItemEnum";
+import { apiSearchItemInfo, apiSearchPriceInfo } from "@/resources/api/pages/main/Main.api";
+import ItemInfoDialog from "@/components/dialog/ItemInfoDialog";
 
 const diamondImage = require("@/assets/images/diamond.png");
 // const equipNonActive = require("@/assets/images/equip_non_active.png");
@@ -22,7 +24,10 @@ function LowPriceSearch() {
   const [searchParam, setSearchParam] = useState<LowPriceSearchParamType>(location.state || LowPriceSearchParamTypeDefault());
   const [resultList, setResultList] = useState<LowPriceSearchType[]>(LowPriceSearchTypeListDefault());
   const [resultRow, setResultRow] = useState<LowPriceSearchType>(LowPriceSearchTypeDefault());
-  const [isShow, setIsShow] = useState<boolean>(false);
+  const [itemInfo, setItemInfo] = useState<ItemInfoType>(() => ItemInfoTypeDefault());
+  const [itemPriceInfo, setItemPriceInfo] = useState<ItemPriceInfoType>(() => ItemPriceInfoTypeDefault());
+  const [isInfoPopShow, setIsInfoPopShow] = useState<boolean>(false);
+  const [isChangePopShow, setIsChangePopShow] = useState<boolean>(false);
   const [changePopParam, setChangePopParam] = useState<ChangePopParamType>(ChangePopParamTypeDefault());
 
   // 최저가세팅 조회 api 호출
@@ -45,7 +50,7 @@ function LowPriceSearch() {
       enchantLevel: searchParam.from_enchant_level
     });
 
-    setIsShow(true);
+    setIsChangePopShow(true);
   };
 
   // 교체후 팝업닫기
@@ -56,8 +61,45 @@ function LowPriceSearch() {
     resultListCopy[index] = ChangePopTypeRow(row, tradeCategoryName);
     setResultList(resultListCopy);
 
-    setIsShow(false);
+    setIsChangePopShow(false);
   }
+
+  // 아이템 상세보기 액션
+  const itemInfoOpen = (item_id: number, server_id: number, enchant_level: number) => {
+    apiSearchItemInfo(item_id, enchant_level)
+      .then((result) => {
+        setItemInfo(result.data);
+      })
+    searchItemPriceInfo(item_id, server_id, enchant_level);
+    setIsInfoPopShow(true);
+  };
+
+  // 아이템 시세정보 조회
+  const searchItemPriceInfo = (item_id: number, server_id: number, enchant_level: number) => {
+    apiSearchPriceInfo(item_id, server_id, enchant_level)
+      .then((result) => {
+        setItemPriceInfo(result.data);
+      });
+  };
+
+  // 강화수치 변경시 이벤트
+  const changeEnchant = (item_id: number, server_id: number, enchant_level: number) => {
+    apiSearchItemInfo(item_id, enchant_level)
+      .then((result) => {
+        setItemInfo(result.data);
+      })
+    searchItemPriceInfo(item_id, server_id, enchant_level);
+  };
+
+  // 시세정보 서버 변경시 이벤트
+  const changeServerPrice = (item_id: number, server_id: number, enchant_level: number) => {
+    searchItemPriceInfo(item_id, server_id, enchant_level);
+  };
+
+  // 아이템 상세보기 닫기
+  const itemInfoClose = () => {
+    setIsInfoPopShow(false);
+  };
 
   // 세팅 저장하기
   const settingSave = () => {
@@ -78,7 +120,7 @@ function LowPriceSearch() {
           <SearchSelect defaultValue="강화수치" effect="disabled" options={enchantLevelList} value={searchParam.from_enchant_level} onChange={(val) => setSearchParam({ ...searchParam, from_enchant_level: parseInt(val) })} />
         </div>
       </div>
-      <LowPriceSearchGrid list={resultList} onClickFunction={openChangePopup} />
+      <LowPriceSearchGrid list={resultList} onClickFunction={openChangePopup} itemInfoOpen={itemInfoOpen} />
       <div className="low-price-item">
         <div className="low-price-item__total">
           <span>세팅 최저가:</span>
@@ -92,14 +134,17 @@ function LowPriceSearch() {
           <button type="button" className="low-price-item__setting__btn" onClick={settingSave}>저장하기</button>
         </div>
       </div>
-      {isShow &&
+      {isChangePopShow &&
         <ItemChangeDialog
-          isShow={isShow}
-          setIsShow={setIsShow}
+          isShow={isChangePopShow}
+          setIsShow={setIsChangePopShow}
           changePopParam={changePopParam}
           setChangePopParam={setChangePopParam}
           selectRow={itemChange}
         />
+      }
+      {isInfoPopShow &&
+      <ItemInfoDialog changeEnchant={changeEnchant} changeServerPrice={changeServerPrice} isShow={isInfoPopShow} info={itemInfo} priceInfo={itemPriceInfo} close={itemInfoClose}/>
       }
     </div>
   );
