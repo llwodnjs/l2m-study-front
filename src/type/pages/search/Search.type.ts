@@ -197,6 +197,23 @@ export type LowPriceSearchType = ItemSearchType & {
 /**
  * 최저가 조회 반환 타입 default
  */
+export const LowPriceSearchTypeDefault = (): LowPriceSearchType => ({
+  avg_unit_price: 0,
+  enchant_level: 0,
+  grade: '',
+  image: '',
+  item_id: 0,
+  item_name: '',
+  now_min_unit_price: 0,
+  server_id: 0,
+  server_name: '',
+  world: false,
+  tradeCategoryName: '',
+});
+
+/**
+ * 최저가 조회 반환 타입 default
+ */
 export const LowPriceSearchTypeListDefault = (): LowPriceSearchType[] => ([{
   avg_unit_price: 0,
   enchant_level: 0,
@@ -243,7 +260,7 @@ export type ChangePopParamType = {
   size: number,
 }
 
-export const ChangePopParamTypeDefault = ():ChangePopParamType => ({
+export const ChangePopParamTypeDefault = (): ChangePopParamType => ({
   itemId: 0,
   itemType: '',
   serverId: 0,
@@ -256,7 +273,9 @@ export const ChangePopParamTypeDefault = ():ChangePopParamType => ({
 });
 
 // 교체 팝업 반환
-export type ChangePopType = ItemSearchType;
+export type ChangePopType = ItemSearchType & {
+  tradeCategoryName: string,
+};
 
 export const ChangePopTypeListDefault = (): ChangePopType[] => ([{
   avg_unit_price: 0,
@@ -268,5 +287,20 @@ export const ChangePopTypeListDefault = (): ChangePopType[] => ([{
   now_min_unit_price: 0,
   server_id: 0,
   server_name: '',
-  world: false
+  world: false,
+  tradeCategoryName: '',
 }]);
+
+export const ChangePopTypeRow = (row: ItemSearchType, tradeCategoryName: string): LowPriceSearchType => ({
+  avg_unit_price: row.avg_unit_price,
+  enchant_level: row.enchant_level,
+  grade: row.grade,
+  image: row.image,
+  item_id: row.item_id,
+  item_name: row.item_name,
+  now_min_unit_price: row.now_min_unit_price,
+  server_id: row.server_id,
+  server_name: row.server_name,
+  world: row.world,
+  tradeCategoryName: tradeCategoryName,
+});

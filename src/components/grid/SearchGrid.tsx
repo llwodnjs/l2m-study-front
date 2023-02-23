@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import '@/assets/scss/grid/searchgrid.style.scoped.scss';
 import { ItemCompareParamType, ItemSearchType, PagingType } from "@/type/pages/search/Search.type";
 import SearchImage from "@/components/img/SearchImage";
@@ -7,6 +6,7 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
 const diamondImage = require("@/assets/images/diamond.png");
 const searchImage = require("@/assets/images/iconSearch.png");
+const changeImage = require("@/assets/images/icon_changes.png");
 
 type SearchGridProps = {
   search_result: PagingType,
@@ -15,6 +15,9 @@ type SearchGridProps = {
   checkItem?: (item_id: number, server_id: number, enchant_level: number, item_name: string) => void,
   compareParams?: ItemCompareParamType[],
   isCountColor?: boolean,
+  mode?: 'change' | 'non',
+  itemType?: string,
+  selectRow?: (row: ItemSearchType, tradeCategoryName: string) => void,
 }
 
 function SearchGrid({
@@ -23,7 +26,10 @@ function SearchGrid({
   onClickFunction = () => { },
   checkItem = () => { },
   compareParams,
-  isCountColor = false
+  isCountColor = false,
+  mode = 'non',
+  selectRow = () => {},
+  itemType = ''
 }: SearchGridProps) {
   return (
     <div className="search__table">
@@ -76,8 +82,17 @@ function SearchGrid({
                 </td>
                 <td>
                   <div className="search-table-all">
-                    <SearchImage imgUrl={searchImage} wd={'27px'} hi={'27px'} itemId={item.item_id} serverId={item.server_id} enchantLevel={item.enchant_level} onClickFunction={onClickFunction} />
-                    <FontAwesomeIcon className="check_icon" icon={faCheck} onClick={() => checkItem(item.item_id, item.server_id, item.enchant_level, item.item_name)}></FontAwesomeIcon>
+                    {
+                      mode === 'change' ?
+                        <img src={changeImage} onClick={() => selectRow(item, itemType)} />
+                        // <SearchImage imgUrl={changeImage} wd={'27px'} hi={'27px'} itemId={item.item_id} serverId={item.server_id} enchantLevel={item.enchant_level} onClickFunction={onClickFunction} />
+                        : <SearchImage imgUrl={searchImage} wd={'27px'} hi={'27px'} itemId={item.item_id} serverId={item.server_id} enchantLevel={item.enchant_level} onClickFunction={onClickFunction} />
+                    }
+                    {
+                      mode === 'change' ?
+                        ''
+                        : <FontAwesomeIcon className="check_icon" icon={faCheck} onClick={() => checkItem(item.item_id, item.server_id, item.enchant_level, item.item_name)}></FontAwesomeIcon>
+                    }
                   </div>
                 </td>
               </tr>
