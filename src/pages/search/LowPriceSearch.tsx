@@ -11,6 +11,11 @@ import ItemChangeDialog from "@/components/dialog/ItemChangeDialog";
 import { ItemEnum } from "@/resources/enum/ItemEnum";
 import { apiSearchItemInfo, apiSearchPriceInfo } from "@/resources/api/pages/main/Main.api";
 import ItemInfoDialog from "@/components/dialog/ItemInfoDialog";
+import html2canvas from "html2canvas";
+import { insertMySettingFileApi, insertMySettingItemApi } from "@/resources/api/pages/mysetting/MySetting.api";
+import { MySettingInsertParamSetting } from "@/type/pages/mysetting/MySetting.type";
+import SettingSaveDialog from "@/components/dialog/SettingSaveDialog";
+import axios from "axios";
 
 const diamondImage = require("@/assets/images/diamond.png");
 // const equipNonActive = require("@/assets/images/equip_non_active.png");
@@ -28,7 +33,9 @@ function LowPriceSearch() {
   const [itemPriceInfo, setItemPriceInfo] = useState<ItemPriceInfoType>(() => ItemPriceInfoTypeDefault());
   const [isInfoPopShow, setIsInfoPopShow] = useState<boolean>(false);
   const [isChangePopShow, setIsChangePopShow] = useState<boolean>(false);
+  const [isSettingNamePopShow, setIsSettingNamePopShow] = useState<boolean>(false);
   const [changePopParam, setChangePopParam] = useState<ChangePopParamType>(ChangePopParamTypeDefault());
+  const [settingName, setSettingName] = useState<string>('');
 
   // 최저가세팅 조회 api 호출
   const searchLowPriceSetting = () => {
@@ -101,8 +108,40 @@ function LowPriceSearch() {
     setIsInfoPopShow(false);
   };
 
+  // 세팅명 입력 팝업 오픈
+  const settingNamePopOpen = () => {
+    setIsSettingNamePopShow(true);
+  }
+
   // 세팅 저장하기
   const settingSave = () => {
+    setIsSettingNamePopShow(false);
+    setTimeout(() => {
+      html2canvas(document.body, { useCORS: true, proxy: '/' })
+        .then(function (canvas) {
+          let img = canvas.toDataURL('image/png');
+  
+          let blobBin = window.atob(img.split(',')[1]);	// base64 데이터 디코딩
+          let array = [];
+          for (let i = 0; i < blobBin.length; i++) {
+            array.push(blobBin.charCodeAt(i));
+          }
+          let blob = new Blob([new Uint8Array(array)]);	// Blob 생성
+          let file = new File([blob], settingName + '.png', { type: 'image/png' });
+          let formdata = new FormData();	// formData 생성
+          formdata.append("file", file);	// file data 추가
+  
+          insertMySettingFileApi(formdata)
+            .then((result) => {
+              const totalPrice = resultList.map((x) => x.now_min_unit_price).reduce((prev, current) => prev + current);
+              insertMySettingItemApi(MySettingInsertParamSetting(resultList, searchParam, settingName, result.data.results.fullPath, totalPrice))
+                .then((result) => {
+                  console.log(result, 'result');
+                  alert('세팅등록완료!');
+                });
+            });
+        })
+    }, 500);
 
   }
 
@@ -110,7 +149,7 @@ function LowPriceSearch() {
     searchLowPriceSetting();
   }, []);
   return (
-    <div>
+    <div id="screen-area">
       <div className="low-price-search">
         <span className="low-price-search__text">내가 원하는 클래스의 최저가를 확인해보세요.</span>
         <div className="low-price-search__select">
@@ -131,7 +170,7 @@ function LowPriceSearch() {
         </div>
         <div className="low-price-item__setting">
           <span>세팅을 저장해보세요.</span>
-          <button type="button" className="low-price-item__setting__btn" onClick={settingSave}>저장하기</button>
+          <button type="button" className="low-price-item__setting__btn" onClick={settingNamePopOpen}>저장하기</button>
         </div>
       </div>
       {isChangePopShow &&
@@ -144,7 +183,10 @@ function LowPriceSearch() {
         />
       }
       {isInfoPopShow &&
-      <ItemInfoDialog changeEnchant={changeEnchant} changeServerPrice={changeServerPrice} isShow={isInfoPopShow} info={itemInfo} priceInfo={itemPriceInfo} close={itemInfoClose}/>
+        <ItemInfoDialog changeEnchant={changeEnchant} changeServerPrice={changeServerPrice} isShow={isInfoPopShow} info={itemInfo} priceInfo={itemPriceInfo} close={itemInfoClose} />
+      }
+      {isSettingNamePopShow &&
+        <SettingSaveDialog onClickFunction={settingSave} isShow={isSettingNamePopShow} setSettingName={setSettingName} setIsSettingNamePopShow={setIsSettingNamePopShow} />
       }
     </div>
   );
