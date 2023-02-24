@@ -58,6 +58,13 @@ export const PagingDefault = (): PagingType => ({
   total: 10,
 });
 
+// 페이징 setter
+export const PagingSetting = (page:number, size:number, total:number): PagingType => ({
+  page: page,
+  size: size,
+  total: total,
+});
+
 // 아이템 속성
 export type ItemAttribute = {
   collection_count: number,

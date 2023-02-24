@@ -1,4 +1,4 @@
-import { MySettingInsertParamType } from "@/type/pages/mysetting/MySetting.type";
+import { MySettingInsertParamType, MySettingListParamType } from "@/type/pages/mysetting/MySetting.type";
 import { LowPriceSearchType } from "@/type/pages/search/Search.type";
 import { newAxios } from "@/utils/axios";
 
@@ -16,3 +16,7 @@ export const insertMySettingItemApi = (params: MySettingInsertParamType) =>
                                         settingName: params.settingName,
                                         fileUrl: params.fileUrl,
                                         totalPrice: params.totalPrice});
+
+// 나의 세팅 리스트 조회 api
+export const searchMySettingApi = (params: MySettingListParamType) =>
+  newAxios().get('mySetting/list', {params});

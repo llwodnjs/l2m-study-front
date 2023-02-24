@@ -134,7 +134,7 @@ function LowPriceSearch() {
           insertMySettingFileApi(formdata)
             .then((result) => {
               const totalPrice = resultList.map((x) => x.now_min_unit_price).reduce((prev, current) => prev + current);
-              insertMySettingItemApi(MySettingInsertParamSetting(resultList, searchParam, settingName, result.data.results.fullPath, totalPrice))
+              insertMySettingItemApi(MySettingInsertParamSetting(resultList, searchParam, settingName, result.data.results.fileUrl, totalPrice))
                 .then((result) => {
                   console.log(result, 'result');
                   alert('세팅등록완료!');

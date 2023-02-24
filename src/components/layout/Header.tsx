@@ -23,7 +23,7 @@ const RightHeader = ({openDialog}:HeaderProps) => {
     return <div className="header__right">
       <div className="header__right__btn" onClick={openDialog}>나의 정보</div>
       <div className="header__right__btn__line"></div>
-      <div className="header__right__btn" onClick={() => navigate("/login")}>나의 세팅</div>
+      <div className="header__right__btn" onClick={() => navigate("/mySetting")}>나의 세팅</div>
       <div className="header__right__btn__line"></div>
       <div className="header__right__btn" onClick={() => navigate("/join")}>즐겨찾기</div>
       <div className="header__right__btn__line"></div>

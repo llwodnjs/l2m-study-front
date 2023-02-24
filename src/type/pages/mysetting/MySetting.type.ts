@@ -23,3 +23,33 @@ export const MySettingInsertParamSetting = (list: LowPriceSearchType[], searchPa
   fileUrl: fileUrl,
   totalPrice: totalPrice,
 });
+
+// 나의 세팅 리스트 반환 타입
+export type MySettingListType = {
+  mySettingKey: string,
+  imageUrl: string,
+  settingName: string,
+  totalPrice: number,
+}
+
+// 나의 세팅 리스트 반환 default
+export const MySettingListTypeDefault = ():MySettingListType[] => ([{
+  mySettingKey: '',
+  imageUrl: '',
+  settingName: '',
+  totalPrice: 0,
+}]);
+
+// 나의 세팅 리스트 파라미터 타입
+export type MySettingListParamType = {
+  page: number,
+  size: number,
+  searchKeyword: string,
+}
+
+// 나의 세팅 리스트 파라미터 타입 default
+export const MySettingListParamTypeDefault = ():MySettingListParamType => ({
+  page: 1,
+  size: 10,
+  searchKeyword: '',
+});
