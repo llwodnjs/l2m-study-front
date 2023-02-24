@@ -1,5 +1,6 @@
 import "@/assets/scss/pages/mysetting/mysetting.style.scoped.scss";
 import SearchButton from "@/components/button/SearchButton";
+import PreviewImageDialog from "@/components/dialog/PreviewImageDialog";
 import MySettingSearchGrid from "@/components/grid/MySettingSearchGrid";
 import SearchInput from "@/components/input/SearchInput";
 import SearchPaging from "@/components/paging/SearchPaging";
@@ -7,16 +8,15 @@ import { searchMySettingApi } from "@/resources/api/pages/mysetting/MySetting.ap
 import { MySettingListParamType, MySettingListParamTypeDefault, MySettingListType, MySettingListTypeDefault } from "@/type/pages/mysetting/MySetting.type";
 import { PagingDefault, PagingSetting, PagingType } from "@/type/pages/search/Search.type";
 import { useEffect, useState } from "react";
-const previewImage = require("@/assets/images/previewImage.png");
-const diamondImage = require("@/assets/images/diamond.png");
-const searchImage = require("@/assets/images/iconSearch.png");
-const arrowBackImage = require("@/assets/images/icon_arrow_back.png");
-const arrowForwardImage = require("@/assets/images/icon_arrow_forward.png");
+import { useNavigate } from "react-router-dom";
 
 function MySetting() {
+  const navigate = useNavigate();
   const [searchParam, setSearchParam] = useState<MySettingListParamType>(MySettingListParamTypeDefault());
   const [resultList, setResultList] = useState<MySettingListType[]>(MySettingListTypeDefault());
   const [paging, setPaging] = useState<PagingType>(PagingDefault());
+  const [selectImageUrl, setSelectImageUrl] = useState<string>('');
+  const [isShow, setIsShow] = useState<boolean>(false);
   
   // 리스트 검색
   const searchList = () => {
@@ -37,6 +37,25 @@ function MySetting() {
     searchList();
   };
 
+  // 미리보기 이미지 팝업 open
+  const getPreviewImage = (url: string) => {
+    setSelectImageUrl(url);
+    setIsShow(true);
+  }
+
+  // 세팅 상세로 이동
+  const goSettingInfo = (mySettingKey: string, serverId: number, classId: string, gradeId: string, fromEnchantLevel: number) => {
+    navigate('/lowPriceSearch', {
+      state: {
+        mySettingKey: mySettingKey,
+        server_id: serverId,
+        class_id: classId,
+        grade_id: gradeId,
+        from_enchant_level: fromEnchantLevel,
+      }
+    })
+  }
+
   useEffect(() => {
     searchList();
   }, []);
@@ -50,7 +69,7 @@ function MySetting() {
         <SearchInput wd="760px" hi="69px" placeholder="세팅명을 입력해주세요." value={searchParam.searchKeyword} onChange={(val) => setSearchParam({...searchParam, searchKeyword: val})} />
         <SearchButton wd="110px" hi="69px" text="검색" onClickFunction={searchList} />
       </div>
-      <MySettingSearchGrid list={resultList} search_result={paging} />
+      <MySettingSearchGrid list={resultList} search_result={paging} onClickFunction={getPreviewImage} goSettingInfo={goSettingInfo} />
       {/* <div className="my-setting-search-result">
         <div className="my-setting-search-result__count">
           <span className="my-setting-search-result__count__text">검색 결과: 8건</span>
@@ -272,6 +291,7 @@ function MySetting() {
         </div>
       </div> */}
       <SearchPaging paging={paging} pageChangeHandler={pageChangeHandler} />
+      <PreviewImageDialog isShow={isShow} setIsShow={setIsShow} imgUrl={selectImageUrl} />
     </div>
   );
 }

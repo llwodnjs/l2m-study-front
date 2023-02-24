@@ -1,11 +1,11 @@
 import "@/assets/scss/pages/search/lowpricesearch.style.scoped.scss";
-import { useState, useEffect } from "react";
-import { lowPriceSearchApi } from "@/resources/api/pages/search/Search.api";
+import { useState, useEffect, useCallback } from "react";
+import { lowPriceSearchApi, mySettingLowPriceSearchApi } from "@/resources/api/pages/search/Search.api";
 import { LowPriceSearchParamType, LowPriceSearchParamTypeDefault, LowPriceSearchType, LowPriceSearchTypeListDefault, ChangePopParamType, ChangePopParamTypeDefault, LowPriceSearchTypeDefault, ChangePopType, ItemSearchType, ChangePopTypeRow, ItemInfoType, ItemInfoTypeDefault, ItemPriceInfoType, ItemPriceInfoTypeDefault } from "@/type/pages/search/Search.type";
 import ServerSearchSelect from "@/components/select/ServerSearchSelect";
 import SearchSelect from "@/components/select/SearchSelect";
 import { serverList, classList, gradeList, enchantLevelList } from "@/type/pages/main/Main.type";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import LowPriceSearchGrid from "@/components/grid/LowPriceSearchGrid";
 import ItemChangeDialog from "@/components/dialog/ItemChangeDialog";
 import { ItemEnum } from "@/resources/enum/ItemEnum";
@@ -26,6 +26,8 @@ const diamondImage = require("@/assets/images/diamond.png");
 function LowPriceSearch() {
   // 파라미터
   const location = useLocation();
+  const navigate = useNavigate();
+  const mySettingKey = location.state.mySettingKey;
   const [searchParam, setSearchParam] = useState<LowPriceSearchParamType>(location.state || LowPriceSearchParamTypeDefault());
   const [resultList, setResultList] = useState<LowPriceSearchType[]>(LowPriceSearchTypeListDefault());
   const [resultRow, setResultRow] = useState<LowPriceSearchType>(LowPriceSearchTypeDefault());
@@ -64,7 +66,7 @@ function LowPriceSearch() {
   const itemChange = (row: ItemSearchType, itemType: string) => {
     let resultListCopy = [...resultList];
     let index = resultListCopy.findIndex((result) => result.tradeCategoryName === resultRow?.tradeCategoryName);
-    let tradeCategoryName = Object.values(ItemEnum).filter((value) => value.code === itemType).map((value) => value.name)[0];
+    let tradeCategoryName = Object.values(ItemEnum).filter((value) => value.detailCode === itemType).map((value) => value.name)[0];
     resultListCopy[index] = ChangePopTypeRow(row, tradeCategoryName);
     setResultList(resultListCopy);
 
@@ -110,7 +112,13 @@ function LowPriceSearch() {
 
   // 세팅명 입력 팝업 오픈
   const settingNamePopOpen = () => {
-    setIsSettingNamePopShow(true);
+    console.log(localStorage.getItem('auth'), 'localstorage');
+    if (localStorage.getItem('auth') === null) {
+      alert('로그인이 필요한 서비스입니다.');
+      navigate('/login');
+    } else {
+      setIsSettingNamePopShow(true);
+    }
   }
 
   // 세팅 저장하기
@@ -142,12 +150,26 @@ function LowPriceSearch() {
             });
         })
     }, 500);
-
   }
 
+  // 나의 세팅 키로 세팅정보 조회하기 api
+  const mySettingLowPriceSearch = () => {
+    mySettingLowPriceSearchApi(mySettingKey)
+      .then((result) => {
+        setResultList(result.data.results.list);
+      });
+    }
+
   useEffect(() => {
-    searchLowPriceSetting();
+    if (mySettingKey === undefined) {
+      // 세팅키가 없을 시 최저가 조회
+      searchLowPriceSetting();
+    } else {
+      // 있으면 세팅된 아이템들의 최저가 조회
+      mySettingLowPriceSearch();
+    }
   }, []);
+
   return (
     <div id="screen-area">
       <div className="low-price-search">

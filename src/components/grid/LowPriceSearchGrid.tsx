@@ -26,6 +26,7 @@ function LowPriceSearchGrid({
   for (const value of Object.values(ItemEnum)) {
     itemTypeArray.push({
       code: value.code,
+      detailCode: value.detailCode,
       name: value.name
     });
   }
@@ -59,7 +60,7 @@ function LowPriceSearchGrid({
                   const row = list.filter((row) => row.tradeCategoryName === itemType.name)[0];
 
                   return (
-                    <tr key={itemType.code}>
+                    <tr key={itemType.name}>
                       <td>
                         <span>{itemType.name}</span>
                       </td>
@@ -96,7 +97,7 @@ function LowPriceSearchGrid({
                             onClickFunction={onClickFunction}
                           />
                           <SearchImage imgUrl={searchImage} wd='28px' hi='28px' /> */}
-                          <img src={changeImage} onClick={() => onClickFunction(row, itemType.code)} />
+                          <img src={changeImage} onClick={() => onClickFunction(row, itemType.detailCode)} />
                           <SearchImage imgUrl={searchImage} wd='28px' hi='28px' itemId={row?.item_id} serverId={row?.server_id} enchantLevel={row?.enchant_level}  onClickFunction={itemInfoOpen} />
                         </div>
                       </td>

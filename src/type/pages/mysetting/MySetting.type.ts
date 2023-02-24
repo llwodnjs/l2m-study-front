@@ -30,6 +30,10 @@ export type MySettingListType = {
   imageUrl: string,
   settingName: string,
   totalPrice: number,
+  serverId: number,
+  classId: string,
+  gradeId: string,
+  fromEnchantLevel: number,
 }
 
 // 나의 세팅 리스트 반환 default
@@ -38,6 +42,10 @@ export const MySettingListTypeDefault = ():MySettingListType[] => ([{
   imageUrl: '',
   settingName: '',
   totalPrice: 0,
+  serverId: 0,
+  classId: '',
+  gradeId: '',
+  fromEnchantLevel: 0,
 }]);
 
 // 나의 세팅 리스트 파라미터 타입

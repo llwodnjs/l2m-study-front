@@ -1,0 +1,76 @@
+.previewImageDialogWrapper {
+  width: 100%;
+  height: 100%;
+  z-index: 10000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: none;
+
+  &__show {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.68);
+  }
+}
+.previewImageDialog {
+  // width: 1300px;
+  // height: 400px;
+  // margin: auto;
+  // top: 50px;
+  // left: 180px;
+  position: absolute;
+  background-color: #FFFFFF;
+  display: none;
+
+  &__show {
+    display: block;
+  }
+
+  &__header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 10px 0px 10px;
+    background-color: #000000;
+    height: 80px;
+
+    &__left {
+      color: #FFFFFF;
+      font-family: 'Noto Sans KR';
+      font-style: normal;
+      font-weight: 500;
+      font-size: 28px;
+      line-height: 41px;
+    }
+
+    // &__right {
+      
+    // }
+  }
+
+  &__content {
+    height: 820px;
+
+    &__area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 0px 0px;
+      gap: 10px;
+
+    }
+  }
+}
+
+.close_icon {
+  color: white;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+}

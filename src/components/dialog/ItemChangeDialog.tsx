@@ -13,7 +13,7 @@ import SearchSelect from "../select/SearchSelect";
 const enumArray = new Array();
 for (const value of Object.values(ItemEnum)) {
   enumArray.push({
-    value: value.code,
+    value: value.detailCode,
     text: value.name
   });
 }

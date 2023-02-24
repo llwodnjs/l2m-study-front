@@ -9,13 +9,15 @@ const searchImage = require("@/assets/images/iconSearch.png");
 type MySettingSearchGridProps = {
   search_result: PagingType,
   list: MySettingListType[],
-  onClickFunction?: () => void,
+  onClickFunction?: (val: string) => void,
+  goSettingInfo?: (mySettingKey: string, serverId: number, classId: string, gradeId: string, fromEnchantLevel: number) => void,
 }
 
 function MySettingSearchGrid({
   search_result,
   list,
   onClickFunction = () => { },
+  goSettingInfo = () => {},
 }: MySettingSearchGridProps) {
   return (
     <div className="my-setting-search-result">
@@ -46,7 +48,7 @@ function MySettingSearchGrid({
                     return (
                       <tr key={idx}>
                         <td>
-                          <SearchImage imgUrl={process.env.REACT_APP_FILE_URL + row.imageUrl} wd='51px' hi='41px' />
+                          <img src={process.env.REACT_APP_FILE_URL + row.imageUrl} onClick={() => onClickFunction(process.env.REACT_APP_FILE_URL + row.imageUrl)} />
                           {/* <img src={previewImage} /> */}
                         </td>
                         <td>
@@ -62,7 +64,7 @@ function MySettingSearchGrid({
                         </td>
                         <td>
                           <div className="search-table-all">
-                            <SearchImage imgUrl={searchImage} wd='27px' hi='27px' onClickFunction={onClickFunction} />
+                            <SearchImage imgUrl={searchImage} wd='27px' hi='27px' onClickFunction={() => goSettingInfo(row.mySettingKey, row.serverId, row.classId, row.gradeId, row.fromEnchantLevel)} />
                           </div>
                         </td>
                       </tr>
