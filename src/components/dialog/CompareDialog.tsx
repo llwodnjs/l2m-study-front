@@ -16,6 +16,8 @@ const world = require("@/assets/images/world.png");
 const diamond = require("@/assets/images/diamond.png");
 const arrowUp = require("@/assets/images/arrow_up.png");
 const arrowDown = require("@/assets/images/arrow_down.png");
+const disabledFavorite = require("@/assets/images/likely.png");
+const activeFavorite = require("@/assets/images/star.png");
 
 type CompareDialogProps = {
   close: React.MouseEventHandler<SVGSVGElement>
@@ -119,7 +121,7 @@ function CompareDialog({close, contents}: CompareDialogProps) {
               </div>
             </div>
             <div className="compare-dialog__body__img__left__header__like">
-              <img src={likely} />
+              {contents.isFavorite[0] === 'Y' ? <img src={activeFavorite} /> : <img src={disabledFavorite} />}
             </div>
           </div>
           <div className="compare-dialog__body__img__right__header">
@@ -145,7 +147,7 @@ function CompareDialog({close, contents}: CompareDialogProps) {
               </div>
             </div>
             <div className="compare-dialog__body__img__left__header__like">
-              <img src={likely} />
+              {contents.isFavorite[1] === 'Y' ? <img src={activeFavorite} /> : <img src={disabledFavorite} />}
             </div>
           </div>
         </div>

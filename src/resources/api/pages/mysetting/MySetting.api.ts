@@ -19,4 +19,4 @@ export const insertMySettingItemApi = (params: MySettingInsertParamType) =>
 
 // 나의 세팅 리스트 조회 api
 export const searchMySettingApi = (params: MySettingListParamType) =>
-  newAxios().get('mySetting/list', {params});
+  newAxios().get('mySetting/list', {params}); 

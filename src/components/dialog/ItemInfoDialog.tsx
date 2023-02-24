@@ -4,15 +4,18 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { ItemInfoType, ItemPriceInfoType } from "@/type/pages/search/Search.type";
 import { serverList, enchantLevelList } from "@/type/pages/main/Main.type";
 import SearchImage from "../img/SearchImage";
+import { useState } from "react";
+import { addFavoriteApi } from "@/resources/api/pages/favorites/Favorite.api";
 
 const storable = require("@/assets/images/storable.png");
 const dropable = require("@/assets/images/dropable.png");
 const tradeable = require("@/assets/images/tradeble.png");
 const enchantable = require("@/assets/images/enchantable.png");
-const likely = require("@/assets/images/likely.png");
+const disabledFavorite = require("@/assets/images/likely.png");
 const compare = require("@/assets/images/compare.png");
 const world = require("@/assets/images/world.png");
 const diamond = require("@/assets/images/diamond.png");
+const activeFavorite = require("@/assets/images/star.png");
 
 type ItemInfoDialogProps = {
   changeEnchant: (item_id: number, server_id: number, enchant_level: number) => void,
@@ -21,6 +24,8 @@ type ItemInfoDialogProps = {
   info: ItemInfoType,
   priceInfo: ItemPriceInfoType,
   close: React.MouseEventHandler<SVGSVGElement>,
+  isFavorite: string,
+  controlFavorite: (info: ItemInfoType) => void
 }
 
 function ItemInfoDialog({
@@ -30,7 +35,11 @@ function ItemInfoDialog({
   info,
   priceInfo,
   close,
+  isFavorite,
+  controlFavorite
 }: ItemInfoDialogProps) {
+  // 즐겨찾기 파라미터
+  // const [favoriteParam, setFavoriteParam] = useState<AddFavoritesParamType>(() => AddFavoritesParamTypeDefault());
 
   // 강화수치 변경 핸들러
   const enchantLevelChangeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -43,6 +52,16 @@ function ItemInfoDialog({
     const serverId = parseInt(e.target.value);
     changeServerPrice(info.item_id, serverId, info.enchant_level);
   }
+
+  // setFavoriteParam(
+  //   { ...favoriteParam, 
+  //     itemId: info.item_id,
+  //     itemName: info.item_name,
+  //     gradeCode: info.grade,
+  //     gradeName: info.grade_name,
+  //     imgUrl: info.image,
+  //     username: JSON.parse(localStorage.getItem('auth') || '').username
+  //   })
 
   return (
     <div className={`item-info-dialog-container ${isShow ? 'item-info-dialog-container-active' : ''}`}>
@@ -77,7 +96,8 @@ function ItemInfoDialog({
               </div>
             </div>
             <div className="item-info-dialog__body__header__like">
-              <img src={likely} />
+              {isFavorite === 'N' && <img src={disabledFavorite} onClick={() => controlFavorite(info)} alt='favorite'/>}
+              {isFavorite === 'Y' && <img src={activeFavorite} onClick={() => controlFavorite(info)} alt='favorite'/>}
               <img src={compare} />
             </div>
           </div>

@@ -1,18 +1,19 @@
-import { useState, useEffect } from "react";
-import { Search, useLocation } from "react-router-dom";
 import "@/assets/scss/pages/search/itemsearch.style.scoped.scss";
+import SearchButton from "@/components/button/SearchButton";
+import CompareDialog from "@/components/dialog/CompareDialog";
+import ItemInfoDialog from "@/components/dialog/ItemInfoDialog";
 import SearchGrid from "@/components/grid/SearchGrid";
+import SearchInput from "@/components/input/SearchInput";
 import SearchPaging from "@/components/paging/SearchPaging";
 import SearchSelect from "@/components/select/SearchSelect";
 import ServerSearchSelect from "@/components/select/ServerSearchSelect";
-import SearchInput from "@/components/input/SearchInput";
-import SearchButton from "@/components/button/SearchButton";
-import ItemInfoDialog from "@/components/dialog/ItemInfoDialog";
-import { SearchListParam, SearchListParamInit, serverList, classList, gradeList, enchantLevelList } from "@/type/pages/main/Main.type";
+import { addFavoriteApi } from "@/resources/api/pages/favorites/Favorite.api";
 import { apiSearchItem, apiSearchItemInfo, apiSearchPriceInfo } from "@/resources/api/pages/main/Main.api";
-import { ItemSearchType, ItemSearchTypeDefault, ItemSearchTypeListDefault, PagingType, PagingDefault, ItemInfoType, ItemInfoTypeDefault, ItemPriceInfoType, ItemPriceInfoTypeDefault, ItemCompareParamType, ItemCompareInfoType, ItemCompareInfoTypeDefault } from "@/type/pages/search/Search.type";
-import ItemChangeDialog from "@/components/dialog/ItemChangeDialog";
-import CompareDialog from "@/components/dialog/CompareDialog";
+import { getCompareItemApi, getItemInfoPopApi } from "@/resources/api/pages/search/Search.api";
+import { enchantLevelList, SearchListParam, SearchListParamInit, serverList } from "@/type/pages/main/Main.type";
+import { ItemCompareInfoType, ItemCompareInfoTypeDefault, ItemCompareParamListType, ItemCompareParamListTypeDefault, ItemCompareParamType, ItemInfoType, ItemInfoTypeDefault, ItemPriceInfoType, ItemPriceInfoTypeDefault, ItemSearchType, ItemSearchTypeListDefault, PagingDefault, PagingType } from "@/type/pages/search/Search.type";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 function ItemSearch() {
   const location = useLocation();
@@ -26,6 +27,9 @@ function ItemSearch() {
   const [compareParams, setCompareParams] = useState<ItemCompareParamType[]>([]);
   const [compareInfos, setCompareInfos] = useState<ItemCompareInfoType>(() => ItemCompareInfoTypeDefault());
   const [isShowCompareDialog, setIsShowCompareDialog] = useState(false);
+  const [username, setUsername] = useState<string>('');
+  const [isFavorite, setIsFavorite] = useState('Y' || 'N');
+  const [compareParamList, setCompareParamList] = useState<ItemCompareParamListType>(() => ItemCompareParamListTypeDefault());
 
   // 아이템조회
   const searchItem = () =>
@@ -52,12 +56,29 @@ function ItemSearch() {
 
   // 아이템 상세보기 액션
   const itemInfoOpen = (item_id: number, server_id: number, enchant_level: number) => {
-    apiSearchItemInfo(item_id, enchant_level)
+  
+    if (localStorage.getItem('auth') !== null) {
+      setUsername(JSON.parse(localStorage.getItem('auth') || '').username);
+    }
+    
+    getItemInfoPopApi(item_id, server_id, enchant_level, username)
       .then((result) => {
-        setItemInfo(result.data);
+        if (result.data.bizStatusCode === "E0GGG000") {
+          setItemInfo(result.data.results.itemInfo);
+          setItemPriceInfo(result.data.results.priceInfo);
+          setIsFavorite(result.data.results.isFavorite);
+          setIsShow(true);
+        } else {
+          alert(result.data.bizStatusMessage);
+        }
       })
-    searchItemPriceInfo(item_id, server_id, enchant_level);
-    setIsShow(true);
+      .catch((error) => alert(error));
+      // apiSearchItemInfo(item_id, enchant_level)
+      //   .then((result) => {
+      //     setItemInfo(result.data);
+      //   })
+      // searchItemPriceInfo(item_id, server_id, enchant_level);
+      // setIsShow(true);
   };
 
   // 강화수치 변경시 이벤트
@@ -87,70 +108,52 @@ function ItemSearch() {
     setIsShow(false);
   };
 
-  // 보류
-  // const openCompareSearchDialog = (category: string) => {
-  //   setIsShow(false);
-  //   setCompareTargetOption(category);
-  //   setIsShowCompareSearchDialog(true);
-  // }
+  // 아이템 즐겨찾기 제어
+  const controlFavorite = (info:ItemInfoType) => {
+    // 비로그인 시 즐겨찾기 안됨.
+    if (localStorage.getItem('auth') !== null) {
+      const loginUsername:string = JSON.parse(localStorage.getItem('auth') || '').username;
+      addFavoriteApi(info, loginUsername)
+        .then((res) => {
+          if (res.data.bizStatusCode === 'E0GGG000') {
+            if (res.data.results.isFavorite === 'N') {
+              alert(info.item_name + ' 아이템이 즐겨찾기에서 제거되었습니다.');
+            } else {
+              alert(info.item_name + ' 아이템이 즐겨찾기에 저장되었습니다.');
+            }
 
-  // const compareSearchClose = () => {
-  //   setIsShowCompareSearchDialog(false);
-  // }
-
-  // const compareDialogChangeEvent = () => {
-  //   value={listParam?.search_keyword}
-  //           onChange={(val) => setListParam({ ...listParam, search_keyword: val })}
-  // }
+            setIsFavorite(res.data.results.isFavorite);
+          } else {
+            alert(res.data.bizStatusMessage);
+          }
+        })
+        .catch((err) => console.log(err));
+    } else {
+      alert('회원 전용입니다. 로그인해주세요');
+    }
+  }
 
   // 비교할 아이템 체크
   const checkItem = (item_id: number, server_id: number, enchant_level: number, item_name: string) => {
     // setState
     if (compareParams.length <= 1) {
+
+        if (localStorage.getItem('auth') !== null) {
+          setUsername(JSON.parse(localStorage.getItem('auth') || '').username);
+        }
+
         setCompareParams([
           ...compareParams,
           {
             item_id: item_id,
             server_id: server_id,
             enchant_level: enchant_level,
-            item_name: item_name
+            item_name: item_name,
+            username: username
           }
-          ],
-        )
+        ])
     }
   }
-
-  // 비교 api
-  // const getCompareInfos = (params: ItemCompareParamType[]) => {
-    
-  //   if (compareParams.length === 2) {
-  //     setCompareInfos(() => ItemCompareInfoTypeDefault());
-
-  //     apiSearchItemInfo(params[0].item_id, params[0].enchant_level)
-  //       .then((result) => {
-  //         const tempData:ItemInfoType = result.data;
-  //         apiSearchItemInfo(params[1].item_id, params[1].enchant_level)
-  //           .then((result) => {
-  //               if (result.data.trade_category_name === tempData.trade_category_name) {
-  //                 apiSearchPriceInfo(params[0].item_id, params[0].server_id, params[0].enchant_level)
-  //                 .then((price) => {
-  //                   const tempPriceData:ItemPriceInfoType = price.data;
-  //                   apiSearchPriceInfo(params[1].item_id, params[1].server_id, params[1].enchant_level)
-  //                   .then((price) => {
-  //                     setCompareInfos({
-  //                       itemInfos: [tempData, result.data],
-  //                       itemPriceInfos: [tempPriceData, price.data]
-  //                     });
-  //                     setIsShowCompareDialog(true);
-  //                   })
-  //                 })
-  //               } else {
-  //                 alert('카테고리가 같은 항목을 비교해주세요');
-  //               }
-  //           })
-  //       })
-  //   } 
-  // }
 
   const closeCompareDialog = () => {
     setCompareParams([]);
@@ -163,35 +166,24 @@ function ItemSearch() {
 
   useEffect(() => {
     if (compareParams.length === 2) {
-      const getCompareInfos = (params: ItemCompareParamType[]) => {
-        setCompareInfos(() => ItemCompareInfoTypeDefault());
-  
-        apiSearchItemInfo(params[0].item_id, params[0].enchant_level)
-          .then((result) => {
-            const tempData:ItemInfoType = result.data;
-            apiSearchItemInfo(params[1].item_id, params[1].enchant_level)
-              .then((result) => {
-                  if (result.data.trade_category_name === tempData.trade_category_name) {
-                    apiSearchPriceInfo(params[0].item_id, params[0].server_id, params[0].enchant_level)
-                    .then((price) => {
-                      const tempPriceData:ItemPriceInfoType = price.data;
-                      apiSearchPriceInfo(params[1].item_id, params[1].server_id, params[1].enchant_level)
-                      .then((price) => {
-                        setCompareInfos({
-                          itemInfos: [tempData, result.data],
-                          itemPriceInfos: [tempPriceData, price.data]
-                        });
-                        setIsShowCompareDialog(true);
-                      })
-                    })
-                  } else {
-                    alert('카테고리가 같은 항목을 비교해주세요');
-                    setCompareParams([]);
-                  }
-              })
-          })
-      }
-    getCompareInfos(compareParams);
+      getCompareItemApi(compareParams)
+      .then((result) => {
+        if (result.data.bizStatusCode === 'E0GGG000') {
+          const firstInfo = result.data.results[0];
+          const secondInfo = result.data.results[1];
+          setCompareInfos({
+            itemInfos: [firstInfo.itemInfo, secondInfo.itemInfo],
+            itemPriceInfos: [secondInfo.priceInfo, secondInfo.priceInfo],
+            isFavorite: [firstInfo.isFavorite, secondInfo.isFavorite]
+          });
+          setIsShowCompareDialog(true);
+        } else {
+          alert(result.data.bizStatusMessage);
+          setCompareParams([]);
+        }
+        
+      })
+      .catch((error) => console.log(error));
   }
   }, [compareParams]);
   
@@ -229,7 +221,11 @@ function ItemSearch() {
       </div>
       <SearchGrid search_result={paging} list={list} onClickFunction={itemInfoOpen} checkItem={checkItem} compareParams={compareParams}/>
       <SearchPaging paging={paging} pageChangeHandler={pageChangeHandler} />
-      <ItemInfoDialog changeEnchant={changeEnchant} changeServerPrice={changeServerPrice} isShow={isShow} info={itemInfo} priceInfo={itemPriceInfo} close={itemInfoClose}/>
+      <ItemInfoDialog changeEnchant={changeEnchant} 
+                      changeServerPrice={changeServerPrice} 
+                      isShow={isShow} info={itemInfo} 
+                      priceInfo={itemPriceInfo} isFavorite={isFavorite} 
+                      controlFavorite={controlFavorite} close={itemInfoClose}/>
       {isShowCompareDialog && <CompareDialog close={closeCompareDialog} contents={compareInfos}/>}
     </div>
   );

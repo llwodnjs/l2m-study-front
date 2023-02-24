@@ -16,6 +16,7 @@ import { insertMySettingFileApi, insertMySettingItemApi } from "@/resources/api/
 import { MySettingInsertParamSetting } from "@/type/pages/mysetting/MySetting.type";
 import SettingSaveDialog from "@/components/dialog/SettingSaveDialog";
 import axios from "axios";
+import { addFavoriteApi } from "@/resources/api/pages/favorites/Favorite.api";
 
 const diamondImage = require("@/assets/images/diamond.png");
 // const equipNonActive = require("@/assets/images/equip_non_active.png");
@@ -38,6 +39,7 @@ function LowPriceSearch() {
   const [isSettingNamePopShow, setIsSettingNamePopShow] = useState<boolean>(false);
   const [changePopParam, setChangePopParam] = useState<ChangePopParamType>(ChangePopParamTypeDefault());
   const [settingName, setSettingName] = useState<string>('');
+  const [isFavorite, setIsFavorite] = useState('Y' || 'N');
 
   // 최저가세팅 조회 api 호출
   const searchLowPriceSetting = () => {
@@ -159,6 +161,32 @@ function LowPriceSearch() {
         setResultList(result.data.results.list);
       });
     }
+    
+	// 아이템 즐겨찾기 제어
+  const controlFavorite = (info:ItemInfoType) => {
+    // 비로그인 시 즐겨찾기 안됨.
+    if (localStorage.getItem('auth') !== null) {
+      const loginUsername:string = JSON.parse(localStorage.getItem('auth') || '').username;
+      addFavoriteApi(info, loginUsername)
+        .then((res) => {
+          if (res.data.bizStatusCode === 'E0GGG000') {
+            if (res.data.results.isFavorite === 'N') {
+              alert(info.item_name + ' 아이템이 즐겨찾기에서 제거되었습니다.');
+            } else {
+              alert(info.item_name + ' 아이템이 즐겨찾기에 저장되었습니다.');
+            }
+
+            setIsFavorite(res.data.results.isFavorite);
+          } else {
+            alert(res.data.bizStatusMessage);
+          }
+        })
+        .catch((err) => console.log(err));
+    } else {
+      alert('회원 전용입니다. 로그인해주세요');
+    }
+  }
+
 
   useEffect(() => {
     if (mySettingKey === undefined) {
@@ -205,7 +233,7 @@ function LowPriceSearch() {
         />
       }
       {isInfoPopShow &&
-        <ItemInfoDialog changeEnchant={changeEnchant} changeServerPrice={changeServerPrice} isShow={isInfoPopShow} info={itemInfo} priceInfo={itemPriceInfo} close={itemInfoClose} />
+        <ItemInfoDialog changeEnchant={changeEnchant} changeServerPrice={changeServerPrice} isShow={isInfoPopShow} info={itemInfo} priceInfo={itemPriceInfo} close={itemInfoClose} isFavorite={isFavorite} controlFavorite={controlFavorite}/>
       }
       {isSettingNamePopShow &&
         <SettingSaveDialog onClickFunction={settingSave} isShow={isSettingNamePopShow} setSettingName={setSettingName} setIsSettingNamePopShow={setIsSettingNamePopShow} />

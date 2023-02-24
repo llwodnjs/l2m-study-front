@@ -240,19 +240,30 @@ export type ItemCompareParamType = {
   item_id: number,
   enchant_level: number,
   server_id: number,
-  item_name: string
+  item_name: string,
+  username: string
 }
+
+export type ItemCompareParamListType = {
+  compareParamList: ItemCompareParamType[]
+}
+
+export const ItemCompareParamListTypeDefault = (): ItemCompareParamListType => ({
+  compareParamList: []
+})
 
 // 아이템 비교 반환 타입
 export type ItemCompareInfoType = {
   itemInfos: ItemInfoType[],
-  itemPriceInfos: ItemPriceInfoType[]
+  itemPriceInfos: ItemPriceInfoType[],
+  isFavorite: string[]
 }
 
 // 아이템 비교 반환 타입 초기화
 export const ItemCompareInfoTypeDefault = (): ItemCompareInfoType => ({
   itemInfos: [],
-  itemPriceInfos: []
+  itemPriceInfos: [],
+  isFavorite: [],
 })
 
 export type ChangePopParamType = {
