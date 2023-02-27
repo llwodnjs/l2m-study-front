@@ -23,6 +23,12 @@ export type FavoriteListParamType = {
     size: number
 }
 
+export const FavoriteListParamTypeDefault = ():FavoriteListParamType => ({
+    username: JSON.parse(localStorage.getItem('auth') || '').username,
+    page: 1,
+    size: 5
+})
+
 export type FavoriteListType = {
     itemId: number,
     itemName: string,

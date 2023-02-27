@@ -5,9 +5,11 @@ import "@/assets/scss/pages/favorites/favorites.style.scoped.scss";
 import SearchImage from "@/components/img/SearchImage";
 import SearchPaging from "@/components/paging/SearchPaging";
 import { addFavoriteApi, getFavoriteListApi } from "@/resources/api/pages/favorites/Favorite.api";
-import { ControlFavoritesParamType, ControlFavoritesParamTypeDefault, FavoriteListParamType, FavoriteListType } from "@/type/pages/favorite/Favorites.type";
+import { ControlFavoritesParamType, ControlFavoritesParamTypeDefault, FavoriteListParamType, FavoriteListParamTypeDefault, FavoriteListType } from "@/type/pages/favorite/Favorites.type";
+import { SearchListParam, SearchListParamInit } from "@/type/pages/main/Main.type";
 import { PagingType } from "@/type/pages/search/Search.type";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // const arcAngelOrb = require("@/assets/images/arcAngelOrb.png");
 // const arkanaOrb = require("@/assets/images/arkanaOrb.png");
@@ -46,11 +48,7 @@ const arrowForwardImage = require("@/assets/images/icon_arrow_forward.png");
 // };
 
 function Favorites() {
-  const [favoriteListParam, setFavoriteListParam] = useState<FavoriteListParamType>({
-    username: JSON.parse(localStorage.getItem('auth') || '').username,
-    page: 1,
-    size: 5
-  });
+  const [favoriteListParam, setFavoriteListParam] = useState<FavoriteListParamType>(() => FavoriteListParamTypeDefault());
   const [favoriteList, setFavoriteList] = useState<FavoriteListType[]>([]);
   const [paging, setPaging] = useState<PagingType>({
     page: 1,
@@ -58,14 +56,15 @@ function Favorites() {
     total: 0,
   });
   const [controlFavoritesParam, setControlFavoritesParam] = useState<ControlFavoritesParamType>(() => ControlFavoritesParamTypeDefault());
+  const [listParam, setListParam] = useState<SearchListParam>(() => SearchListParamInit()); 
+  const navigate = useNavigate();
 
   // 리스트 검색
   const searchFavoriteList = () => {
     getFavoriteListApi(favoriteListParam)
       .then((result) => {
         setFavoriteList(result.data.results);
-        setPaging({ ...paging, page: result.data.offset, size: result.data.limit, total: result.data.total });
-        console.log(result.data);
+        setPaging({ ...paging, page: favoriteListParam.page, size: result.data.limit, total: result.data.total });        
       })
       .catch((error) => console.log(error));
   }
@@ -79,6 +78,7 @@ function Favorites() {
     }));
   };
 
+  // 아이템 즐겨찾기 제어 파라미터 세팅
   const settingParam = (info: FavoriteListType) => {
     if (localStorage.getItem('auth') !== null) {
       const loginUsername:string = JSON.parse(localStorage.getItem('auth') || '').username;
@@ -93,8 +93,10 @@ function Favorites() {
     }
   }
 
-  // 아이템 즐겨찾기 제어
-  
+  // 아이템 클릭 이벤트
+  const itemSearch = (itemName: string) => {
+    setListParam({...listParam, search_keyword: itemName});
+  }
 
   useEffect(() => {
     searchFavoriteList();
@@ -113,6 +115,8 @@ function Favorites() {
               alert(controlFavoritesParam.itemName + ' 아이템이 즐겨찾기에 저장되었습니다.');
               setControlFavoritesParam(() => ControlFavoritesParamTypeDefault());
             }
+
+            setFavoriteListParam(() => FavoriteListParamTypeDefault());
           } else {
             alert(res.data.bizStatusMessage);
           }
@@ -122,6 +126,14 @@ function Favorites() {
     
     if(controlFavoritesParam.itemId !== 0) controlFavorite();
   }, [controlFavoritesParam])
+
+  useEffect(() => {
+    if (listParam.search_keyword !== '') {
+      navigate('/itemSearch', {
+        state: listParam
+      });
+    }
+  }, [listParam]);
 
   return (
     <div className="favorites">
@@ -133,10 +145,11 @@ function Favorites() {
           {favoriteList.map((item, idx) => {
             return (
             <div key={idx} className="favorites__content__list__img">
-              <SearchImage imgUrl={item.imgUrl} wd={'125px'} hi={'125px'}/>
+              <img className="favorites__content__list__img__itemImg" src={item.imgUrl} onClick={() => itemSearch(item.itemName)} alt={'itemImg'}/>
+              {/* <SearchImage imgUrl={item.imgUrl} wd={'132px'} hi={'132px'}/> */}
               <div className="favorites__content__list__img__text">
-                { item.isFavorite === 'Y' ? <img src={activeFavorite} onClick={() => settingParam(item)} alt={'active'}/> 
-                : <img src={disabledFavorite} onClick={() => settingParam(item)} alt={'disable'}/>}
+                { item.isFavorite === 'Y' ? <img className='favorites__content__list__img__text__btn' src={activeFavorite} onClick={() => settingParam(item)} alt={'active'}/> 
+                : <img className='favorites__content__list__img__text__btn' src={disabledFavorite} onClick={() => settingParam(item)} alt={'disable'}/>}
                 <span className={item.gradeCode}>{item.itemName}</span>
               </div>
             </div>

@@ -36,7 +36,7 @@
       flex-direction: row;
       align-items: center;
       justify-content: center;
-      // gap: 22px;
+      gap: 22px;
 
       &__img {
         width: 242px;
@@ -45,7 +45,12 @@
         align-items: center;
         justify-content: center;
         gap: 20px;
-        border-right: 1px solid #FFFFFF;
+
+        &__itemImg {
+          width: 132px;
+          height: 132px;
+          cursor: pointer;
+        }
 
         &__text {
           display: flex;
@@ -105,6 +110,10 @@
             font-size: 20px;
             line-height: 18px;
             color: $mythic-font-color;
+          }
+
+          &__btn {
+            cursor: pointer;
           }
         }
       }
