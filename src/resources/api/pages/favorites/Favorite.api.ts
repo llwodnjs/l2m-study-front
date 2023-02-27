@@ -1,4 +1,4 @@
-import { ControlFavoritesParamType, FavoriteListParamType } from "@/type/pages/favorite/Favorites.type";
+import { ControlFavoritesParamType, FavoriteItemChartParamType, FavoriteListParamType } from "@/type/pages/favorite/Favorites.type";
 import { newAxios } from "@/utils/axios";
 
 export const addFavoriteApi = (itemInfo: ControlFavoritesParamType) => 
@@ -11,3 +11,8 @@ export const addFavoriteApi = (itemInfo: ControlFavoritesParamType) =>
 
 export const getFavoriteListApi = (params: FavoriteListParamType) =>
     newAxios().get('favorite/getItems', {params});
+
+export const getItemChartApi = (params: FavoriteItemChartParamType) =>
+    newAxios().post('favorite/getCharts', {serverIdList: params.serverIdList,
+                                            itemId: params.itemId,
+                                            enchantLevel: params.enchantLevel});

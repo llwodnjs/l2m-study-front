@@ -1,14 +1,16 @@
-// import Chart from 'chart.js/auto';
+import Chart from 'chart.js/auto';
 // import { Bar } from 'react-chartjs-2';
 
 import "@/assets/scss/pages/favorites/favorites.style.scoped.scss";
 import SearchImage from "@/components/img/SearchImage";
 import SearchPaging from "@/components/paging/SearchPaging";
-import { addFavoriteApi, getFavoriteListApi } from "@/resources/api/pages/favorites/Favorite.api";
-import { ControlFavoritesParamType, ControlFavoritesParamTypeDefault, FavoriteListParamType, FavoriteListParamTypeDefault, FavoriteListType } from "@/type/pages/favorite/Favorites.type";
-import { SearchListParam, SearchListParamInit } from "@/type/pages/main/Main.type";
+import { addFavoriteApi, getFavoriteListApi, getItemChartApi } from "@/resources/api/pages/favorites/Favorite.api";
+import { ChartType, ChartTypeDefault, ControlFavoritesParamType, ControlFavoritesParamTypeDefault, FavoriteItemChartParamType, FavoriteItemChartParamTypeDefault, FavoriteListParamType, FavoriteListParamTypeDefault, FavoriteListType, serverNameList, ServerPriceListType } from "@/type/pages/favorite/Favorites.type";
+import { enchantLevelList, SearchListParam, SearchListParamInit } from "@/type/pages/main/Main.type";
 import { PagingType } from "@/type/pages/search/Search.type";
+import { CategoryScale, LinearScale, BarElement } from "chart.js";
 import { useEffect, useState } from "react";
+import { Bar } from "react-chartjs-2";
 import { useNavigate } from "react-router-dom";
 
 // const arcAngelOrb = require("@/assets/images/arcAngelOrb.png");
@@ -18,9 +20,7 @@ import { useNavigate } from "react-router-dom";
 // const imperialPants = require("@/assets/images/imperialPants.png");
 const activeFavorite = require("@/assets/images/star.png");
 const disabledFavorite = require("@/assets/images/likely.png");
-const line = require("@/assets/images/line.png");
-const arrowBackImage = require("@/assets/images/icon_arrow_back.png");
-const arrowForwardImage = require("@/assets/images/icon_arrow_forward.png");
+const searchImage = require("@/assets/images/iconSearch.png");
 // const options = {
 //   responsive: true,
 //   plugins: {
@@ -58,6 +58,10 @@ function Favorites() {
   const [controlFavoritesParam, setControlFavoritesParam] = useState<ControlFavoritesParamType>(() => ControlFavoritesParamTypeDefault());
   const [listParam, setListParam] = useState<SearchListParam>(() => SearchListParamInit()); 
   const navigate = useNavigate();
+  Chart.register(CategoryScale, LinearScale, BarElement);
+  const [chartParam, setChartParam] = useState<FavoriteItemChartParamType>(() => FavoriteItemChartParamTypeDefault());
+  const [chartList, setChartList] = useState<number[]>([]);
+  const [chartConfig, setChartConfig] = useState<ChartType>(() => ChartTypeDefault());
 
   // 리스트 검색
   const searchFavoriteList = () => {
@@ -94,8 +98,56 @@ function Favorites() {
   }
 
   // 아이템 클릭 이벤트
-  const itemSearch = (itemName: string) => {
-    setListParam({...listParam, search_keyword: itemName});
+  const itemSearch = (itemName: string, enchantLevel: number) => {
+    setListParam({...listParam, search_keyword: itemName, to_enchant_level: enchantLevel, from_enchant_level: enchantLevel});
+  }
+
+  const test:number[] = [];
+
+  const getPriceChart = () => {
+    getItemChartApi(chartParam)
+      .then((result) => {
+        const priceList:ServerPriceListType[] = result.data.results;
+        
+        priceList.forEach((result) => {
+          test.push(result.price);   
+        })
+
+        setChartConfig({
+          data: {
+            labels: serverNameList,
+            datasets: [{
+                label: '서버별 통계',
+                data: test,
+                backgroundColor: ['#06A3B0'],
+                borderColor: ['#06A3B0'],
+                borderWidth: 1,
+            }]
+            },
+            option: {
+                responsive: false,
+          }})
+      })
+      .catch((error) => console.log(error));
+    
+    // setChartParam(() => FavoriteItemChartParamTypeDefault());
+  }
+
+  const settingChartParam = (itemId: number, itemName: string, gradeCode: string) => {
+    setChartParam({
+      ...chartParam,
+      itemId: itemId,
+      itemName: itemName,
+      gradeCode: gradeCode
+    })
+  }
+
+  const enchantLevelChangeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const level = parseInt(e.target.value);
+    setChartParam({
+      ...chartParam,
+      enchantLevel: level
+    })
   }
 
   useEffect(() => {
@@ -135,6 +187,10 @@ function Favorites() {
     }
   }, [listParam]);
 
+  useEffect(() => {
+    getPriceChart();
+  }, [chartParam])
+
   return (
     <div className="favorites">
       <div className="favorites__header">
@@ -145,7 +201,7 @@ function Favorites() {
           {favoriteList.map((item, idx) => {
             return (
             <div key={idx} className="favorites__content__list__img">
-              <img className="favorites__content__list__img__itemImg" src={item.imgUrl} onClick={() => itemSearch(item.itemName)} alt={'itemImg'}/>
+              <img className="favorites__content__list__img__itemImg" src={item.imgUrl} onClick={() => settingChartParam(item.itemId, item.itemName, item.gradeCode)} alt={'itemImg'}/>
               {/* <SearchImage imgUrl={item.imgUrl} wd={'132px'} hi={'132px'}/> */}
               <div className="favorites__content__list__img__text">
                 { item.isFavorite === 'Y' ? <img className='favorites__content__list__img__text__btn' src={activeFavorite} onClick={() => settingParam(item)} alt={'active'}/> 
@@ -191,22 +247,32 @@ function Favorites() {
         </div>
         <SearchPaging paging={paging} pageChangeHandler={pageChangeHandler} />
       </div>
+      { chartConfig.data.datasets[0].data.length !== 0 && 
       <div className="chart">
         <div className="chart__header">
           <div className="chart__header__wrapper">
-            <span>아르카나 오브</span>
-            <select className="select-button">
-              <option>+0</option>
+            <span className={chartParam.gradeCode}>{chartParam.itemName}</span>
+            <select className="select-button" value={chartParam.enchantLevel} onChange={enchantLevelChangeHandler}>
+              {enchantLevelList.map((obj, idx) => {
+                return <option key={idx} value={obj.value}>{obj.text}</option>
+              })}
             </select>
+            <img src={searchImage} alt='search' onClick={() => itemSearch(chartParam.itemName, chartParam.enchantLevel)}/>
           </div>
         </div>
         <div className="chart__content">
-          {/* <Bar
-            options={options}
-            data={data}
-          /> */}
+          <Bar
+            data={chartConfig.data} options={chartConfig.option}
+            width="1080px" height='420px'
+          />
         </div>
-      </div>
+      </div>}
+      { chartConfig.data.datasets[0].data.length === 0 && 
+      <div className="chart">
+        <div className="chart__none">
+          <p>아이템을 클릭해서 서버별 최저가를 확인해보세요!</p>
+        </div>
+      </div>}
     </div>
   );
 }

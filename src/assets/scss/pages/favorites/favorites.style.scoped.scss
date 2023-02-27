@@ -150,6 +150,11 @@
 
 // 차트영역 [s]
 .chart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
 
   // 차트헤더 영역 [s]
   &__header {
@@ -167,16 +172,58 @@
       gap: 18px;
       padding: 24px 0;
 
-      &>span {
-        font-family: 'Inter';
+      &>.common {
+        font-family: 'Noto Sans KR';
         font-style: normal;
         font-weight: 400;
         font-size: 32px;
         line-height: 39px;
-        text-align: center;
-
-        color: #FFFFFF;
-
+        color: $common-font-color;
+      }
+    
+      &>.uncommon {
+        font-family: 'Noto Sans KR';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 32px;
+        line-height: 39px;
+        color: $uncommon-font-color;
+      }
+    
+      &>.rare {
+        font-family: 'Noto Sans KR';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 32px;
+        line-height: 39px;
+        color: $rare-font-color;
+      }
+    
+      &>.epic {
+        font-family: 'Noto Sans KR';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 32px;
+        line-height: 39px;
+        color: $epic-font-color;
+      }
+    
+      &>.legendary {
+        font-family: 'Noto Sans KR';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 32px;
+        line-height: 39px;
+        color: $legendary-font-color;
+      }
+    
+      &>.mythic {
+        font-family: 'Noto Sans KR';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 32px;
+        line-height: 39px;
+        color: $mythic-font-color;
       }
 
       &>.select-button {
@@ -196,10 +243,30 @@
         color: #d6d6d6;
         padding-left: 15px;
       }
+
+      &>img{
+        width: 37px;
+        height: 37px;
+        cursor: pointer;
+      }
     }
   }
 
-  // 차트헤더 영역 [e]
+  // 차트영역 [e]
+  &__content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__none {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 900px;
+    height: 400px;
+    color: #d6d6d6;
+    font-size: 30px;
+  }
 }
 
-// 차트영역 [e]
