@@ -36,7 +36,7 @@
       flex-direction: row;
       align-items: center;
       justify-content: center;
-      gap: 22px;
+      // gap: 22px;
 
       &__img {
         width: 242px;
@@ -45,6 +45,7 @@
         align-items: center;
         justify-content: center;
         gap: 20px;
+        border-right: 1px solid #FFFFFF;
 
         &__text {
           display: flex;
@@ -52,58 +53,58 @@
           align-items: center;
           justify-content: center;
 
-          &>.normal {
+          &>.common {
             font-family: 'Noto Sans KR';
             font-style: normal;
             font-weight: 500;
             font-size: 20px;
             line-height: 18px;
-            color: #FFFFFF;
+            color: $common-font-color;
           }
-
-          &>.advanced {
+        
+          &>.uncommon {
             font-family: 'Noto Sans KR';
             font-style: normal;
             font-weight: 500;
             font-size: 20px;
             line-height: 18px;
-            color: #2FED00;
+            color: $uncommon-font-color;
           }
-
+        
           &>.rare {
             font-family: 'Noto Sans KR';
             font-style: normal;
             font-weight: 500;
             font-size: 20px;
             line-height: 18px;
-            color: #402FFD;
+            color: $rare-font-color;
           }
-
-          &>.hero {
+        
+          &>.epic {
             font-family: 'Noto Sans KR';
             font-style: normal;
             font-weight: 500;
             font-size: 20px;
             line-height: 18px;
-            color: #FD000F;
+            color: $epic-font-color;
           }
-
-          &>.regend {
+        
+          &>.legendary {
             font-family: 'Noto Sans KR';
             font-style: normal;
             font-weight: 500;
             font-size: 20px;
             line-height: 18px;
-            color: #BD00FF;
+            color: $legendary-font-color;
           }
-
-          &>.myth {
+        
+          &>.mythic {
             font-family: 'Noto Sans KR';
             font-style: normal;
             font-weight: 500;
             font-size: 20px;
             line-height: 18px;
-            color: #EDC700;
+            color: $mythic-font-color;
           }
         }
       }

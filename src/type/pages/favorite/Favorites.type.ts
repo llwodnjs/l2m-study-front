@@ -1,20 +1,33 @@
 // 잠시
-// export type AddFavoritesParamType = {
-//     itemId: number,
-//     itemName: string,
-//     gradeCode: string,
-//     gradeName: string,
-//     imgUrl: string,
-//     username: string
-// }
+export type ControlFavoritesParamType = {
+    itemId: number,
+    itemName: string,
+    gradeCode: string,
+    gradeName: string,
+    imgUrl: string,
+    username: string
+}
 
-// export const AddFavoritesParamTypeDefault = ():AddFavoritesParamType => ({
-//     itemId: 0,
-//     itemName: '',
-//     gradeCode: '',
-//     gradeName: '',
-//     imgUrl: '',
-//     username: ''
-// })
+export const ControlFavoritesParamTypeDefault = ():ControlFavoritesParamType => ({
+    itemId: 0,
+    itemName: '',
+    gradeCode: '',
+    gradeName: '',
+    imgUrl: '',
+    username: ''
+})
 
-export {}
+export type FavoriteListParamType = {
+    username: string,
+    page: number,
+    size: number
+}
+
+export type FavoriteListType = {
+    itemId: number,
+    itemName: string,
+    gradeCode: string,
+    gradeName: string,
+    imgUrl: string,
+    isFavorite: string
+}

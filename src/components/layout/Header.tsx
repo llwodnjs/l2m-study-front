@@ -25,7 +25,7 @@ const RightHeader = ({openDialog}:HeaderProps) => {
       <div className="header__right__btn__line"></div>
       <div className="header__right__btn" onClick={() => navigate("/mySetting")}>나의 세팅</div>
       <div className="header__right__btn__line"></div>
-      <div className="header__right__btn" onClick={() => navigate("/join")}>즐겨찾기</div>
+      <div className="header__right__btn" onClick={() => navigate("/favorites")}>즐겨찾기</div>
       <div className="header__right__btn__line"></div>
       <div className="header__right__btn" onClick={logout}>로그아웃</div>
     </div>

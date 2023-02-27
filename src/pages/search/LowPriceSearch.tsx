@@ -1,6 +1,6 @@
 import "@/assets/scss/pages/search/lowpricesearch.style.scoped.scss";
 import { useState, useEffect, useCallback } from "react";
-import { lowPriceSearchApi, mySettingLowPriceSearchApi } from "@/resources/api/pages/search/Search.api";
+import { getItemInfoPopApi, lowPriceSearchApi, mySettingLowPriceSearchApi } from "@/resources/api/pages/search/Search.api";
 import { LowPriceSearchParamType, LowPriceSearchParamTypeDefault, LowPriceSearchType, LowPriceSearchTypeListDefault, ChangePopParamType, ChangePopParamTypeDefault, LowPriceSearchTypeDefault, ChangePopType, ItemSearchType, ChangePopTypeRow, ItemInfoType, ItemInfoTypeDefault, ItemPriceInfoType, ItemPriceInfoTypeDefault } from "@/type/pages/search/Search.type";
 import ServerSearchSelect from "@/components/select/ServerSearchSelect";
 import SearchSelect from "@/components/select/SearchSelect";
@@ -17,6 +17,7 @@ import { MySettingInsertParamSetting } from "@/type/pages/mysetting/MySetting.ty
 import SettingSaveDialog from "@/components/dialog/SettingSaveDialog";
 import axios from "axios";
 import { addFavoriteApi } from "@/resources/api/pages/favorites/Favorite.api";
+import { ControlFavoritesParamType, ControlFavoritesParamTypeDefault } from "@/type/pages/favorite/Favorites.type";
 
 const diamondImage = require("@/assets/images/diamond.png");
 // const equipNonActive = require("@/assets/images/equip_non_active.png");
@@ -40,6 +41,8 @@ function LowPriceSearch() {
   const [changePopParam, setChangePopParam] = useState<ChangePopParamType>(ChangePopParamTypeDefault());
   const [settingName, setSettingName] = useState<string>('');
   const [isFavorite, setIsFavorite] = useState('Y' || 'N');
+  const [username, setUsername] = useState<string>('');
+  const [controlFavoritesParam, setControlFavoritesParam] = useState<ControlFavoritesParamType>(() => ControlFavoritesParamTypeDefault());
 
   // 최저가세팅 조회 api 호출
   const searchLowPriceSetting = () => {
@@ -77,12 +80,29 @@ function LowPriceSearch() {
 
   // 아이템 상세보기 액션
   const itemInfoOpen = (item_id: number, server_id: number, enchant_level: number) => {
-    apiSearchItemInfo(item_id, enchant_level)
+    // apiSearchItemInfo(item_id, enchant_level)
+    //   .then((result) => {
+    //     setItemInfo(result.data);
+    //   })
+    // searchItemPriceInfo(item_id, server_id, enchant_level);
+    // setIsInfoPopShow(true);
+    if (localStorage.getItem('auth') !== null) {
+      setUsername(JSON.parse(localStorage.getItem('auth') || '').username);
+    }
+    
+    getItemInfoPopApi(item_id, server_id, enchant_level, username)
       .then((result) => {
-        setItemInfo(result.data);
+        if (result.data.bizStatusCode === "E0GGG000") {
+          setItemInfo(result.data.results.itemInfo);
+          setItemPriceInfo(result.data.results.priceInfo);
+          setIsFavorite(result.data.results.isFavorite);
+          setControlFavoritesParam(result.data.results.itemInfo);
+          setIsInfoPopShow(true);
+        } else {
+          alert(result.data.bizStatusMessage);
+        }
       })
-    searchItemPriceInfo(item_id, server_id, enchant_level);
-    setIsInfoPopShow(true);
+      .catch((error) => alert(error));
   };
 
   // 아이템 시세정보 조회
@@ -163,25 +183,17 @@ function LowPriceSearch() {
     }
     
 	// 아이템 즐겨찾기 제어
-  const controlFavorite = (info:ItemInfoType) => {
-    // 비로그인 시 즐겨찾기 안됨.
+  const settingParam = (info:ItemInfoType) => {
     if (localStorage.getItem('auth') !== null) {
       const loginUsername:string = JSON.parse(localStorage.getItem('auth') || '').username;
-      addFavoriteApi(info, loginUsername)
-        .then((res) => {
-          if (res.data.bizStatusCode === 'E0GGG000') {
-            if (res.data.results.isFavorite === 'N') {
-              alert(info.item_name + ' 아이템이 즐겨찾기에서 제거되었습니다.');
-            } else {
-              alert(info.item_name + ' 아이템이 즐겨찾기에 저장되었습니다.');
-            }
-
-            setIsFavorite(res.data.results.isFavorite);
-          } else {
-            alert(res.data.bizStatusMessage);
-          }
-        })
-        .catch((err) => console.log(err));
+      setControlFavoritesParam({
+        itemId: info.item_id,
+        itemName: info.item_name,
+        gradeCode: info.grade,
+        gradeName: info.grade_name,
+        imgUrl: info.image,
+        username: loginUsername
+      })
     } else {
       alert('회원 전용입니다. 로그인해주세요');
     }
@@ -197,6 +209,29 @@ function LowPriceSearch() {
       mySettingLowPriceSearch();
     }
   }, []);
+
+  useEffect(() => {
+    const controlFavorite = () => {
+      // 비로그인 시 즐겨찾기 안됨.  
+      addFavoriteApi(controlFavoritesParam)
+        .then((res) => {
+          if (res.data.bizStatusCode === 'E0GGG000') {
+            if (res.data.results.isFavorite === 'N') {
+              alert(controlFavoritesParam.itemName + ' 아이템이 즐겨찾기에서 제거되었습니다.');
+              setControlFavoritesParam(() => ControlFavoritesParamTypeDefault());
+            } else {
+              alert(controlFavoritesParam.itemName + ' 아이템이 즐겨찾기에 저장되었습니다.');
+              setControlFavoritesParam(() => ControlFavoritesParamTypeDefault());
+            }
+          } else {
+            alert(res.data.bizStatusMessage);
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+    
+    if(controlFavoritesParam.itemId !== 0) controlFavorite();
+  }, [controlFavoritesParam]);
 
   return (
     <div id="screen-area">
@@ -233,7 +268,7 @@ function LowPriceSearch() {
         />
       }
       {isInfoPopShow &&
-        <ItemInfoDialog changeEnchant={changeEnchant} changeServerPrice={changeServerPrice} isShow={isInfoPopShow} info={itemInfo} priceInfo={itemPriceInfo} close={itemInfoClose} isFavorite={isFavorite} controlFavorite={controlFavorite}/>
+        <ItemInfoDialog changeEnchant={changeEnchant} changeServerPrice={changeServerPrice} isShow={isInfoPopShow} info={itemInfo} priceInfo={itemPriceInfo} close={itemInfoClose} isFavorite={isFavorite} controlFavorite={settingParam}/>
       }
       {isSettingNamePopShow &&
         <SettingSaveDialog onClickFunction={settingSave} isShow={isSettingNamePopShow} setSettingName={setSettingName} setIsSettingNamePopShow={setIsSettingNamePopShow} />

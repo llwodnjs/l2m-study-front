@@ -10,6 +10,7 @@ import ServerSearchSelect from "@/components/select/ServerSearchSelect";
 import { addFavoriteApi } from "@/resources/api/pages/favorites/Favorite.api";
 import { apiSearchItem, apiSearchItemInfo, apiSearchPriceInfo } from "@/resources/api/pages/main/Main.api";
 import { getCompareItemApi, getItemInfoPopApi } from "@/resources/api/pages/search/Search.api";
+import { ControlFavoritesParamType, ControlFavoritesParamTypeDefault } from "@/type/pages/favorite/Favorites.type";
 import { enchantLevelList, SearchListParam, SearchListParamInit, serverList } from "@/type/pages/main/Main.type";
 import { ItemCompareInfoType, ItemCompareInfoTypeDefault, ItemCompareParamListType, ItemCompareParamListTypeDefault, ItemCompareParamType, ItemInfoType, ItemInfoTypeDefault, ItemPriceInfoType, ItemPriceInfoTypeDefault, ItemSearchType, ItemSearchTypeListDefault, PagingDefault, PagingType } from "@/type/pages/search/Search.type";
 import { useEffect, useState } from "react";
@@ -30,6 +31,7 @@ function ItemSearch() {
   const [username, setUsername] = useState<string>('');
   const [isFavorite, setIsFavorite] = useState('Y' || 'N');
   const [compareParamList, setCompareParamList] = useState<ItemCompareParamListType>(() => ItemCompareParamListTypeDefault());
+  const [controlFavoritesParam, setControlFavoritesParam] = useState<ControlFavoritesParamType>(() => ControlFavoritesParamTypeDefault());
 
   // 아이템조회
   const searchItem = () =>
@@ -109,25 +111,17 @@ function ItemSearch() {
   };
 
   // 아이템 즐겨찾기 제어
-  const controlFavorite = (info:ItemInfoType) => {
-    // 비로그인 시 즐겨찾기 안됨.
+  const settingParam = (info:ItemInfoType) => {
     if (localStorage.getItem('auth') !== null) {
       const loginUsername:string = JSON.parse(localStorage.getItem('auth') || '').username;
-      addFavoriteApi(info, loginUsername)
-        .then((res) => {
-          if (res.data.bizStatusCode === 'E0GGG000') {
-            if (res.data.results.isFavorite === 'N') {
-              alert(info.item_name + ' 아이템이 즐겨찾기에서 제거되었습니다.');
-            } else {
-              alert(info.item_name + ' 아이템이 즐겨찾기에 저장되었습니다.');
-            }
-
-            setIsFavorite(res.data.results.isFavorite);
-          } else {
-            alert(res.data.bizStatusMessage);
-          }
-        })
-        .catch((err) => console.log(err));
+      setControlFavoritesParam({
+        itemId: info.item_id,
+        itemName: info.item_name,
+        gradeCode: info.grade,
+        gradeName: info.grade_name,
+        imgUrl: info.image,
+        username: loginUsername
+      })
     } else {
       alert('회원 전용입니다. 로그인해주세요');
     }
@@ -163,6 +157,32 @@ function ItemSearch() {
   useEffect(() => { 
     searchItem();
   }, []);
+
+  useEffect(() => {
+    const controlFavorite = () => {
+      console.log(controlFavoritesParam);
+      // 비로그인 시 즐겨찾기 안됨.  
+      addFavoriteApi(controlFavoritesParam)
+        .then((res) => {
+          if (res.data.bizStatusCode === 'E0GGG000') {
+            if (res.data.results.isFavorite === 'N') {
+              alert(controlFavoritesParam.itemName + ' 아이템이 즐겨찾기에서 제거되었습니다.');
+              setControlFavoritesParam(() => ControlFavoritesParamTypeDefault());
+            } else {
+              alert(controlFavoritesParam.itemName + ' 아이템이 즐겨찾기에 저장되었습니다.');
+              setControlFavoritesParam(() => ControlFavoritesParamTypeDefault());
+            }
+
+            setIsFavorite(res.data.results.isFavorite);
+          } else {
+            alert(res.data.bizStatusMessage);
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+    
+    if(controlFavoritesParam.itemId !== 0) controlFavorite();
+  }, [controlFavoritesParam]);
 
   useEffect(() => {
     if (compareParams.length === 2) {
@@ -225,7 +245,7 @@ function ItemSearch() {
                       changeServerPrice={changeServerPrice} 
                       isShow={isShow} info={itemInfo} 
                       priceInfo={itemPriceInfo} isFavorite={isFavorite} 
-                      controlFavorite={controlFavorite} close={itemInfoClose}/>
+                      controlFavorite={settingParam} close={itemInfoClose}/>
       {isShowCompareDialog && <CompareDialog close={closeCompareDialog} contents={compareInfos}/>}
     </div>
   );
