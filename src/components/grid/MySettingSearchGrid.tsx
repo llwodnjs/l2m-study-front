@@ -44,7 +44,7 @@ function MySettingSearchGrid({
               </thead>
               <tbody>
                 {
-                  list.length === 0 ? 
+                  list[0].mySettingKey === '' ? 
                   <tr>
                     <td colSpan={4} className='no-item'>
                       검색된 아이템이 존재하지 않습니다.
