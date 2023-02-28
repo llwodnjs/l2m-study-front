@@ -51,18 +51,18 @@ tbody>tr {
   border: 1px solid #828282;
 }
 
-tbody>tr>td {
-  height: 55px;
+// tbody>tr>td {
+//   height: 55px;
 
-  font-family: 'Noto Sans Kr';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 18px;
-  vertical-align: middle;
-}
+//   font-family: 'Noto Sans Kr';
+//   font-style: normal;
+//   font-weight: 400;
+//   font-size: 12px;
+//   line-height: 18px;
+//   vertical-align: middle;
+// }
 
-tbody>tr>td:first-child {
+.image-td {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -74,6 +74,11 @@ tbody>tr>td:first-child {
     height: 40px;
     cursor: pointer;
   }
+}
+
+.no-item {
+  height: 40px;
+  text-align: center;
 }
 
 .search-table {

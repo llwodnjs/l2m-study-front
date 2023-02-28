@@ -1,6 +1,7 @@
 import "@/assets/scss/dialog/itemchangedialog.style.scoped.scss";
 import { changePopListApi } from "@/resources/api/pages/search/Search.api";
 import { ItemEnum } from "@/resources/enum/ItemEnum";
+import { gradeList } from "@/type/pages/main/Main.type";
 import { ChangePopParamType, ChangePopType, ChangePopTypeListDefault, ItemSearchType, PagingType } from "@/type/pages/search/Search.type";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -68,7 +69,8 @@ function ItemChangeDialog({
         </div>
         <div className="itemChangeDialog__content">
           <div className="itemChangeDialog__content__search">
-            <SearchSelect value={changePopParam.itemType} options={enumArray} effect="disabled" />
+            <SearchSelect value={changePopParam.itemType} options={enumArray} effect="disabled" wd="120px" />
+            <SearchSelect value={changePopParam.gradeId} options={gradeList} wd="120px" onChange={(val) => setChangePopParam({ ...changePopParam, gradeId: val })} />
             <SearchInput placeholder="아이템명을 입력해주세요." wd="560px" hi="60px" onChange={(val) => setChangePopParam({ ...changePopParam, searchKeyword: val })} />
             <button type="button" onClick={searchChangePopList}>검색</button>
           </div>

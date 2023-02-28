@@ -29,8 +29,9 @@ function SearchGrid({
   isCountColor = false,
   mode = 'non',
   selectRow = () => {},
-  itemType = ''
+  itemType = '',
 }: SearchGridProps) {
+  console.log(list, 'list');
   return (
     <div className="search__table">
       <div className="search__table__count">
@@ -56,9 +57,17 @@ function SearchGrid({
             </tr>
           </thead>
           <tbody>
-            {list.map((item, idx) => {
+            {
+              list.length === 0 || list[0].item_id === 0 ?
+              <tr>
+                <td colSpan={5} className='no-item'>
+                  검색된 아이템이 존재하지 않습니다.
+                </td>
+              </tr>
+              :
+              list.map((item, idx) => {
               return <tr key={idx}>
-                <td>
+                <td className='image-td'>
                   <SearchImage imgUrl={item.image} wd={'50px'} hi={'50px'} />
                   {/* <img src={item.image} /> */}
                   <span className={item.grade}>{item.item_name} + {item.enchant_level}</span>
@@ -96,7 +105,8 @@ function SearchGrid({
                   </div>
                 </td>
               </tr>
-            })}
+              })
+            }
           </tbody>
         </table>
       </div>

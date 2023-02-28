@@ -56,7 +56,7 @@ function LowPriceSearch() {
   const openChangePopup = (row: LowPriceSearchType, itemType: string) => {
     setResultRow(row);
     setChangePopParam({
-      ...changePopParam, itemId: row.item_id,
+      ...changePopParam, itemId: row === undefined ? 0 : row.item_id,
       itemType: itemType,
       serverId: searchParam.server_id,
       classId: searchParam.class_id,
@@ -70,7 +70,10 @@ function LowPriceSearch() {
   // 교체후 팝업닫기
   const itemChange = (row: ItemSearchType, itemType: string) => {
     let resultListCopy = [...resultList];
-    let index = resultListCopy.findIndex((result) => result.tradeCategoryName === resultRow?.tradeCategoryName);
+    // let index = resultListCopy.findIndex((result) => result.tradeCategoryName === resultRow?.tradeCategoryName);
+    console.log(itemType, 'itemType');
+    let index = Object.values(ItemEnum).findIndex((value) => value.detailCode === itemType);
+    console.log(index, 'index');
     let tradeCategoryName = Object.values(ItemEnum).filter((value) => value.detailCode === itemType).map((value) => value.name)[0];
     resultListCopy[index] = ChangePopTypeRow(row, tradeCategoryName);
     setResultList(resultListCopy);

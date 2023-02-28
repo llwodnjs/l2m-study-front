@@ -44,10 +44,17 @@ function MySettingSearchGrid({
               </thead>
               <tbody>
                 {
+                  list.length === 0 ? 
+                  <tr>
+                    <td colSpan={4} className='no-item'>
+                      검색된 아이템이 존재하지 않습니다.
+                    </td>
+                  </tr>
+                  :
                   list.map((row, idx) => {
                     return (
                       <tr key={idx}>
-                        <td>
+                        <td className='image-td'>
                           <img src={process.env.REACT_APP_FILE_URL + row.imageUrl} onClick={() => onClickFunction(process.env.REACT_APP_FILE_URL + row.imageUrl)} />
                           {/* <img src={previewImage} /> */}
                         </td>

@@ -117,11 +117,30 @@ tbody > tr > td {
   }
 }
 
-tbody > tr > td:first-child {
+// tbody > tr > td:first-child {
+//   display: flex;
+//   align-items: center;
+//   gap: 10px;
+//   padding-left: 10px;
+// }
+
+.image-td {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   gap: 10px;
   padding-left: 10px;
+
+  // &>img {
+  //   width: 50px;
+  //   height: 40px;
+  //   cursor: pointer;
+  // }
+}
+
+.no-item {
+  height: 40px;
+  text-align: center;
 }
 
 .search-table {
