@@ -83,12 +83,7 @@ function LowPriceSearch() {
 
   // 아이템 상세보기 액션
   const itemInfoOpen = (item_id: number, server_id: number, enchant_level: number) => {
-    // apiSearchItemInfo(item_id, enchant_level)
-    //   .then((result) => {
-    //     setItemInfo(result.data);
-    //   })
-    // searchItemPriceInfo(item_id, server_id, enchant_level);
-    // setIsInfoPopShow(true);
+
     if (localStorage.getItem('auth') !== null) {
       setUsername(JSON.parse(localStorage.getItem('auth') || '').username);
     }
@@ -99,7 +94,6 @@ function LowPriceSearch() {
           setItemInfo(result.data.results.itemInfo);
           setItemPriceInfo(result.data.results.priceInfo);
           setIsFavorite(result.data.results.isFavorite);
-          setControlFavoritesParam(result.data.results.itemInfo);
           setIsInfoPopShow(true);
         } else {
           alert(result.data.bizStatusMessage);
@@ -226,6 +220,8 @@ function LowPriceSearch() {
               alert(controlFavoritesParam.itemName + ' 아이템이 즐겨찾기에 저장되었습니다.');
               setControlFavoritesParam(() => ControlFavoritesParamTypeDefault());
             }
+
+            setIsFavorite(res.data.results.isFavorite);
           } else {
             alert(res.data.bizStatusMessage);
           }
