@@ -3,6 +3,7 @@ import NamingInput from "@/components/input/NamingInput";
 import SearchButton from "@/components/button/SearchButton";
 import { useState } from "react";
 import { findPwApi } from "@/resources/api/pages/findpw/FindPw.api";
+import { isNotEmpty } from "@/utils/PredicateUtil";
 
 const logoImg = require("@/assets/images/l2m-logo.png");
 
@@ -20,7 +21,8 @@ function FindPw() {
 
   // 비밀번호 찾기
   const findPw = () => {
-    findPwApi(name, username)
+    if (isNotEmpty(name) && isNotEmpty(username)) {
+      findPwApi(name, username)
       .then((result) => {
         if (result.data.bizStatusCode === 'E0GGG000') {
           alert('비밀번호를 찾았습니다.\r\n확인해주세요.');
@@ -30,6 +32,9 @@ function FindPw() {
           alert(result.data.bizStatusMessage);
         }
       })
+    } else {
+      alert('정보를 기입해주세요');
+    }
   }
   return (
     <div className="find-pw">

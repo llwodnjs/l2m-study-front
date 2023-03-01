@@ -1,7 +1,7 @@
 import "@/assets/scss/pages/search/lowpricesearch.style.scoped.scss";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { getItemInfoPopApi, lowPriceSearchApi, mySettingLowPriceSearchApi } from "@/resources/api/pages/search/Search.api";
-import { LowPriceSearchParamType, LowPriceSearchParamTypeDefault, LowPriceSearchType, LowPriceSearchTypeListDefault, ChangePopParamType, ChangePopParamTypeDefault, LowPriceSearchTypeDefault, ChangePopType, ItemSearchType, ChangePopTypeRow, ItemInfoType, ItemInfoTypeDefault, ItemPriceInfoType, ItemPriceInfoTypeDefault } from "@/type/pages/search/Search.type";
+import { LowPriceSearchParamType, LowPriceSearchParamTypeDefault, LowPriceSearchType, LowPriceSearchTypeListDefault, ChangePopParamType, ChangePopParamTypeDefault, LowPriceSearchTypeDefault, ItemSearchType, ChangePopTypeRow, ItemInfoType, ItemInfoTypeDefault, ItemPriceInfoType, ItemPriceInfoTypeDefault } from "@/type/pages/search/Search.type";
 import ServerSearchSelect from "@/components/select/ServerSearchSelect";
 import SearchSelect from "@/components/select/SearchSelect";
 import { serverList, classList, gradeList, enchantLevelList } from "@/type/pages/main/Main.type";
@@ -15,9 +15,9 @@ import html2canvas from "html2canvas";
 import { insertMySettingFileApi, insertMySettingItemApi } from "@/resources/api/pages/mysetting/MySetting.api";
 import { MySettingInsertParamSetting } from "@/type/pages/mysetting/MySetting.type";
 import SettingSaveDialog from "@/components/dialog/SettingSaveDialog";
-import axios from "axios";
 import { addFavoriteApi } from "@/resources/api/pages/favorites/Favorite.api";
 import { ControlFavoritesParamType, ControlFavoritesParamTypeDefault } from "@/type/pages/favorite/Favorites.type";
+import { Skeleton } from "@mui/material";
 
 const diamondImage = require("@/assets/images/diamond.png");
 // const equipNonActive = require("@/assets/images/equip_non_active.png");
@@ -43,12 +43,19 @@ function LowPriceSearch() {
   const [isFavorite, setIsFavorite] = useState('Y' || 'N');
   const [username, setUsername] = useState<string>('');
   const [controlFavoritesParam, setControlFavoritesParam] = useState<ControlFavoritesParamType>(() => ControlFavoritesParamTypeDefault());
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // 최저가세팅 조회 api 호출
   const searchLowPriceSetting = () => {
     lowPriceSearchApi(searchParam)
       .then((result) => {
-        setResultList(result.data.results);
+        if (result.data.bizStatusCode === 'E0GGG000') {
+          setResultList(result.data.results);
+          setIsLoading(true);
+        } else {
+          alert(result.data.bizStatusMessage);
+          navigate('/');
+        }
       });
   };
 
@@ -196,7 +203,6 @@ function LowPriceSearch() {
     }
   }
 
-
   useEffect(() => {
     if (mySettingKey === undefined) {
       // 세팅키가 없을 시 최저가 조회
@@ -233,7 +239,7 @@ function LowPriceSearch() {
   }, [controlFavoritesParam]);
 
   return (
-    <div id="screen-area">
+    <div className="screen-area">
       <div className="low-price-search">
         <span className="low-price-search__text">내가 원하는 클래스의 최저가를 확인해보세요.</span>
         <div className="low-price-search__select">
@@ -242,8 +248,9 @@ function LowPriceSearch() {
           <SearchSelect defaultValue="장비등급" effect="disabled" options={gradeList} value={searchParam.grade_id} onChange={(val) => setSearchParam({ ...searchParam, grade_id: val })} />
           <SearchSelect defaultValue="강화수치" effect="disabled" options={enchantLevelList} value={searchParam.from_enchant_level} onChange={(val) => setSearchParam({ ...searchParam, from_enchant_level: parseInt(val) })} />
         </div>
-      </div>
-      <LowPriceSearchGrid list={resultList} onClickFunction={openChangePopup} itemInfoOpen={itemInfoOpen} />
+      </div>      
+        {isLoading && <LowPriceSearchGrid list={resultList} onClickFunction={openChangePopup} itemInfoOpen={itemInfoOpen}/>}
+        {!isLoading && <Skeleton variant="rectangular" animation="wave" width={740} height={740}></Skeleton>}
       <div className="low-price-item">
         <div className="low-price-item__total">
           <span>세팅 최저가:</span>

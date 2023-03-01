@@ -3,6 +3,7 @@ import "@/assets/scss/pages/login/login.style.scoped.scss";
 import { useState } from "react";
 import { loginProcess } from "@/resources/api/pages/login/Login.api";
 import { LoginParamType, LoginParamTypeDefault, LoginResponseType } from "@/type/pages/login/Login.type";
+import { isNotEmpty } from "@/utils/PredicateUtil";
 
 const logoImg = require("@/assets/images/l2m-logo.png");
 
@@ -12,7 +13,8 @@ function Login() {
 
   // 로그인
   const login = () => {
-    loginProcess(loginObj)
+    if (isNotEmpty(loginObj.username) && isNotEmpty(loginObj.password)) {
+      loginProcess(loginObj)
       .then((result) => {
         if (result.data.bizStatusCode === 'E0GGG000') {
           localStorage.setItem('auth', JSON.stringify(result.data.results));
@@ -21,6 +23,9 @@ function Login() {
           
         }
       });
+    } else {
+      alert('정보를 기입해주세요');
+    }
   }
 
   return (

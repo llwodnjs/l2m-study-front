@@ -7,6 +7,7 @@ import NamingInput from "@/components/input/NamingInput";
 import SearchButton from "@/components/button/SearchButton";
 import { editInfoApi } from "@/resources/api/pages/confirmInfo/ConfirmInfo.api";
 import { EditParamType } from "@/type/pages/myinfo/MyInfo.type";
+import { isNotEmpty } from "@/utils/PredicateUtil";
 
 const logoImg = require("@/assets/images/l2m-logo.png");
 
@@ -24,7 +25,16 @@ function Join() {
 
   // 회원가입 api
   const join = () => {
-    joinApi(joinParam)
+    if (!isNotEmpty(joinParam.name)) {
+      alert('이름을 입력해주세요.');
+    } else if (!isNotEmpty(joinParam.username)) {
+      alert('아이디를 입력해주세요.');
+    } else if (!isNotEmpty(joinParam.password)) {
+      alert('비밀번호를 입력해주세요.');
+    } else if (!isNotEmpty(joinParam.rePassword)) {
+      alert('비밀번호 확인창에 입력해주세요.');
+    } else {
+      joinApi(joinParam)
       .then((result) => {
         if (result.data.bizStatusCode === 'E0GGG000') {
           alert('가입되었습니다!');
@@ -33,12 +43,19 @@ function Join() {
           alert(result.data.bizStatusMessage);
         }
       });
+    }
   }
 
   // 내 정보 수정 api
   const edit = () => {
     setEditParam({...editParam, username: location.state.resultInfo.username})
-    editInfoApi(editParam)
+
+    if (!isNotEmpty(joinParam.password)) {
+      alert('비밀번호를 입력해주세요.');
+    } else if (!isNotEmpty(joinParam.rePassword)) {
+      alert('비밀번호 확인창에 입력해주세요.');
+    } else {
+      editInfoApi(editParam)
       .then((result) => {
         if (result.data.bizStatusCode === 'E0GGG000') {
           alert('정보가 수정되었습니다.');
@@ -47,6 +64,7 @@ function Join() {
           alert(result.data.bizStatusMessage);
         }
       })
+    }
   }
 
   return (
