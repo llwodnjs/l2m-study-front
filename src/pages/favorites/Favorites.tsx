@@ -5,8 +5,8 @@ import "@/assets/scss/pages/favorites/favorites.style.scoped.scss";
 import SearchImage from "@/components/img/SearchImage";
 import SearchPaging from "@/components/paging/SearchPaging";
 import { addFavoriteApi, getFavoriteListApi, getItemChartApi } from "@/resources/api/pages/favorites/Favorite.api";
-import { ChartType, ChartTypeDefault, ControlFavoritesParamType, ControlFavoritesParamTypeDefault, FavoriteItemChartParamType, FavoriteItemChartParamTypeDefault, FavoriteListParamType, FavoriteListParamTypeDefault, FavoriteListType, serverNameList, ServerPriceListType } from "@/type/pages/favorite/Favorites.type";
-import { enchantLevelList, SearchListParam, SearchListParamInit } from "@/type/pages/main/Main.type";
+import { ChartType, ChartTypeDefault, ControlFavoritesParamType, ControlFavoritesParamTypeDefault, FavoriteItemChartParamType, FavoriteItemChartParamTypeDefault, FavoriteListParamType, FavoriteListParamTypeDefault, FavoriteListType, worldNameList, ServerPriceListType, serverExchangeList, worldIdList } from "@/type/pages/favorite/Favorites.type";
+import { enchantLevelList, SearchListParam, SearchListParamInit, serverList } from "@/type/pages/main/Main.type";
 import { PagingType } from "@/type/pages/search/Search.type";
 import { CategoryScale, LinearScale, BarElement } from "chart.js";
 import { useEffect, useState } from "react";
@@ -60,7 +60,6 @@ function Favorites() {
   const navigate = useNavigate();
   Chart.register(CategoryScale, LinearScale, BarElement);
   const [chartParam, setChartParam] = useState<FavoriteItemChartParamType>(() => FavoriteItemChartParamTypeDefault());
-  const [chartList, setChartList] = useState<number[]>([]);
   const [chartConfig, setChartConfig] = useState<ChartType>(() => ChartTypeDefault());
 
   // 리스트 검색
@@ -102,23 +101,42 @@ function Favorites() {
     setListParam({...listParam, search_keyword: itemName, to_enchant_level: enchantLevel, from_enchant_level: enchantLevel});
   }
 
-  const test:number[] = [];
-
   const getPriceChart = () => {
+    const priceArray:number[] = [];
+    const serverNameArray:string[] = [];
+
     getItemChartApi(chartParam)
       .then((result) => {
         const priceList:ServerPriceListType[] = result.data.results;
         
         priceList.forEach((result) => {
-          test.push(result.price);   
+          priceArray.push(result.price);
+          // 일반, 고급, 희귀 기준
+          if (serverExchangeList.indexOf(chartParam.gradeCode) !== -1) {
+            serverList.map((item) => {
+              item.servers.map((item) => {
+                if (item.server_id === result.serverId) {
+                  serverNameArray.push(item.server_name);
+                }
+              })
+            })
+          // 영웅, 전설, 신화 기준
+          } else {
+            serverList.map((item) => {
+              if (item.world_id === result.serverId) {
+                serverNameArray.push(item.world_name);
+              }
+            })
+          }
+          
         })
 
         setChartConfig({
           data: {
-            labels: serverNameList,
+            labels: serverNameArray,
             datasets: [{
                 label: '서버별 통계',
-                data: test,
+                data: priceArray,
                 backgroundColor: ['#06A3B0'],
                 borderColor: ['#06A3B0'],
                 borderWidth: 1,
@@ -129,17 +147,36 @@ function Favorites() {
           }})
       })
       .catch((error) => console.log(error));
-    
-    // setChartParam(() => FavoriteItemChartParamTypeDefault());
   }
 
   const settingChartParam = (itemId: number, itemName: string, gradeCode: string) => {
-    setChartParam({
-      ...chartParam,
-      itemId: itemId,
-      itemName: itemName,
-      gradeCode: gradeCode
-    })
+
+    // 일반, 고급, 희귀 기준 -> 서버 거래소
+    if (serverExchangeList.indexOf(gradeCode) !== -1) {
+      const serverIdArr: number[] = [];
+      const selectedServer = serverList.find((item) => item.world_id === 1001);
+      selectedServer?.servers.map((item) => serverIdArr.push(item.server_id));
+
+      setChartParam({
+        ...chartParam,
+        serverIdList: serverIdArr,
+        itemId: itemId,
+        itemName: itemName,
+        gradeCode: gradeCode,
+        enchantLevel: 0
+      })
+    //영웅, 전설, 신화 -> 월드 거래소
+    } else {
+      setChartParam({
+        ...chartParam,
+        serverIdList: worldIdList,
+        itemId: itemId,
+        itemName: itemName,
+        gradeCode: gradeCode,
+        enchantLevel: 0
+      })
+    }
+    
   }
 
   const enchantLevelChangeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -150,11 +187,21 @@ function Favorites() {
     })
   }
 
+  const serverChangeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const worldId = parseInt(e.target.value);
+    const serverIdArr: number[] = [];
+    const selectedServer = serverList.find((item) => item.world_id === worldId);
+    selectedServer?.servers.map((item) => serverIdArr.push(item.server_id));
+    setChartParam({...chartParam, serverIdList: serverIdArr});
+    // changeServerPrice(info.item_id, serverId, info.enchant_level);
+  }
+
   useEffect(() => {
     searchFavoriteList();
   }, [favoriteListParam]);
 
   useEffect(() => {
+    // 즐겨찾기 제어
     const controlFavorite = () => {
       // 비로그인 시 즐겨찾기 안됨.  
       addFavoriteApi(controlFavoritesParam)
@@ -180,6 +227,7 @@ function Favorites() {
   }, [controlFavoritesParam])
 
   useEffect(() => {
+    // 검색페이지 이동
     if (listParam.search_keyword !== '') {
       navigate('/itemSearch', {
         state: listParam
@@ -188,7 +236,8 @@ function Favorites() {
   }, [listParam]);
 
   useEffect(() => {
-    getPriceChart();
+    // 차트 조회
+    if(chartParam.itemId !== 0) getPriceChart();
   }, [chartParam])
 
   return (
@@ -251,13 +300,24 @@ function Favorites() {
       <div className="chart">
         <div className="chart__header">
           <div className="chart__header__wrapper">
-            <span className={chartParam.gradeCode}>{chartParam.itemName}</span>
-            <select className="select-button" value={chartParam.enchantLevel} onChange={enchantLevelChangeHandler}>
-              {enchantLevelList.map((obj, idx) => {
-                return <option key={idx} value={obj.value}>{obj.text}</option>
-              })}
-            </select>
-            <img src={searchImage} alt='search' onClick={() => itemSearch(chartParam.itemName, chartParam.enchantLevel)}/>
+            <div className="chart__header__wrapper__main">
+              <span className={chartParam.gradeCode}>{chartParam.itemName}</span>
+              <select className="select-button" value={chartParam.enchantLevel} onChange={enchantLevelChangeHandler}>
+                {enchantLevelList.map((obj, idx) => {
+                  return <option key={idx} value={obj.value}>{obj.text}</option>
+                })}
+              </select>
+              <img src={searchImage} alt='search' onClick={() => itemSearch(chartParam.itemName, chartParam.enchantLevel)}/>
+            </div>
+            <div className="chart__header__wrapper__sub">
+              { serverExchangeList.indexOf(chartParam.gradeCode) !== -1 &&
+              <select className="select-server" onChange={serverChangeHandler}>
+                {serverList.map((option, idx) => (
+                  <option key={idx} value={option.world_id}>{option.world_name}</option>
+                ))}
+              </select>
+              }
+            </div>
           </div>
         </div>
         <div className="chart__content">

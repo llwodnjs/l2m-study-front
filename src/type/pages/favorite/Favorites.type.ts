@@ -46,8 +46,10 @@ export type FavoriteItemChartParamType = {
     gradeCode: string
 }
 
+export const worldIdList: number[] = [1001, 1011, 1021, 1031, 1041, 1051, 1061, 1071, 1081, 1091, 1101, 1111, 1121, 1131, 1141];
+
 export const FavoriteItemChartParamTypeDefault = ():FavoriteItemChartParamType => ({
-    serverIdList: [1001, 1011, 1021, 1031, 1041, 1051, 1061, 1071, 1081, 1091, 1101, 1111, 1121, 1131, 1141],
+    serverIdList: worldIdList,
     itemId: 0,
     enchantLevel: 0,
     itemName: '',
@@ -59,7 +61,9 @@ export type ServerPriceListType = {
     price: number
 }
 
-export const serverNameList: string[] = ['바츠', '지그하르트', '카인', '리오나', '에리카', '거스틴', '카스티엔', '아리아', '드비안느', '테온', '에르휘나', '아이린', '오필리아', '바이움', '안타라스'];
+export const worldNameList: string[] = ['바츠', '지그하르트', '카인', '리오나', '에리카', '거스틴', '카스티엔', '아리아', '드비안느', '테온', '에르휘나', '아이린', '오필리아', '바이움', '안타라스'];
+export const serverExchangeList: string[] = ['uncommon', 'common', 'rare'];
+
 
 type ChartDataType = {
     labels: string[]

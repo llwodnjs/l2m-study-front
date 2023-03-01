@@ -160,7 +160,6 @@ function ItemSearch() {
 
   useEffect(() => {
     const controlFavorite = () => {
-      console.log(controlFavoritesParam);
       // 비로그인 시 즐겨찾기 안됨.  
       addFavoriteApi(controlFavoritesParam)
         .then((res) => {
