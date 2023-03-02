@@ -26,7 +26,7 @@ function SearchPaging({
   const isTotalZero = total === 0;
 
   // 현재 페이지가 마지막 페이지니?
-  const isOffsetLast = total <= _page + size; // 32 >= 1 . tru. 
+  const isOffsetLast = total <= _page * size; // 32 >= 1 . tru. 
 
   // 페이지 표시 상태정보
   const initPageInfo = () => {

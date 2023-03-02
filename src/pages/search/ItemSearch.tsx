@@ -48,7 +48,8 @@ function ItemSearch() {
       page: page,
       size: current.size,
     }));
-    searchItem();
+
+    if (page === 1) searchItem();
   };
 
   // 검색버튼 클릭시 1페이지 처리
@@ -156,7 +157,7 @@ function ItemSearch() {
 
   useEffect(() => { 
     searchItem();
-  }, []);
+  }, [listParam.page]);
 
   useEffect(() => {
     const controlFavorite = () => {
@@ -166,10 +167,10 @@ function ItemSearch() {
           if (res.data.bizStatusCode === 'E0GGG000') {
             if (res.data.results.isFavorite === 'N') {
               alert(controlFavoritesParam.itemName + ' 아이템이 즐겨찾기에서 제거되었습니다.');
-              setControlFavoritesParam(() => ControlFavoritesParamTypeDefault());
+              // setControlFavoritesParam(() => ControlFavoritesParamTypeDefault());
             } else {
               alert(controlFavoritesParam.itemName + ' 아이템이 즐겨찾기에 저장되었습니다.');
-              setControlFavoritesParam(() => ControlFavoritesParamTypeDefault());
+              // setControlFavoritesParam(() => ControlFavoritesParamTypeDefault());
             }
 
             setIsFavorite(res.data.results.isFavorite);
@@ -245,7 +246,7 @@ function ItemSearch() {
                       isShow={isShow} info={itemInfo} 
                       priceInfo={itemPriceInfo} isFavorite={isFavorite} 
                       controlFavorite={settingParam} close={itemInfoClose}/>
-      {isShowCompareDialog && <CompareDialog close={closeCompareDialog} contents={compareInfos}/>}
+      {isShowCompareDialog && <CompareDialog close={closeCompareDialog} contents={compareInfos} settingParam={settingParam}/>}
     </div>
   );
 };

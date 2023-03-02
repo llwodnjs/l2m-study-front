@@ -47,7 +47,7 @@ function ItemChangeDialog({
     changePopListApi(changePopParam)
       .then((result) => {
         setChangePopList(result.data.results);
-        setPaging({ ...paging, page: result.data.offset, size: result.data.limit, total: result.data.total });
+        setPaging({ ...paging, page: changePopParam.page, size: result.data.limit, total: result.data.total });
       });
   }
 

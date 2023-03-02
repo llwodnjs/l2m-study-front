@@ -50,15 +50,16 @@ function Join() {
   const edit = () => {
     setEditParam({...editParam, username: location.state.resultInfo.username})
 
-    if (!isNotEmpty(joinParam.password)) {
+    if (!isNotEmpty(editParam.password)) {
       alert('비밀번호를 입력해주세요.');
-    } else if (!isNotEmpty(joinParam.rePassword)) {
+    } else if (!isNotEmpty(editParam.rePassword)) {
       alert('비밀번호 확인창에 입력해주세요.');
     } else {
       editInfoApi(editParam)
       .then((result) => {
         if (result.data.bizStatusCode === 'E0GGG000') {
-          alert('정보가 수정되었습니다.');
+          alert('정보가 수정되었습니다. 재로그인해주세요.');
+          localStorage.removeItem('auth');
           navigate('/');
         } else {
           alert(result.data.bizStatusMessage);

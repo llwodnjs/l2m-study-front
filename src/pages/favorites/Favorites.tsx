@@ -113,8 +113,8 @@ function Favorites() {
           priceArray.push(result.price);
           // 일반, 고급, 희귀 기준
           if (serverExchangeList.indexOf(chartParam.gradeCode) !== -1) {
-            serverList.map((item) => {
-              item.servers.map((item) => {
+            serverList.forEach((item) => {
+              item.servers.forEach((item) => {
                 if (item.server_id === result.serverId) {
                   serverNameArray.push(item.server_name);
                 }
@@ -122,7 +122,7 @@ function Favorites() {
             })
           // 영웅, 전설, 신화 기준
           } else {
-            serverList.map((item) => {
+            serverList.forEach((item) => {
               if (item.world_id === result.serverId) {
                 serverNameArray.push(item.world_name);
               }

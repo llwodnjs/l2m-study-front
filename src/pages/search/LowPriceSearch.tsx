@@ -18,6 +18,7 @@ import SettingSaveDialog from "@/components/dialog/SettingSaveDialog";
 import { addFavoriteApi } from "@/resources/api/pages/favorites/Favorite.api";
 import { ControlFavoritesParamType, ControlFavoritesParamTypeDefault } from "@/type/pages/favorite/Favorites.type";
 import { Skeleton } from "@mui/material";
+import { isNotEmpty } from "@/utils/PredicateUtil";
 
 const diamondImage = require("@/assets/images/diamond.png");
 // const equipNonActive = require("@/assets/images/equip_non_active.png");
@@ -149,33 +150,38 @@ function LowPriceSearch() {
 
   // 세팅 저장하기
   const settingSave = () => {
-    setIsSettingNamePopShow(false);
-    setTimeout(() => {
-      html2canvas(document.body, { useCORS: true, proxy: '/' })
-        .then(function (canvas) {
-          let img = canvas.toDataURL('image/png');
-  
-          let blobBin = window.atob(img.split(',')[1]);	// base64 데이터 디코딩
-          let array = [];
-          for (let i = 0; i < blobBin.length; i++) {
-            array.push(blobBin.charCodeAt(i));
-          }
-          let blob = new Blob([new Uint8Array(array)]);	// Blob 생성
-          let file = new File([blob], settingName + '.png', { type: 'image/png' });
-          let formdata = new FormData();	// formData 생성
-          formdata.append("file", file);	// file data 추가
-  
-          insertMySettingFileApi(formdata)
-            .then((result) => {
-              const totalPrice = resultList.map((x) => x.now_min_unit_price).reduce((prev, current) => prev + current);
-              insertMySettingItemApi(MySettingInsertParamSetting(resultList, searchParam, settingName, result.data.results.fileUrl, totalPrice))
-                .then((result) => {
-                  console.log(result, 'result');
-                  alert('세팅등록완료!');
-                });
-            });
-        })
-    }, 500);
+
+    if (!isNotEmpty(settingName)) {
+      alert('입력창에 세팅명을 입력해주세요.');
+    } else {
+      setIsSettingNamePopShow(false);
+      setTimeout(() => {
+        html2canvas(document.body, { useCORS: true, proxy: '/' })
+          .then(function (canvas) {
+            let img = canvas.toDataURL('image/png');
+    
+            let blobBin = window.atob(img.split(',')[1]);	// base64 데이터 디코딩
+            let array = [];
+            for (let i = 0; i < blobBin.length; i++) {
+              array.push(blobBin.charCodeAt(i));
+            }
+            let blob = new Blob([new Uint8Array(array)]);	// Blob 생성
+            let file = new File([blob], settingName + '.png', { type: 'image/png' });
+            let formdata = new FormData();	// formData 생성
+            formdata.append("file", file);	// file data 추가
+    
+            insertMySettingFileApi(formdata)
+              .then((result) => {
+                const totalPrice = resultList.map((x) => x.now_min_unit_price).reduce((prev, current) => prev + current);
+                insertMySettingItemApi(MySettingInsertParamSetting(resultList, searchParam, settingName, result.data.results.fileUrl, totalPrice))
+                  .then((result) => {
+                    console.log(result, 'result');
+                    alert('세팅등록완료!');
+                  });
+              });
+          })
+      }, 500);
+    }
   }
 
   // 나의 세팅 키로 세팅정보 조회하기 api
@@ -183,6 +189,7 @@ function LowPriceSearch() {
     mySettingLowPriceSearchApi(mySettingKey)
       .then((result) => {
         setResultList(result.data.results.list);
+        setIsLoading(true);
       });
     }
     

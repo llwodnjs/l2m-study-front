@@ -35,8 +35,8 @@ function SearchGrid({
   return (
     <div className="search__table">
       <div className="search__table__count">
-        <div className={isCountColor ? 'search__table__count__color' : ''}>검색결과: {search_result?.total}건</div>
-        {compareParams && <div className={"search__table__count__compareItems"}>비교대상 : {compareParams.map((item) => item.item_name + ' +' + item.enchant_level)}</div>}
+        <div className={isCountColor ? 'search__table__count__color' : ''}>검색결과 : {search_result?.total}건</div>
+        {compareParams?.length !== 0 && <div className={"search__table__count__compareItems"}>카테고리가 같은 비교 대상을 선택해주세요.</div>}
       </div>
       <div className="search__table__content">
         <table className="search-table">

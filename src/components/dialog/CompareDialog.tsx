@@ -1,7 +1,7 @@
 import "@/assets/scss/dialog/comparedialog.style.scoped.scss";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import { ItemCompareInfoType } from "@/type/pages/search/Search.type";
+import { ItemCompareInfoType, ItemInfoType } from "@/type/pages/search/Search.type";
 import SearchImage from "../img/SearchImage";
 
 const sirBlade = require("@/assets/images/sir_blade.png");
@@ -21,10 +21,11 @@ const activeFavorite = require("@/assets/images/star.png");
 
 type CompareDialogProps = {
   close: React.MouseEventHandler<SVGSVGElement>
-  contents: ItemCompareInfoType 
+  contents: ItemCompareInfoType
+  settingParam: (info: ItemInfoType) => void
 }
 
-function CompareDialog({close, contents}: CompareDialogProps) {
+function CompareDialog({close, contents, settingParam}: CompareDialogProps) {
 
   function calcCompare(firstInfoDisplay:string, SecondInfoDisplay:string):number {
     return parseInt(SecondInfoDisplay.replace(/[^0-9]/g, '')) - parseInt(firstInfoDisplay.replace(/[^0-9]/g, ''));
@@ -121,7 +122,7 @@ function CompareDialog({close, contents}: CompareDialogProps) {
               </div>
             </div>
             <div className="compare-dialog__body__img__left__header__like">
-              {contents.isFavorite[0] === 'Y' ? <img src={activeFavorite} /> : <img src={disabledFavorite} />}
+              {contents.isFavorite[0] === 'Y' ? <img src={activeFavorite} onClick={() => settingParam(contents.itemInfos[0])} alt='favorite'/> : <img src={disabledFavorite} onClick={() => settingParam(contents.itemInfos[0])} alt='favorite'/>}
             </div>
           </div>
           <div className="compare-dialog__body__img__right__header">
@@ -147,7 +148,7 @@ function CompareDialog({close, contents}: CompareDialogProps) {
               </div>
             </div>
             <div className="compare-dialog__body__img__left__header__like">
-              {contents.isFavorite[1] === 'Y' ? <img src={activeFavorite} /> : <img src={disabledFavorite} />}
+              {contents.isFavorite[1] === 'Y' ? <img src={activeFavorite} onClick={() => settingParam(contents.itemInfos[1])} alt='favorite'/> : <img src={disabledFavorite} onClick={() => settingParam(contents.itemInfos[1])} alt='favorite'/>}
             </div>
           </div>
         </div>

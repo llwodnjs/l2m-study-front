@@ -20,7 +20,7 @@ function Login() {
           localStorage.setItem('auth', JSON.stringify(result.data.results));
           navigate("/");
         } else {
-          
+          alert(result.data.bizStatusMessage);
         }
       });
     } else {
